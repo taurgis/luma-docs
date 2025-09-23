@@ -175,7 +175,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   };
 
   return (
-    <div className={`relative group ${className}`}>
+    <div className={`${className}`}>
       {/* Header with title and language */}
       {(title) && (
         <div className="flex items-center justify-between bg-slate-100 text-slate-800 px-4 py-2 text-sm font-medium rounded-t-lg border border-slate-200 border-b-0">
@@ -205,7 +205,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       )}
       
       {/* Code container */}
-      <div className="relative">
+      <div>
         <pre className={`
           overflow-x-auto p-4 text-sm leading-relaxed
           bg-slate-50 text-slate-800 border border-slate-200
