@@ -2,6 +2,10 @@
 
 A modern, fast, and beautiful documentation platform built with React 19, MDX, Vite React SSG, and Tailwind CSS. Perfect for creating documentation websites that are both developer-friendly and user-friendly with automatic route generation, search functionality, and optimized deployment workflows.
 
+## 🚀 Live Demo
+
+**[View Live Demo](https://taurgis.github.io/luma-docs/)** - See Luma Docs in action with full SEO features, search functionality, and responsive design.
+
 ## Features
 
 - **React 19** with TypeScript for modern development
@@ -18,11 +22,28 @@ A modern, fast, and beautiful documentation platform built with React 19, MDX, V
 - **SEO Optimized**: Automatic sitemap.xml generation, meta tags, and structured data for better search rankings
 - **Performance Optimized**: Code splitting, lazy loading, and optimized bundle sizes
 
+## 🎯 Showcase
+
+**[Live Demo: taurgis.github.io/luma-docs](https://taurgis.github.io/luma-docs/)**
+
+This repository itself serves as a complete example of Luma Docs in action, featuring:
+
+- 📱 **Fully responsive design** that works on all devices
+- 🔍 **Live search functionality** - try searching for "SEO" or "deployment"
+- 🏷️ **Comprehensive SEO** - view source to see Open Graph, Twitter Cards, and JSON-LD
+- 📚 **Multiple content types** - guides, examples, and documentation
+- 🚀 **GitHub Pages deployment** with automatic subfolder detection
+- ⚡ **Fast loading** with static site generation and optimized assets
+
+Explore the demo to see how your documentation site will look and feel!
+
 ## Quick Start
+
+🌐 **[Try the Live Demo](https://taurgis.github.io/luma-docs/)** first to see what you're building!
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/taurgis/luma-docs.git
    cd luma-docs
    ```
 
@@ -282,6 +303,8 @@ The site is optimized for GitHub Pages deployment with intelligent subfolder sup
              github_token: ${{ secrets.GITHUB_TOKEN }}
              publish_dir: ./dist
    ```
+   
+   **Example:** See this exact setup in action at [taurgis.github.io/luma-docs](https://taurgis.github.io/luma-docs/)
 
 ### Other Platforms
 
