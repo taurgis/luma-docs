@@ -41,13 +41,17 @@ Each MDX file from an archived version keeps its original relative path, so a pa
 ## Configuration (`config.ts`)
 
 ```ts
-versions: {
-  current: "v1.0",    // Label applied to root pages
-  enableSwitcher: true,
-  strategy: 'folder',
-  hidden: [],          // Hide specific archived versions from switcher
-  order: [],           // Optional explicit ordering (else semantic version sort)
-}
+// Excerpt from config.ts (snapshot)
+export const config = {
+  versions: {
+    current: "v1.0",    // Label applied to root pages
+    enableSwitcher: true,
+    strategy: 'folder',
+    hidden: [],          // Hide specific archived versions from switcher
+    order: [],           // Optional explicit ordering (else semantic version sort)
+  },
+  // ...other config fields...
+};
 ```
 
 ## Creating a Snapshot

@@ -521,7 +521,16 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Versioning",
     "heading": "Navigation Behavior",
     "headingId": "navigation-behavior",
-    "content": "Navigation Behavior Sidebar displays only the pages for the active version (prevents cross-version noise) Version switcher hides automatically if there are no archived versions Archived versions can be excluded from the switcher via",
+    "content": "Navigation Behavior Sidebar displays only the pages for the active version (prevents cross-version noise) Archived sidebars achieve navigation parity with the current version: the visible group names strip the prefix so historical docs feel native instead of nested under an extra version bucket Inde",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Version Switching & Fallback",
+    "headingId": "version-switching-fallback",
+    "content": "Version Switching & Fallback When you switch versions while viewing a page that does not exist in the target version: The system first attempts to find the exact relative path in the target version. If it does not exist, it transparently falls back to that version’s root ( for archived, or for curre",
     "description": "",
     "version": null
   },
