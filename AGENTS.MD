@@ -187,14 +187,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Derive base path
-        id: base
+      - name: Derive SITE_URL (owner.github.io or CNAME)
+        id: site
         run: |
-          if [[ "${GITHUB_REPOSITORY}" =~ github\.io$ ]]; then
-            echo "base=/" >> "$GITHUB_OUTPUT"
+          if [ -f CNAME ]; then
+            DOMAIN=$(head -n1 CNAME | tr -d '\r')
+            echo "site_url=https://$DOMAIN" >> "$GITHUB_OUTPUT"
           else
-            repo=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
-            echo "base=/$repo/" >> "$GITHUB_OUTPUT"
+            echo "site_url=https://${GITHUB_REPOSITORY_OWNER}.github.io" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Setup Node.js
@@ -212,12 +212,12 @@ jobs:
           npm run lint
           npm run type-check
 
-      # GitHub Pages Expert + Vite Expert: subfolder-aware build
+      # GitHub Pages Expert + Vite Expert: unified auto-detected base
       - name: Build static site
         env:
-          VITE_BASE_PATH: ${{ steps.base.outputs.base }}
+          SITE_URL: ${{ steps.site.outputs.site_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-  run: npm run build
+        run: npm run build
 
       # (Optional) place for link/a11y checks before deployment
       # - name: Check links

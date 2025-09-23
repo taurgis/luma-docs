@@ -362,7 +362,7 @@ The site is optimized for GitHub Pages deployment with intelligent subfolder sup
 
 #### 1. Modern Native GitHub Pages Workflow (Recommended)
 
-Create `.github/workflows/deploy.yml` using the built‑in Pages deployment actions (no third‑party action needed):
+Create `.github/workflows/deploy.yml` using the built‑in Pages deployment actions (no third‑party action needed). The resolver now auto-detects the base path; we only add a tiny step to derive `SITE_URL` from a CNAME or owner:
 
 ```yaml
 name: Docs CI
@@ -387,16 +387,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Derive base path
-        id: base
+      - name: Derive SITE_URL (owner.github.io or CNAME)
+        id: site
         run: |
-          if [[ "${GITHUB_REPOSITORY}" =~ github\.io$ ]]; then
-            echo "base=/" >> "$GITHUB_OUTPUT"
+          if [ -f CNAME ]; then
+            DOMAIN=$(head -n1 CNAME | tr -d '\r')
+            echo "site_url=https://$DOMAIN" >> "$GITHUB_OUTPUT"
           else
-            repo=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
-            echo "base=/$repo/" >> "$GITHUB_OUTPUT"
+            echo "site_url=https://${GITHUB_REPOSITORY_OWNER}.github.io" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Setup Node.js
@@ -413,16 +414,16 @@ jobs:
           npm run lint
           npm run type-check
 
-      - name: Build (subfolder aware)
+      - name: Build (auto base detection)
         env:
-          VITE_FORCE_BASE: ${{ steps.base.outputs.base }}
+          SITE_URL: ${{ steps.site.outputs.site_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: dist
 
   deploy:
     if: github.ref == 'refs/heads/main'
@@ -439,10 +440,10 @@ jobs:
 
 Key benefits:
 
-- Uses GitHub’s native Pages flow (fewer permissions, clearer audit trail)
+- Native Pages flow (fewer permissions, clearer audit trail)
 - Automatic cancellation of superseded builds (faster feedback)
-- Single place for base path derivation (`Derive base path` step)
-- Separate build + deploy jobs for better caching and security boundary
+- Zero duplication of base path logic (handled centrally in resolver & Vite config)
+- Supports custom domains automatically via optional CNAME
 
 #### 2. Manual / Local Build (Optional)
 
