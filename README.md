@@ -19,7 +19,20 @@ A modern, fast, and beautiful documentation platform built with React 19, MDX, V
 - **GitHub Pages Ready**: Optimized for deployment on GitHub Pages with intelligent subfolder support
 - **Beautiful Design**: Clean, responsive design with excellent typography using Tailwind CSS
 - **Search Functionality**: Built-in search index generation to help users find content quickly
-- **Table of Contents**: Automatic table of contents generation from headings with smooth scrolling
+- **Table of Contents**: Automatic table of contents generation from headings with smooth scrolling (now supports nested h2 / h3 / h4)
+- **Breadcrumb Navigation**: Automatic breadcrumbs derived from the current route path
+- **Error Boundary**: Built-in fault isolation with developer-friendly stack display in development
+- **Structured Data**: JSON-LD for page + optional BreadcrumbList for enhanced SEO
+### New Enhancements (Recent Updates)
+
+The template now includes:
+
+- Breadcrumb navigation (configurable via `config.features.breadcrumbs`)
+- Error boundary wrapping page content to prevent full app crashes
+- Expanded TOC depth (h2-h4) with hierarchical indentation
+- Breadcrumb JSON-LD structured data (toggle with `config.features.structuredDataBreadcrumbs`)
+
+These changes are backward compatible. Disable any feature in `config.ts` if not desired.
 - **Mobile Responsive**: Fully responsive design that works perfectly on all devices
 - **Code Highlighting**: Prism.js integration with dynamic loading and copy functionality
 - **SEO Optimized**: Automatic sitemap.xml generation, meta tags, and structured data for better search rankings

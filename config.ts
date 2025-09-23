@@ -51,6 +51,8 @@ export const config = {
     search: true,
     darkMode: false, // Future feature
     analytics: false, // Future feature
+    breadcrumbs: true,
+    structuredDataBreadcrumbs: true,
   },
 
   // Navigation

@@ -16,18 +16,19 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
       <h3 className="text-sm font-semibold text-slate-900 mb-4">On this page</h3>
       <nav>
         <ul className="space-y-2">
-          {items.map((item) => (
-            <li key={item.id}>
-              <a
-                href={`#${item.id}`}
-                className={`block text-sm text-slate-600 hover:text-slate-900 transition-colors ${
-                  item.level === 3 ? 'ml-4' : ''
-                }`}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {items.map((item) => {
+            const indent = item.level === 2 ? '' : item.level === 3 ? 'ml-4' : 'ml-8';
+            return (
+              <li key={item.id}>
+                <a
+                  href={`#${item.id}`}
+                  className={`block text-sm text-slate-600 hover:text-slate-900 transition-colors ${indent}`}
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </div>

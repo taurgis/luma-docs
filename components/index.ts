@@ -29,3 +29,5 @@ export { default as Search } from './Search';
 export { default as SEO } from './SEO';
 export { default as Sidebar } from './Sidebar';
 export { default as VersionBadge } from './VersionBadge';
+export { default as Breadcrumbs } from './Breadcrumbs';
+export { default as ErrorBoundary } from './ErrorBoundary';

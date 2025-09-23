@@ -4,6 +4,8 @@ import { useLocation, Outlet } from 'react-router-dom';
 import config from '../config';
 import { TocItem } from '../types';
 
+import Breadcrumbs from './Breadcrumbs';
+import ErrorBoundary from './ErrorBoundary';
 import MDXPage from './MDXPage';
 import MDXWrapper from './MDXWrapper';
 import OnThisPage from './OnThisPage';
@@ -92,11 +94,11 @@ const Layout: React.FC = () => {
     const timeoutId = setTimeout(() => {
       const mainContent = document.getElementById('main-content');
       if (mainContent) {
-        const headings = mainContent.querySelectorAll('h2, h3');
+        const headings = mainContent.querySelectorAll('h2, h3, h4');
         const newToc: TocItem[] = Array.from(headings).map(heading => ({
           id: heading.id,
           label: heading.textContent || '',
-          level: parseInt(heading.tagName.substring(1)) as 2 | 3,
+          level: parseInt(heading.tagName.substring(1)) as 2 | 3 | 4,
         }));
         setToc(newToc);
       }
@@ -140,7 +142,11 @@ const Layout: React.FC = () => {
       {sidebarOpen && (
         <div
           className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
+          role="button"
+          tabIndex={0}
+          aria-label="Close navigation overlay"
           onClick={() => setSidebarOpen(false)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setSidebarOpen(false);} }}
         />
       )}
 
@@ -161,11 +167,14 @@ const Layout: React.FC = () => {
           <div className="flex min-w-0 max-w-full">
             <main id="main-content" className="flex-1 max-w-4xl mx-auto sm:p-4 lg:p-12 min-w-0 overflow-hidden">
               <div className="prose prose-slate max-w-none min-w-0 break-words">
-                <MDXPage>
-                  <MDXWrapper>
-                    <Outlet />
-                  </MDXWrapper>
-                </MDXPage>
+                {config.features.breadcrumbs && <Breadcrumbs />}
+                <ErrorBoundary>
+                  <MDXPage>
+                    <MDXWrapper>
+                      <Outlet />
+                    </MDXWrapper>
+                  </MDXPage>
+                </ErrorBoundary>
               </div>
             </main>
             <aside className="hidden xl:block w-64 flex-shrink-0">

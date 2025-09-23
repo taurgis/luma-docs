@@ -4,8 +4,14 @@ import { Head } from 'vite-react-ssg';
 import { config } from '../config';
 import { SEOMetadata } from '../types';
 
+interface BreadcrumbItem {
+  name: string;
+  path: string; // absolute URL path part w/ trailing slash preferred
+}
+
 interface SEOProps extends SEOMetadata {
   baseUrl?: string;
+  breadcrumbs?: BreadcrumbItem[]; // Provided by MDXPage when available
 }
 
 const SEO: React.FC<SEOProps> = ({
@@ -25,7 +31,8 @@ const SEO: React.FC<SEOProps> = ({
   noindex = false,
   section,
   tags,
-  baseUrl = ''
+  baseUrl = '',
+  breadcrumbs
 }) => {
   // Build full title with site name
   const fullTitle = title 
@@ -71,8 +78,8 @@ const SEO: React.FC<SEOProps> = ({
       {publishedTime && <meta name="article:published_time" content={publishedTime} />}
       {modifiedTime && <meta name="article:modified_time" content={modifiedTime} />}
       {section && <meta name="article:section" content={section} />}
-      {tags?.map((tag, index) => (
-        <meta key={index} name="article:tag" content={tag} />
+      {tags?.map(tag => (
+        <meta key={`tag-${tag}`} name="article:tag" content={tag} />
       ))}
 
       {/* Open Graph Meta Tags */}
@@ -117,7 +124,7 @@ const SEO: React.FC<SEOProps> = ({
           "url": fullCanonical,
           ...(author && { "author": { "@type": "Person", "name": author } }),
           ...(publishedTime && { "datePublished": publishedTime }),
-          ...(modifiedTime && { "dateModified": modifiedTime }),
+            ...(modifiedTime && { "dateModified": modifiedTime }),
           ...(ogImage && { 
             "image": {
               "@type": "ImageObject",
@@ -132,6 +139,20 @@ const SEO: React.FC<SEOProps> = ({
           }
         })}
       </script>
+      {config.features?.structuredDataBreadcrumbs && breadcrumbs && breadcrumbs.length > 1 && (
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": breadcrumbs.map((c, idx) => ({
+              "@type": "ListItem",
+              "position": idx + 1,
+              "name": c.name,
+              "item": `${baseUrl}${c.path.startsWith('/') ? c.path.substring(1) : c.path}`
+            }))
+          })}
+        </script>
+      )}
     </Head>
   );
 };
