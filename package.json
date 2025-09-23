@@ -5,12 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "npm run generate:routes && npm run build:css && vite-react-ssg dev",
-    "dev:subfolder": "./scripts/dev-subfolder.sh",
+    "dev:subfolder": "VITE_FORCE_BASE=/luma-docs/ npm run dev",
     "build": "npm run generate:routes && npm run build:css && npm run generate:search-index && npm run generate:sitemap && vite-react-ssg build",
-  "build:subfolder": "./scripts/build-subfolder.sh",
-  "preview": "vite preview",
-  "preview:subfolder": "npm run build:subfolder && vite preview --base=/luma-docs/",
-  "preview:resolved": "node scripts/preview-resolved.mjs",
     "generate:routes": "node scripts/generate-routes.js",
     "build:css": "tailwindcss -i ./src/styles/input.css -o ./public/index.css",
     "build:css:watch": "tailwindcss -i ./src/styles/input.css -o ./public/index.css --watch",
@@ -22,7 +18,7 @@
     "clean": "rm -rf dist/ node_modules/.vite/",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.mdx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx,.mdx --fix",
-  "type-check": "npm run generate:routes && tsc --noEmit"
+    "type-check": "npm run generate:routes && tsc --noEmit"
   },
   "dependencies": {
     "@mdx-js/react": "^3.0.1",

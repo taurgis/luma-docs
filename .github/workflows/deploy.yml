@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read   # checkout
-  pages: write     # deployment
-  id-token: write  # required by deploy-pages
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -23,20 +23,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Derive base path & site metadata
-        id: meta
+      - name: Derive SITE_URL (owner.github.io or CNAME)
+        id: site
         run: |
-          META=$(node ./scripts/resolve-base-path.mjs --json)
-          echo "Meta: $META"
-          BASE=$(echo "$META" | jq -r '.basePath')
-          SITE_URL=$(echo "$META" | jq -r '.siteUrl')
-          OWNER=$(echo "$META" | jq -r '.owner')
-          REPO=$(echo "$META" | jq -r '.repo')
-          echo "base=$BASE" >> "$GITHUB_OUTPUT"
-          echo "site_url=$SITE_URL" >> "$GITHUB_OUTPUT"
-          echo "repo=$REPO" >> "$GITHUB_OUTPUT"
-          echo "owner=$OWNER" >> "$GITHUB_OUTPUT"
-          echo "Derived base: $BASE (site: $SITE_URL)"
+          if [ -f CNAME ]; then
+            DOMAIN=$(head -n1 CNAME | tr -d '\r')
+            echo "Using custom domain from CNAME: $DOMAIN"
+            echo "site_url=https://$DOMAIN" >> "$GITHUB_OUTPUT"
+          else
+            echo "No CNAME found; using owner GitHub Pages domain"
+            echo "site_url=https://${GITHUB_REPOSITORY_OWNER}.github.io" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -52,21 +49,17 @@ jobs:
           npm run lint
           npm run type-check
 
-      - name: Build (unified base path)
+      - name: Build (auto base detection)
         env:
-          VITE_FORCE_BASE: ${{ steps.meta.outputs.base }}
-          SITE_URL: ${{ steps.meta.outputs.site_url }}
+          # Auto-detected: custom domain (CNAME) or fallback owner.github.io
+          SITE_URL: ${{ steps.site.outputs.site_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: npm run build
 
-      # Optional hook for link / a11y checks (uncomment to enable)
-      # - name: Link check
-      #   run: npx lychee --no-progress dist
-
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: dist
 
   deploy:
     if: github.ref == 'refs/heads/main'
@@ -76,8 +69,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Configure Pages
-        uses: actions/configure-pages@v4
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

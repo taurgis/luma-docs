@@ -93,8 +93,8 @@ function loadRoutes() {
     const routesPath = path.join(__dirname, '..', 'src', 'generated-routes.tsx');
     const routesContent = fs.readFileSync(routesPath, 'utf8');
     
-    // Extract routeMeta array using regex
-    const routeMetaMatch = routesContent.match(/export const routeMeta = (\[[\s\S]*?\]);/);
+  // Extract routeMeta array using regex (allow optional type annotation e.g. ': RouteMeta[]')
+  const routeMetaMatch = routesContent.match(/export const routeMeta(?:\s*:\s*[^=]+)?\s*=\s*(\[[\s\S]*?\]);/);
     if (!routeMetaMatch) {
       throw new Error('Could not find routeMeta in generated-routes.tsx');
     }

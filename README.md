@@ -17,30 +17,25 @@ Explore the demo to see how your documentation site will look and feel!
 
 ### Available Scripts
 
-- `npm run dev` - Start development server (routes + CSS build pre-run)
-- `npm run dev:subfolder` - Dev server with subfolder base path
-- `npm run build` - Full production build (routes, CSS, search index, sitemap, SSG)
-- `npm run build:subfolder` - Production build with subfolder base path (GitHub Pages)
-- `npm run preview` - Preview production build locally
-- `npm run preview:subfolder` - Preview subfolder build locally (after subfolder build)
-- `npm run generate:routes` - Generate static route map
-- `npm run build:css` - Build Tailwind CSS
-- `npm run build:css:watch` - Watch CSS
-- `npm run generate:search-index` - Build search index
-- `npm run generate:sitemap` - Generate sitemap.xml
-- `npm run clean` - Remove build artifacts/cache
-- `npm run lint` / `lint:fix` - ESLint checks
-- `npm run type-check` - TypeScript type checking
-Each MDX file should include frontmatter to specify metadata:
+  
+Environment-based alternatives (legacy scripts removed):
+- Subfolder dev: `VITE_FORCE_BASE=/your-repo/ npm run dev`
+- Subfolder build: `VITE_FORCE_BASE=/your-repo/ npm run build`
+- (Use env) Subfolder dev: `VITE_FORCE_BASE=/your-repo/ npm run dev`
+- (Use env) Subfolder build: `VITE_FORCE_BASE=/your-repo/ npm run build`
+│   ├── resolve-base-path.mjs # Base path + site URL resolver
+      - name: Build (subfolder aware)
+        env:
+          VITE_FORCE_BASE: ${{ steps.base.outputs.base }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: npm run build
+```bash
+# Build with automatic detection (CI) or force locally
+VITE_FORCE_BASE=/your-repo/ npm run build
 
-```yaml
----
-title: "Page Title"
-description: "Page description for SEO"
-order: 1
----
-# Your Content Here
-
+# Root deployment (custom domain or *.github.io repo)
+VITE_FORCE_BASE=/ npm run build
+```
 You can use standard Markdown syntax and React components.
 ```
 
@@ -262,11 +257,12 @@ For a complete showcase of all components with live examples, visit the [Compone
 ### Available Scripts
 
 - `npm run dev` - Start development server with hot reload (includes route generation and CSS build)
-- `npm run dev:subfolder` - Start development server configured for subfolder deployment
 - `npm run build` - Build for production (includes route generation, CSS build, search index, and sitemap)
-- `npm run build:subfolder` - (Legacy/local) Build for subfolder deployment (CI now uses `npm run build` + `VITE_FORCE_BASE`)
 - `npm run preview` - Preview production build locally
-- `npm run preview:subfolder` - Preview legacy subfolder build (static example)
+  
+Environment-based alternatives (legacy scripts removed):
+- Subfolder dev: `VITE_FORCE_BASE=/your-repo/ npm run dev`
+- Subfolder build: `VITE_FORCE_BASE=/your-repo/ npm run build`
 - `npm run preview:resolved` - Preview using dynamically resolved base path (preferred)
 - `npm run generate:routes` - Generate routes from MDX files in pages directory
 - `npm run build:css` - Build Tailwind CSS from source
@@ -304,7 +300,7 @@ VITE_FORCE_BASE=/docs/ npm run dev
 VITE_FORCE_BASE=/preview/ npm run build
 
 # Standard GitHub Pages (auto-detect /<repo>/)
-npm run build:subfolder
+VITE_FORCE_BASE=/your-repo/ npm run build
 
 # Root deployment (username.github.io repo or custom domain)
 VITE_FORCE_BASE=/ npm run build
@@ -341,8 +337,7 @@ Benefits:
 │   ├── generate-routes.js    # Auto-generates routes from pages directory
 │   ├── generate-search-index.js # Creates search index from MDX content
 │   ├── generate-sitemap.js   # Creates sitemap.xml
-│   ├── build-subfolder.sh   # GitHub Pages subfolder build script
-│   ├── dev-subfolder.sh     # Development server for subfolder testing
+│   ├── resolve-base-path.mjs # Base path + site URL resolver
 ├── src/
 │   ├── generated-routes.tsx    # Auto-generated route definitions
 │   ├── generated-search-index.ts # Auto-generated search index
@@ -420,9 +415,9 @@ jobs:
 
       - name: Build (subfolder aware)
         env:
-          VITE_BASE_PATH: ${{ steps.base.outputs.base }}
+          VITE_FORCE_BASE: ${{ steps.base.outputs.base }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-        run: npm run build:subfolder
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -453,10 +448,10 @@ Key benefits:
 
 ```bash
 # Build with automatic base path detection
-npm run build:subfolder
+VITE_FORCE_BASE=/your-repo/ npm run build
 
 # Or specify repository name manually
-./scripts/build-subfolder.sh your-repo-name
+VITE_FORCE_BASE=/your-repo/ npm run build
 ```
 
 #### 3. Legacy Third‑Party Action (Deprecated Here)
