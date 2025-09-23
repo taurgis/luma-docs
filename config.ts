@@ -46,11 +46,9 @@ export const config = {
     // github: "yourusername",
   },
 
-  // Features
+  // Features (active feature flags only)
   features: {
     search: true,
-    darkMode: false, // Future feature
-    analytics: false, // Future feature
     breadcrumbs: true,
     structuredDataBreadcrumbs: true,
   },

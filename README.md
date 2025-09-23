@@ -6,46 +6,6 @@ A modern, fast, and beautiful documentation platform built with React 19, MDX, V
 
 **[View Live Demo](https://taurgis.github.io/luma-docs/)** - See Luma Docs in action with full SEO features, search functionality, and responsive design.
 
-## Features
-
-- **React 19** with TypeScript for modern development
-- **MDX Support**: Write content in MDX format with the full power of React components
-- **Enhanced Component Library**: Rich set of components including CodeBlock, Callouts, Collapsibles, and CodeTabs
-- **Advanced Typography**: Comprehensive typography system with semantic HTML elements
-- **Interactive Code Examples**: Syntax highlighting with copy functionality and multi-language tabs
-- **Comprehensive SEO**: Dynamic meta tags, Open Graph, Twitter Cards, JSON-LD structured data, and automatic sitemap generation
-- **Automatic Routing**: Pages are automatically added to routes based on file structure using `vite-react-ssg`
-- **Fast Static Generation**: Built with Vite React SSG for lightning-fast performance and SEO optimization
-- **GitHub Pages Ready**: Optimized for deployment on GitHub Pages with intelligent subfolder support
-- **Beautiful Design**: Clean, responsive design with excellent typography using Tailwind CSS
-- **Search Functionality**: Built-in search index generation to help users find content quickly
-- **Table of Contents**: Automatic table of contents generation from headings with smooth scrolling (now supports nested h2 / h3 / h4)
-- **Breadcrumb Navigation**: Automatic breadcrumbs derived from the current route path
-- **Error Boundary**: Built-in fault isolation with developer-friendly stack display in development
-- **Structured Data**: JSON-LD for page + optional BreadcrumbList for enhanced SEO
-
-### New Enhancements (Recent Updates)
-
-The template now includes:
-
-- Breadcrumb navigation (configurable via `config.features.breadcrumbs`)
-- Error boundary wrapping page content to prevent full app crashes
-- Expanded TOC depth (h2-h4) with hierarchical indentation
-- Breadcrumb JSON-LD structured data (toggle with `config.features.structuredDataBreadcrumbs`)
-
-These changes are backward compatible. Disable any feature in `config.ts` if not desired.
-
-- **Mobile Responsive**: Fully responsive design that works perfectly on all devices
-- **Code Highlighting**: Prism.js integration with dynamic loading and copy functionality
-- **SEO Optimized**: Automatic sitemap.xml generation, meta tags, and structured data for better search rankings
-- **Performance Optimized**: Code splitting, lazy loading, and optimized bundle sizes
-
-## 🎯 Showcase
-
-**[Live Demo: taurgis.github.io/luma-docs](https://taurgis.github.io/luma-docs/)**
-
-This repository itself serves as a complete example of Luma Docs in action, featuring:
-
 - 📱 **Fully responsive design** that works on all devices
 - 🔍 **Live search functionality** - try searching for "SEO" or "deployment"
 - 🏷️ **Comprehensive SEO** - view source to see Open Graph, Twitter Cards, and JSON-LD
@@ -55,49 +15,22 @@ This repository itself serves as a complete example of Luma Docs in action, feat
 
 Explore the demo to see how your documentation site will look and feel!
 
-## Quick Start
+### Available Scripts
 
-🌐 **[Try the Live Demo](https://taurgis.github.io/luma-docs/)** first to see what you're building!
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/taurgis/luma-docs.git
-   cd luma-docs
-   ```
-
-2. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Generate routes and start development server**
-
-   ```bash
-   npm run dev
-   ```
-
-4. **Open your browser**
-   Navigate to `http://localhost:3000` to see your documentation site.
-
-## Creating Content
-
-### File Structure
-
-Content is organized in the `pages` directory:
-
-```
-pages/
-├── index.mdx           # Home page (/)
-├── getting-started.mdx # /getting-started/
-└── guides/
-    ├── index.mdx       # /guides/
-    └── advanced.mdx    # /guides/advanced/
-```
-
-### MDX Files
-
+- `npm run dev` - Start development server (routes + CSS build pre-run)
+- `npm run dev:subfolder` - Dev server with subfolder base path
+- `npm run build` - Full production build (routes, CSS, search index, sitemap, SSG)
+- `npm run build:subfolder` - Production build with subfolder base path (GitHub Pages)
+- `npm run preview` - Preview production build locally
+- `npm run preview:subfolder` - Preview subfolder build locally (after subfolder build)
+- `npm run generate:routes` - Generate static route map
+- `npm run build:css` - Build Tailwind CSS
+- `npm run build:css:watch` - Watch CSS
+- `npm run generate:search-index` - Build search index
+- `npm run generate:sitemap` - Generate sitemap.xml
+- `npm run clean` - Remove build artifacts/cache
+- `npm run lint` / `lint:fix` - ESLint checks
+- `npm run type-check` - TypeScript type checking
 Each MDX file should include frontmatter to specify metadata:
 
 ```yaml
@@ -339,13 +272,12 @@ For a complete showcase of all components with live examples, visit the [Compone
 - `npm run build:css:watch` - Watch mode for CSS development
 - `npm run generate:search-index` - Generate search index from MDX content
 - `npm run generate:sitemap` - Generate sitemap.xml for SEO
-- `npm run deploy:gh-pages` - Deploy to GitHub Pages using the deployment script
 - `npm run clean` - Clean build artifacts and cache
 - `npm run lint` - Run ESLint code quality checks
 - `npm run lint:fix` - Run ESLint with automatic fixing
 - `npm run type-check` - Run TypeScript type checking
 
-### Project Structure
+### Project Structure (Simplified)
 
 ```
 ├── components/              # React components
@@ -353,7 +285,8 @@ For a complete showcase of all components with live examples, visit the [Compone
 │   ├── Sidebar.tsx         # Navigation sidebar with auto-generated menu
 │   ├── MDXWrapper.tsx      # MDX provider wrapper with custom components
 │   ├── MDXPage.tsx         # Page wrapper component for SEO integration
-│   ├── SEO.tsx             # Dynamic SEO meta tags component
+│   ├── SEO.tsx             # Dynamic SEO meta tags & JSON-LD component
+│   ├── Breadcrumbs.tsx     # Breadcrumb navigation & schema support
 │   ├── Search.tsx          # Search functionality component
 │   ├── OnThisPage.tsx      # Table of contents component
 │   └── VersionBadge.tsx    # Version display component
@@ -369,14 +302,12 @@ For a complete showcase of all components with live examples, visit the [Compone
 │   ├── generate-sitemap.js   # Creates sitemap.xml
 │   ├── build-subfolder.sh   # GitHub Pages subfolder build script
 │   ├── dev-subfolder.sh     # Development server for subfolder testing
-│   └── deploy-gh-pages.sh   # Deployment automation script
 ├── src/
 │   ├── generated-routes.tsx    # Auto-generated route definitions
 │   ├── generated-search-index.ts # Auto-generated search index
 │   └── styles/
 │       └── input.css          # Tailwind CSS entry point
 ├── utils/                     # Utility functions
-│   ├── generateRoutes.ts      # Route generation logic
 │   ├── search.ts             # Search functionality
 │   └── basePath.ts           # Base path utilities for deployment
 ├── config.ts                  # Site configuration file
@@ -456,9 +387,9 @@ The built site in the `dist` folder can be deployed to any static hosting servic
 
 The build process supports several environment variables:
 
-- `VITE_BASE_PATH` or `BASE_PATH`: Override the base path for deployment
-- `GITHUB_REPOSITORY`: Used for automatic base path detection in CI/CD
-- `GEMINI_API_KEY`: If using AI features (optional)
+- `VITE_BASE_PATH` or `BASE_PATH` – Override the base path (auto-detected for GitHub Pages if unset)
+- `GITHUB_REPOSITORY` – Used for automatic base path detection in CI/CD
+- `GEMINI_API_KEY` – Placeholder for optional future AI features (currently unused)
 
 ## How It Works
 
@@ -473,24 +404,24 @@ The platform automatically scans the `pages` directory and generates routes:
 
 ### Build Process
 
-The build system follows this sequence:
+The build system follows this sequence (as executed by `npm run build`):
 
-1. **Route Generation** (`generate:routes`): Scans `pages/` and creates `src/generated-routes.tsx` with SEO metadata extraction
-2. **CSS Build** (`build:css`): Compiles Tailwind CSS from `src/styles/input.css`
-3. **Search Index** (`generate:search-index`): Extracts content and creates searchable index
-4. **Sitemap Generation** (`generate:sitemap`): Creates SEO-friendly sitemap.xml with all pages
-5. **Vite SSG Build**: Generates static HTML files with React hydration and embedded SEO meta tags
+1. **Route Generation** (`generate:routes`) – Scans `pages/` and creates `src/generated-routes.tsx` (frontmatter + SEO metadata extracted)
+2. **CSS Build** (`build:css`) – Compiles Tailwind CSS from `src/styles/input.css`
+3. **Search Index** (`generate:search-index`) – Extracts content and creates the search index
+4. **Sitemap Generation** (`generate:sitemap`) – Creates SEO-friendly `sitemap.xml`
+5. **Vite SSG Build** – Generates static HTML with React hydration & embedded meta tags via the `SEO` component
 
 ### SEO Integration
 
-The SEO system works through multiple integrated components:
+The SEO system works through integrated runtime & build steps:
 
-- **Frontmatter Extraction**: The route generation script extracts all SEO metadata from MDX frontmatter
-- **SEO Component**: A React component that renders meta tags using `vite-react-ssg`'s `<Head>` component
-- **Static Generation**: During SSG build, all meta tags are included in the static HTML files
-- **Dynamic Override**: Inline `<SEO>` components can override frontmatter values for specific content sections
-- **Structured Data**: Automatic JSON-LD generation for both website and article content types
-- **Canonical URLs**: Automatic canonical URL generation with proper base path handling for different deployment environments
+- **Frontmatter Extraction** – Route generation script extracts SEO metadata from MDX frontmatter
+- **`components/SEO.tsx`** – Renders meta tags using the SSG `<Head>` API (no separate HTML template mutation step)
+- **Static Generation** – Meta tags & JSON-LD emitted during SSG for fully crawable static HTML
+- **Dynamic Override** – Inline `<SEO>` usage in MDX can override frontmatter values for specific pages/sections
+- **Structured Data** – Website + Article schema; optional breadcrumb schema via `config.features.structuredDataBreadcrumbs`
+- **Canonical URLs** – Automatic canonical generation with base path awareness (GitHub Pages subfolder safe)
 
 ### Content Management
 
@@ -508,9 +439,9 @@ The SEO system works through multiple integrated components:
 
 ## Customization
 
-### Site Configuration
+### Site Configuration & Feature Flags
 
-The site configuration is centralized in `config.ts`. Update this file to customize your site:
+The site configuration is centralized in `config.ts`. Update this file to customize branding, links, SEO defaults and feature flags:
 
 ```typescript
 export const config = {
@@ -534,6 +465,22 @@ export const config = {
   links: {
     github: "https://github.com/your-username/your-repo",
     // Add more links as needed
+  },
+
+  // SEO and Metadata Defaults
+  seo: {
+    siteName: "Your Site Title",
+    defaultTitle: "Your Site Title",
+    defaultDescription: "Your site description",
+    author: "Your Name",
+    keywords: ["documentation", "react", "mdx", "typescript", "vite"],
+  },
+
+  // Feature Flags
+  features: {
+    search: true,
+    breadcrumbs: true,
+    structuredDataBreadcrumbs: true,
   },
 
   // Navigation

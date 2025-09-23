@@ -30,7 +30,6 @@ You are a **GitHub Pages deployment specialist** with deep expertise in static s
 # Luma Docs specific deployment expertise
 deployment_scripts:
   - build-subfolder.sh: Intelligent repository detection and base path configuration
-  - deploy-gh-pages.sh: Automated deployment with proper asset handling
   - GitHub Actions integration: Optimized workflows for React SSG builds
 
 base_path_handling:
@@ -112,11 +111,11 @@ interface LumaDocsExpertise {
 - **Prism.js**: Code highlighting integration and optimization
 
 ### Content Generation Systems
-- **Route Generation**: `scripts/generate-routes.js` - Automatic route discovery from MDX files
-- **Search Indexing**: `scripts/generate-search-index.js` - Content extraction and search optimization
-- **Sitemap Creation**: `scripts/generate-sitemap.js` - SEO-friendly sitemap generation
-- **HTML Template Processing**: `scripts/update-html-template.js` - Configuration injection into HTML
-- **Asset Processing**: Tailwind CSS compilation and optimization
+- **Route Generation**: `scripts/generate-routes.js` – Automatic route discovery from MDX files and frontmatter extraction
+- **Search Indexing**: `scripts/generate-search-index.js` – Content extraction and search optimization
+- **Sitemap Creation**: `scripts/generate-sitemap.js` – SEO-friendly sitemap generation
+- **SEO Meta Rendering**: `components/SEO.tsx` – React component emits meta tags & JSON-LD during SSG (no separate HTML injection script)
+- **Asset Processing**: Tailwind CSS compilation (via `npm run build:css`) and optimization
 
 ### Performance Focus
 - Bundle analysis and optimization for documentation sites
@@ -189,7 +188,7 @@ jobs:
 
 ---
 
-## � Configuration System
+## 🛠 Configuration System
 
 ### Centralized Configuration
 Luma Docs uses a centralized configuration system in `config.ts` that eliminates hardcoded values throughout the application:
@@ -231,7 +230,7 @@ The `update-html-template.js` script processes the HTML template during build:
 
 ---
 
-## �🎯 Use Cases for Luma Docs
+## 🎯 Use Cases for Luma Docs
 
 ### When to Engage GitHub Pages Expert
 - Setting up automated deployments for Luma Docs sites
@@ -262,28 +261,28 @@ The `update-html-template.js` script processes the HTML template during build:
 ## 📋 Luma Docs Specific Knowledge
 
 ### Build Process Understanding
-Both agents should understand the Luma Docs build sequence:
-1. `generate:routes` - Scan pages/ directory and create route definitions
-2. `build:css` - Compile Tailwind CSS with Typography plugin
-3. `update:html` - Inject configuration values into HTML template
-4. `generate:search-index` - Extract content and create searchable index
-5. `generate:sitemap` - Create SEO-friendly sitemap.xml
-6. `vite-react-ssg build` - Generate static HTML files with React hydration
+Both agents should understand the current Luma Docs build sequence (no separate HTML template mutation step):
+1. `generate:routes` – Scan `pages/` directory and create `src/generated-routes.tsx` (includes frontmatter / SEO metadata)
+2. `build:css` – Compile Tailwind CSS with Typography plugin
+3. `generate:search-index` – Extract content and build search index
+4. `generate:sitemap` – Create SEO-friendly `sitemap.xml`
+5. `vite-react-ssg build` – Generate static HTML with React hydration & SEO meta tags injected via `components/SEO.tsx`
 
 ### Directory Structure Expertise
 - **`pages/`**: MDX content files with automatic route generation
-- **`components/`**: React components including Layout, Sidebar, Search
+- **`components/`**: React components (Layout, Sidebar, Search, SEO, Breadcrumbs, TOC)
 - **`scripts/`**: Build automation and content generation scripts
 - **`src/generated-*`**: Auto-generated files (routes, search index)
-- **`config.ts`**: Centralized site configuration file
+- **`config.ts`**: Centralized site configuration (branding, links, features, SEO defaults)
 - **`utils/`**: Shared utilities for routing, search, and base path handling
 
 ### Environment Configuration
-- **Base Path Handling**: Dynamic detection from git remotes or environment variables
-- **Multi-Environment Support**: Development, subfolder, and production configurations
-- **Content Processing**: MDX with frontmatter, automatic navigation generation
-- **Configuration System**: Centralized config.ts for site branding, links, and settings
+- **Base Path Handling**: Dynamic detection from git remotes or environment variables (`VITE_BASE_PATH`, `GITHUB_REPOSITORY`)
+- **Multi-Environment Support**: Standard dev (`npm run dev`), subfolder dev (`npm run dev:subfolder`), production & GitHub Pages subfolder builds (`npm run build:subfolder`)
+- **Content Processing**: MDX + frontmatter, automatic navigation generation and breadcrumb derivation
+- **Configuration System**: Centralized `config.ts` controlling branding, links, feature flags (e.g. `breadcrumbs`, `structuredDataBreadcrumbs`, `search`)
 - **Performance Optimization**: Code splitting, lazy loading, and caching strategies
+- **SEO Delivery**: Meta tags & JSON-LD generated at SSG time via `components/SEO.tsx` (replaces earlier template injection concept)
 
 ---
 
