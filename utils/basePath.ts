@@ -28,11 +28,11 @@ export function createPath(path: string): string {
   
   // If base path is just '/', return the path as-is
   if (basePath === '/') {
-    return '/' + cleanPath;
+    return `/${  cleanPath}`;
   }
   
   // Remove trailing slash from base path and add the path
   const cleanBasePath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
   
-  return cleanBasePath + '/' + cleanPath;
+  return `${cleanBasePath  }/${  cleanPath}`;
 }

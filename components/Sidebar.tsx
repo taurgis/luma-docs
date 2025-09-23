@@ -1,18 +1,20 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+
+import config from '../config';
 import { routeMeta } from '../src/generated-routes';
+
 import Search from './Search';
 import VersionBadge from './VersionBadge';
-import config from '../config';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
 
   const isLinkActive = (path: string) => {
-    if (path === '/') return location.pathname === '/';
+    if (path === '/') {return location.pathname === '/';}
     // Normalize paths to have trailing slashes for comparison
-    const normalizedLocationPath = location.pathname.endsWith('/') ? location.pathname : location.pathname + '/';
-    const normalizedPath = path.endsWith('/') ? path : path + '/';
+    const normalizedLocationPath = location.pathname.endsWith('/') ? location.pathname : `${location.pathname  }/`;
+    const normalizedPath = path.endsWith('/') ? path : `${path  }/`;
     return normalizedLocationPath === normalizedPath;
   };
 

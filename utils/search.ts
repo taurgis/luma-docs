@@ -58,21 +58,21 @@ const createSnippet = (text: string, query: string): string => {
   const index = textLower.indexOf(queryLower);
   
   if (index === -1) {
-    return text.length > 150 ? text.substring(0, 150) + '...' : text;
+    return text.length > 150 ? `${text.substring(0, 150)  }...` : text;
   }
 
   const start = Math.max(0, index - 50);
   const end = Math.min(text.length, index + query.length + 50);
 
   let snippet = text.substring(start, end);
-  if (start > 0) snippet = '...' + snippet;
-  if (end < text.length) snippet = snippet + '...';
+  if (start > 0) {snippet = `...${  snippet}`;}
+  if (end < text.length) {snippet = `${snippet  }...`;}
 
   return snippet;
 };
 
 export function searchDocs(query: string): SearchResult[] {
-  if (!query || query.length < 2) return [];
+  if (!query || query.length < 2) {return [];}
   
   const queryLower = query.toLowerCase();
   const searchIndex = getSearchIndex();
@@ -87,14 +87,14 @@ export function searchDocs(query: string): SearchResult[] {
     let score = 0;
     
     // Higher score for exact matches in titles and headings
-    if (titleLower === queryLower) score += 10;
-    else if (titleLower.includes(queryLower)) score += 5;
+    if (titleLower === queryLower) {score += 10;}
+    else if (titleLower.includes(queryLower)) {score += 5;}
     
-    if (headingLower === queryLower) score += 8;
-    else if (headingLower.includes(queryLower)) score += 3;
+    if (headingLower === queryLower) {score += 8;}
+    else if (headingLower.includes(queryLower)) {score += 3;}
     
-    if (descriptionLower.includes(queryLower)) score += 2;
-    if (contentLower.includes(queryLower)) score += 1;
+    if (descriptionLower.includes(queryLower)) {score += 2;}
+    if (contentLower.includes(queryLower)) {score += 1;}
 
     if (score > 0) {
       results.push({
@@ -103,7 +103,7 @@ export function searchDocs(query: string): SearchResult[] {
         heading: item.heading,
         headingId: item.headingId,
         snippet: createSnippet(item.content, query),
-        score: score,
+        score,
       });
     }
   });

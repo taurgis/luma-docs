@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+
 import matter from 'gray-matter';
 
 export interface PageMeta {
@@ -49,11 +50,11 @@ function pathToSlug(filePath: string): string {
     return '/';
   }
   
-  return '/' + parts.join('/') + '/';
+  return `/${  parts.join('/')  }/`;
 }
 
 function slugToRoutePath(slug: string): string {
-  if (slug === '/') return slug;
+  if (slug === '/') {return slug;}
   return slug.endsWith('/') ? slug.slice(0, -1) : slug;
 }
 
@@ -137,7 +138,7 @@ import { Navigate } from 'react-router-dom';
 ${imports}
 
 export const routes = [
-${routeObjects}${redirects ? ',\n' + redirects : ''}
+${routeObjects}${redirects ? `,\n${  redirects}` : ''}
 ];
 
 export const routeMeta = [

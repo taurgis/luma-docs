@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+
 import { CopyIcon, CheckIcon } from './icons';
 
 // Dynamic Prism import to prevent SSR issues
@@ -99,7 +100,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
             if (prismLanguage !== 'javascript' && prismLanguage !== 'typescript') {
               await import(/* @vite-ignore */ `prismjs/components/prism-${prismLanguage}`);
             }
-          } catch (e) {
+          } catch {
             // Silently continue if specific language fails to load
           }
         } catch (error) {

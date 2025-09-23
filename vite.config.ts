@@ -1,10 +1,11 @@
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
-import mdx from '@mdx-js/rollup';
-import remarkGfm from 'remark-gfm';
-import remarkFrontmatter from 'remark-frontmatter';
 
-export default defineConfig(({ mode, command }) => {
+import mdx from '@mdx-js/rollup';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkGfm from 'remark-gfm';
+import { defineConfig, loadEnv } from 'vite';
+
+export default defineConfig(({ mode, command: _command }) => {
     const env = loadEnv(mode, '.', '');
     
     // Determine base path from environment variable, CLI args, or default

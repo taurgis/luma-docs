@@ -11,6 +11,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
 import matter from 'gray-matter';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -36,7 +37,7 @@ function filePathToRoute(filePath) {
   
   // Ensure route starts with /
   if (!route.startsWith('/')) {
-    route = '/' + route;
+    route = `/${  route}`;
   }
   
   // Ensure route ends with / (except for root)
@@ -125,7 +126,7 @@ function parseMDXFile(filePath) {
       pageTitle,
       heading: pageTitle,
       headingId: null,
-      content: description + ' ' + textContent.substring(0, 500),
+      content: `${description  } ${  textContent.substring(0, 500)}`,
       description
     });
     return results;
@@ -212,8 +213,8 @@ function generateSearchIndex() {
       return a.path.localeCompare(b.path);
     }
     // Put page titles (headingId === null) first
-    if (a.headingId === null && b.headingId !== null) return -1;
-    if (a.headingId !== null && b.headingId === null) return 1;
+    if (a.headingId === null && b.headingId !== null) {return -1;}
+    if (a.headingId !== null && b.headingId === null) {return 1;}
     return 0;
   });
   

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+
 import CodeBlock from './CodeBlock';
 
 // Minimal classnames combiner (avoids external dependency)
@@ -32,7 +33,7 @@ function broadcast(group: string, label: string) {
   listeners.forEach(l => l(group, label));
 }
 
-const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, dense }) => {
+const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, dense: _dense }) => {
   const [isClient, setIsClient] = useState(false);
   
   // Generate consistent IDs that work for both SSR and client
@@ -56,7 +57,7 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
 
   // Restore from localStorage on client mount, if groupId provided
   useEffect(() => {
-    if (!isClient || !groupId || hasRestoredFromStorage) return;
+    if (!isClient || !groupId || hasRestoredFromStorage) {return;}
     
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -70,7 +71,7 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
           }
         }
       }
-    } catch (e) {
+    } catch {
       // Silently ignore localStorage errors
     }
     
@@ -79,7 +80,7 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
 
   // Listen for broadcasts from other CodeTabs instances
   useEffect(() => {
-    if (!groupId) return;
+    if (!groupId) {return;}
     
     const listener: Listener = (group, label) => {
       if (group === groupId) {
@@ -107,7 +108,7 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
         const parsed = stored ? JSON.parse(stored) : {};
         parsed[groupId] = tab.label;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
-      } catch (e) {
+      } catch {
         // Silently ignore localStorage errors
       }
       

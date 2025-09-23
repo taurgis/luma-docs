@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { InfoIcon, WarningIcon, SuccessIcon, DangerIcon, LightBulbIcon, NoteIcon } from './icons';
 
 export type CalloutType = 'info' | 'warning' | 'success' | 'note' | 'danger' | 'tip';

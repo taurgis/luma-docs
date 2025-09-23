@@ -44,11 +44,11 @@ const currentDate = new Date().toISOString().split('T')[0];
  * Exception: files (like sitemap.xml) should not have trailing slashes
  */
 function normalizeUrlPath(path) {
-  if (path === '/') return path;
+  if (path === '/') {return path;}
   
   // Don't add trailing slash to files
   if (path.includes('.')) {
-    return path.startsWith('/') ? path : '/' + path;
+    return path.startsWith('/') ? path : `/${  path}`;
   }
   
   // Add trailing slash to directory paths
@@ -68,11 +68,11 @@ function buildFullUrl(baseUrl, basePath, routePath) {
   } else {
     const cleanBasePath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath;
     if (normalizedPath === '/') {
-      fullPath = cleanBasePath + '/';
+      fullPath = `${cleanBasePath  }/`;
     } else if (normalizedPath.startsWith('/')) {
       fullPath = cleanBasePath + normalizedPath;
     } else {
-      fullPath = cleanBasePath + '/' + normalizedPath;
+      fullPath = `${cleanBasePath  }/${  normalizedPath}`;
     }
   }
   
@@ -153,7 +153,7 @@ function generatePages() {
     
     return {
       path: route.path,
-      priority: priority,
+      priority,
       changefreq: override.changefreq || config.defaultChangefreq,
       description: route.title || route.description || `${route.path} page`,
       title: route.title

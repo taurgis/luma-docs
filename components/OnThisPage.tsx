@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { TocItem } from '../types';
 
 interface OnThisPageProps {

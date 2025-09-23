@@ -319,6 +319,8 @@ For a complete showcase of all components with live examples, visit the [Compone
 - `npm run generate:sitemap` - Generate sitemap.xml for SEO
 - `npm run deploy:gh-pages` - Deploy to GitHub Pages using the deployment script
 - `npm run clean` - Clean build artifacts and cache
+- `npm run lint` - Run ESLint code quality checks
+- `npm run lint:fix` - Run ESLint with automatic fixing
 - `npm run type-check` - Run TypeScript type checking
 
 ### Project Structure

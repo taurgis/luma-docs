@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import { searchDocs, SearchResult } from '../utils/search';
 
 const Highlight: React.FC<{ text: string; query: string }> = ({ text, query }) => {
-  if (!query) return <>{text}</>;
+  if (!query) {return <>{text}</>;}
   const parts = text.split(new RegExp(`(${query})`, 'gi'));
   return (
     <>
@@ -60,7 +61,7 @@ const Search: React.FC = () => {
 
   useEffect(() => {
     // Only run on client side
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
     
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -124,7 +125,7 @@ const Search: React.FC = () => {
   
   const handleNavigation = (path: string, heading?: string, headingId?: string | null) => {
     // Use the actual headingId if available, otherwise generate one from the heading
-    let targetPath = path;
+    const targetPath = path;
     let hashFragment = '';
     
     if (headingId) {
@@ -145,7 +146,7 @@ const Search: React.FC = () => {
     
     // Navigate to the path first, then handle hash navigation
     if (hashFragment) {
-      navigate(targetPath + '#' + hashFragment);
+      navigate(`${targetPath  }#${  hashFragment}`);
     } else {
       navigate(targetPath);
     }
@@ -211,7 +212,7 @@ const Search: React.FC = () => {
                   </ul>
                 ) : (
                   <p className="p-6 sm:p-8 text-center text-slate-500 text-sm sm:text-base">
-                    No results found for "{query}"
+                    No results found for &quot;{query}&quot;
                   </p>
                 )}
               </div>

@@ -1,8 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import SEO from './SEO';
+
 import { routeMeta } from '../src/generated-routes';
 import { getBasePath } from '../utils/basePath';
+
+import SEO from './SEO';
 
 interface MDXPageProps {
   children: React.ReactNode;

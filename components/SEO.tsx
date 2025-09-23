@@ -1,5 +1,6 @@
 import React from 'react';
 import { Head } from 'vite-react-ssg';
+
 import { config } from '../config';
 import { SEOMetadata } from '../types';
 
@@ -37,7 +38,7 @@ const SEO: React.FC<SEOProps> = ({
     if (canonical === '' || canonical === '/') {
       fullCanonical = baseUrl;
     } else {
-      fullCanonical = `${baseUrl}${canonical.startsWith('/') ? canonical : '/' + canonical}`;
+      fullCanonical = `${baseUrl}${canonical.startsWith('/') ? canonical : `/${  canonical}`}`;
     }
   }
 
@@ -112,7 +113,7 @@ const SEO: React.FC<SEOProps> = ({
           "@context": "https://schema.org",
           "@type": ogType === 'article' ? 'Article' : 'WebPage',
           "headline": fullTitle,
-          "description": description,
+          description,
           "url": fullCanonical,
           ...(author && { "author": { "@type": "Person", "name": author } }),
           ...(publishedTime && { "datePublished": publishedTime }),

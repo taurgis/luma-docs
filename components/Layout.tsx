@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import OnThisPage from './OnThisPage';
-import MDXWrapper from './MDXWrapper';
-import MDXPage from './MDXPage';
-import { TocItem } from '../types';
+
 import config from '../config';
+import { TocItem } from '../types';
+
+import MDXPage from './MDXPage';
+import MDXWrapper from './MDXWrapper';
+import OnThisPage from './OnThisPage';
+import Sidebar from './Sidebar';
+
 
 const Layout: React.FC = () => {
   const [toc, setToc] = useState<TocItem[]>([]);
@@ -20,7 +23,7 @@ const Layout: React.FC = () => {
   // Scroll restoration - scroll to top on route change or to specific element if hash is present
   useEffect(() => {
     // Only run on client side
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
     
     const scrollToTarget = () => {
       let targetId = '';
@@ -83,7 +86,7 @@ const Layout: React.FC = () => {
 
   useEffect(() => {
     // Only run on client side
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {return;}
     
     // Use a small timeout to ensure the DOM has been updated with new content
     const timeoutId = setTimeout(() => {

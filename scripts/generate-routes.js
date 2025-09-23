@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
 import { fileURLToPath } from 'url';
+
+import matter from 'gray-matter';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,11 +39,11 @@ function pathToSlug(filePath) {
     return '/';
   }
   
-  return '/' + parts.join('/') + '/';
+  return `/${  parts.join('/')  }/`;
 }
 
 function slugToRoutePath(slug) {
-  if (slug === '/') return slug;
+  if (slug === '/') {return slug;}
   return slug.endsWith('/') ? slug.slice(0, -1) : slug;
 }
 
@@ -143,7 +144,7 @@ import { Navigate } from 'react-router-dom';
 ${imports}
 
 export const routes = [
-${routeObjects}${redirects ? ',\n' + redirects : ''}
+${routeObjects}${redirects ? `,\n${  redirects}` : ''}
 ];
 
 export const routeMeta = [
