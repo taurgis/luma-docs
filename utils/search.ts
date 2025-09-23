@@ -1,4 +1,8 @@
-import { GENERATED_SEARCH_INDEX, SearchableItem } from '../src/generated-search-index';
+import { GENERATED_SEARCH_INDEX, SearchableItem as BaseSearchableItem } from '../src/generated-search-index';
+
+interface SearchableItem extends BaseSearchableItem {
+  version?: string | null;
+}
 
 export interface SearchResult {
   path: string;
@@ -7,6 +11,7 @@ export interface SearchResult {
   headingId: string | null;
   snippet: string;
   score?: number;
+  version?: string | null;
 }
 
 // Fallback search index (manually maintained for development/emergency use)
@@ -98,6 +103,12 @@ export function searchDocs(query: string): SearchResult[] {
     if (contentLower.includes(queryLower)) {score += 1;}
 
     if (score > 0) {
+      // derive version if present (path starts with /vX.Y/ pattern)
+      let version: string | null = (item).version || null;
+      if (!version) {
+        const match = item.path.match(/^\/(v\d[^/]+)\//); // e.g., /v0.9/getting-started/
+        if (match) { version = match[1]; }
+      }
       results.push({
         path: item.path,
         pageTitle: item.pageTitle,
@@ -105,6 +116,7 @@ export function searchDocs(query: string): SearchResult[] {
         headingId: item.headingId,
         snippet: createSnippet(item.content, query),
         score,
+        version,
       });
     }
   });

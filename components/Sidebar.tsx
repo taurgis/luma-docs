@@ -3,9 +3,11 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import config from '../config';
 import { routeMeta, type RouteMeta } from '../src/generated-routes';
+import { archivedVersions } from '../src/generated-versions';
 
 import Search from './Search';
 import VersionBadge from './VersionBadge';
+import VersionSwitcher from './VersionSwitcher';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
@@ -18,8 +20,17 @@ const Sidebar: React.FC = () => {
     return normalizedLocationPath === normalizedPath;
   };
 
-  // Group routes by their top-level path
-  const groupedRoutes = routeMeta.reduce<Record<string, RouteMeta[]>>((groups, route: RouteMeta) => {
+  // Determine active version from path
+  const firstSeg = location.pathname.split('/').filter(Boolean)[0];
+  const activeVersion = (firstSeg && (archivedVersions as readonly string[]).includes(firstSeg))
+    ? firstSeg
+    : config.versions.current;
+
+  // Filter routes to only those in the active version
+  const visibleRoutes = routeMeta.filter(r => r.version === activeVersion);
+
+  // Group routes by their top-level path (within active version only)
+  const groupedRoutes = visibleRoutes.reduce<Record<string, RouteMeta[]>>((groups, route: RouteMeta) => {
     if (route.path === '/') {
       if (!groups['Getting Started']) {
         groups['Getting Started'] = [];
@@ -70,7 +81,8 @@ const Sidebar: React.FC = () => {
       {/* Mobile header spacing */}
       <div className="lg:hidden mb-6" />
 
-      <Search />
+  <Search />
+  <VersionSwitcher />
 
       <nav className="flex-1 overflow-y-auto mt-4 sm:mt-6">
         {Object.entries(groupedRoutes).map(([groupName, routes]) => (

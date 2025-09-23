@@ -62,8 +62,8 @@ const SEO: React.FC<SEOProps> = ({
   }
 
   // Default robots behavior
-  const robotsContent = robots || (noindex 
-    ? 'noindex, nofollow' 
+  const robotsContent = robots || (noindex
+    ? 'noindex, nofollow'
     : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
   );
 

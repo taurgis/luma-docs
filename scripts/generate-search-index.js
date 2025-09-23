@@ -19,35 +19,42 @@ const __dirname = path.dirname(__filename);
 
 // Configuration
 const PAGES_DIR = path.join(__dirname, '../pages');
+const VERSIONS_DIR = path.join(__dirname, '../versions');
 const OUTPUT_FILE = path.join(__dirname, '../src/generated-search-index.ts');
 
 /**
- * Convert file path to URL path
+ * Convert file path to URL path relative to a given content root directory.
+ * Handles index file collapsing and guarantees leading + trailing slash (except for root).
  */
-function filePathToRoute(filePath) {
-  const relativePath = path.relative(PAGES_DIR, filePath);
-  
-  // Remove .mdx extension
+function filePathToRoute(filePath, rootDir = PAGES_DIR) {
+  const relativePath = path.relative(rootDir, filePath);
   let route = relativePath.replace(/\.mdx$/, '');
-  
-  // Convert index files to directory paths (root index should become '/')
+
   if (route === 'index') {
     route = '/';
   } else if (route.endsWith('/index')) {
     route = route.slice(0, -('/index'.length)) || '/';
   }
-  
-  // Ensure route starts with /
+
   if (!route.startsWith('/')) {
     route = `/${route}`;
   }
-  
-  // Ensure route ends with / (except for root)
   if (route !== '/' && !route.endsWith('/')) {
     route += '/';
   }
-  
   return route;
+}
+
+function detectVersion(filePath) {
+  // If file resides under versions/<folder>/..., prefix path with that folder
+  if (filePath.includes('/versions/')) {
+    const parts = filePath.split(/\/|\//); // cross-platform
+    const idx = parts.lastIndexOf('versions');
+    if (idx >= 0 && parts[idx + 1]) {
+      return parts[idx + 1];
+    }
+  }
+  return null;
 }
 
 /**
@@ -112,8 +119,21 @@ function extractTextContent(content) {
 function parseMDXFile(filePath) {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
   const { data: frontmatter, content } = matter(fileContent);
-  
-  const route = filePathToRoute(filePath);
+
+  // Determine if versioned and compute route relative to correct root
+  const version = detectVersion(filePath);
+  const contentRoot = version ? path.join(VERSIONS_DIR, version) : PAGES_DIR;
+  let route = filePathToRoute(filePath, contentRoot);
+  if (version) {
+    route = `/${version}${route}`; // ensure prefix
+  }
+  // Normalize any accidental path traversals (defensive)
+  route = route.replace(/\/\.\.+/g, '/');
+  // Remove duplicate slashes (except keep single leading)
+  route = route.replace(/\/+/g, '/');
+  // Ensure trailing slash (except root)
+  if (route !== '/' && !route.endsWith('/')) { route += '/'; }
+
   const pageTitle = frontmatter.title || 'Untitled';
   const description = frontmatter.description || '';
   
@@ -123,13 +143,14 @@ function parseMDXFile(filePath) {
   if (headings.length === 0) {
     // If no headings, create a single entry for the whole page
     const textContent = extractTextContent(content);
-    results.push({
-      path: route,
+      results.push({
+        path: route,
       pageTitle,
       heading: pageTitle,
       headingId: null,
-      content: `${description  } ${  textContent.substring(0, 500)}`,
-      description
+      content: `${description} ${textContent.substring(0, 500)}`,
+      description,
+      version: version || null
     });
     return results;
   }
@@ -150,7 +171,8 @@ function parseMDXFile(filePath) {
         heading: heading.text,
         headingId: heading.id,
         content: textContent.substring(0, 300),
-        description: heading.level === 1 ? description : ''
+        description: heading.level === 1 ? description : '',
+        version: version || null
       });
     }
   });
@@ -193,7 +215,10 @@ function generateSearchIndex() {
     process.exit(1);
   }
   
-  const mdxFiles = findMDXFiles(PAGES_DIR);
+  const mdxFiles = [
+    ...findMDXFiles(PAGES_DIR),
+    ...(fs.existsSync(VERSIONS_DIR) ? findMDXFiles(VERSIONS_DIR) : [])
+  ];
   const searchIndex = [];
   
   console.log(`Found ${mdxFiles.length} MDX files to process`);
@@ -244,6 +269,7 @@ export interface SearchableItem {
   headingId: string | null;
   content: string;
   description?: string;
+  version?: string | null;
 }
 
 export const GENERATED_SEARCH_INDEX: SearchableItem[] = ${JSON.stringify(searchIndex, null, 2)};

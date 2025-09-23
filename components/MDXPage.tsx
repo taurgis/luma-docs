@@ -3,6 +3,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import config from '../config';
 import { routeMeta, type RouteMeta } from '../src/generated-routes';
+import { archivedVersions } from '../src/generated-versions';
 import { getBasePath } from '../utils/basePath';
 import SEO from './SEO';
 // Narrowed SEO meta shape
@@ -111,14 +112,38 @@ const MDXPage: React.FC<MDXPageProps> = ({ children, meta: explicitMeta }) => {
     });
   }
 
+  // Version awareness: detect archived version from first path segment
+  const firstSeg = location.pathname.split('/').filter(Boolean)[0];
+  const isArchived = firstSeg && (archivedVersions as readonly string[]).includes(firstSeg);
+  const currentVersionLabel = config.versions.current;
+
+  // Auto-inject noindex if archived and not explicitly overridden
+  const effectiveNoIndex: boolean = finalMeta.noindex === true || isArchived === true;
+
   return (
     <>
       <SEO
         {...finalMeta}
+        noindex={effectiveNoIndex}
         canonical={finalMeta.canonical || location.pathname}
         baseUrl={baseUrl}
         breadcrumbs={breadcrumbs}
       />
+      {isArchived && (
+        <div className="mb-6 -mt-2 rounded-md border border-amber-300 bg-amber-50 p-4 text-amber-900 text-sm flex flex-col gap-2" role="status" aria-label="Archived version notice">
+          <div className="font-semibold flex items-center gap-2">
+            <svg className="w-4 h-4 text-amber-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M10 2a1 1 0 01.894.553l7 14A1 1 0 0117 18H3a1 1 0 01-.894-1.447l7-14A1 1 0 0110 2zm0 4a1 1 0 00-.993.883L9 7v4a1 1 0 001.993.117L11 11V7a1 1 0 00-1-1zm.002 8a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z" clipRule="evenodd" /></svg>
+            Archived Documentation
+          </div>
+          <p className="leading-snug">You are viewing an older version of the documentation (version <strong>{firstSeg}</strong>). The current stable version is <strong>{currentVersionLabel}</strong>.</p>
+          <div>
+            <a href={`/${currentVersionLabel === firstSeg ? '' : ''}`} onClick={(e) => { e.preventDefault(); window.location.href = '/'; }} className="inline-flex items-center gap-1 text-xs font-medium text-blue-700 hover:underline">
+              Go to current version
+              <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M12.293 3.293a1 1 0 011.32-.083l.094.083 5.293 5.293a1 1 0 01.083 1.32l-.083.094-5.293 5.293a1 1 0 01-1.497-1.32l.083-.094L15.585 11H2a1 1 0 01-.117-1.993L2 9h13.585l-3.292-3.293a1 1 0 01-.083-1.32l.083-.094z" /></svg>
+            </a>
+          </div>
+        </div>
+      )}
       {children}
     </>
   );

@@ -47,12 +47,8 @@ function slugToRoutePath(slug) {
   return slug.endsWith('/') ? slug.slice(0, -1) : slug;
 }
 
-function generateRoutes(pagesDir) {
-  if (!fs.existsSync(pagesDir)) {
-    console.warn(`Pages directory ${pagesDir} does not exist`);
-    return [];
-  }
-
+function processDir(pagesDir, versionPrefix = '', versionLabel) {
+  if (!fs.existsSync(pagesDir)) { return []; }
   const mdxFiles = getMdxFiles(pagesDir);
   const routes = [];
 
@@ -61,8 +57,14 @@ function generateRoutes(pagesDir) {
     const content = fs.readFileSync(fullPath, 'utf-8');
     const { data: frontmatter } = matter(content);
     
-    const slug = pathToSlug(file);
-    const routePath = slugToRoutePath(slug);
+    let slug = pathToSlug(file);
+    let routePath = slugToRoutePath(slug);
+
+    if (versionPrefix) {
+      // Ensure versioned slugs are nested: /v1.0/... (keep trailing slash behavior)
+      slug = `${versionPrefix}${slug === '/' ? '' : slug.slice(1)}`;
+      routePath = `${versionPrefix}${routePath === '/' ? '' : routePath.slice(1)}`.replace(/\/$/, '');
+    }
     
     // Convert file path to component import path
     const componentPath = file.replace(/\.mdx$/, '.mdx').replace(/\\/g, '/');
@@ -96,23 +98,63 @@ function generateRoutes(pagesDir) {
       path: routePath,
       slug,
       component: componentPath,
-      meta
+      meta: { ...meta, version: versionLabel }
     });
   }
+  return routes;
+}
 
-  // Sort routes by order, then by path
-  routes.sort((a, b) => {
+function extractCurrentVersionLabel(baseDir) {
+  try {
+    const source = fs.readFileSync(path.join(baseDir, '../config.ts'), 'utf8');
+    const match = source.match(/versions\s*:\s*{[\s\S]*?current:\s*"([^"]+)"/);
+    return match ? match[1] : 'next';
+  } catch {
+    return 'next';
+  }
+}
+
+function generateRoutes(baseDir) {
+  const currentDir = path.join(baseDir, '../pages');
+  const versionsDir = path.join(baseDir, '../versions');
+  const allRoutes = [];
+  const currentVersionLabel = extractCurrentVersionLabel(baseDir);
+
+  // Root pages use configured current version label
+  allRoutes.push(...processDir(currentDir, '', currentVersionLabel));
+
+  if (fs.existsSync(versionsDir)) {
+    const versionFolders = fs.readdirSync(versionsDir).filter(f => fs.statSync(path.join(versionsDir, f)).isDirectory());
+    for (const folder of versionFolders) {
+      const dir = path.join(versionsDir, folder);
+      allRoutes.push(...processDir(dir, `/${folder}/`, folder));
+    }
+  }
+
+  // Sort: current version first, then descending semantic version for archived
+  const semver = (v) => {
+    const n = (v || '').replace(/^v/, '').split('.').map(x => parseInt(x, 10) || 0);
+    while (n.length < 3) { n.push(0); }
+    return n;
+  };
+  allRoutes.sort((a, b) => {
+    if (a.meta.version !== b.meta.version) {
+      if (a.meta.version === currentVersionLabel) { return -1; }
+      if (b.meta.version === currentVersionLabel) { return 1; }
+      const sa = semver(a.meta.version);
+      const sb = semver(b.meta.version);
+      // descending
+      for (let i = 0; i < 3; i++) {
+        if (sa[i] !== sb[i]) { return sb[i] - sa[i]; }
+      }
+    }
     const orderA = a.meta.order || 0;
     const orderB = b.meta.order || 0;
-    
-    if (orderA !== orderB) {
-      return orderA - orderB;
-    }
-    
+    if (orderA !== orderB) { return orderA - orderB; }
     return a.path.localeCompare(b.path);
   });
 
-  return routes;
+  return allRoutes;
 }
 
 function generateRouteFile(routes, outputPath) {
@@ -166,6 +208,7 @@ export interface RouteMeta {
   noindex?: boolean;
   section?: string;
   tags?: string[];
+  version?: string; // 'next' or archived version folder name
 }
 
 export interface RouteDefinition {
@@ -187,11 +230,11 @@ ${routes.map(route => `  ${JSON.stringify(route.meta)}`).join(',\n')}
   console.log(`Generated routes file: ${outputPath}`);
 }
 
-const pagesDir = path.join(__dirname, '../pages');
+const baseDir = __dirname; 
 const outputPath = path.join(__dirname, '../src/generated-routes.tsx');
 
 try {
-  const routes = generateRoutes(pagesDir);
+  const routes = generateRoutes(baseDir);
   generateRouteFile(routes, outputPath);
   console.log(`✅ Generated ${routes.length} routes`);
 } catch (error) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import config from '../config';
 import { searchDocs, SearchResult } from '../utils/search';
 
 const Highlight: React.FC<{ text: string; query: string }> = ({ text, query }) => {
@@ -46,6 +47,7 @@ const SearchIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" })
 const Search: React.FC = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [scopeAllVersions, setScopeAllVersions] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -143,12 +145,25 @@ const Search: React.FC = () => {
     const newQuery = e.target.value;
     setQuery(newQuery);
     if (newQuery.length > 1) {
-      setResults(searchDocs(newQuery));
+      const raw = searchDocs(newQuery);
+      if (scopeAllVersions) {
+        setResults(raw);
+      } else {
+        setResults(raw.filter(r => !r.version || r.version === config.versions.current));
+      }
     } else {
       setResults([]);
     }
     setActiveIndex(0);
   };
+
+  // Re-filter when scope toggled
+  useEffect(() => {
+    if (query.length > 1) {
+      const raw = searchDocs(query);
+      setResults(scopeAllVersions ? raw : raw.filter(r => !r.version || r.version === config.versions.current));
+    }
+  }, [scopeAllVersions, query]);
   
   // handleNavigation now memoized above
 
@@ -163,7 +178,7 @@ const Search: React.FC = () => {
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { closeSearch(); } }}
       />
       <div className="relative z-[1001] bg-white w-full max-w-2xl rounded-lg shadow-xl max-h-[90vh] flex flex-col border border-slate-200">
-        <div className="relative flex-shrink-0">
+        <div className="relative flex-shrink-0 border-b border-slate-200">
           <SearchIcon className="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <input
             ref={inputRef}
@@ -171,9 +186,31 @@ const Search: React.FC = () => {
             value={query}
             onChange={handleSearch}
             placeholder="Search documentation..."
-            className="w-full text-base sm:text-lg py-3 sm:py-4 pl-12 pr-4 border-b border-slate-200 focus:outline-none"
+            className="w-full text-base sm:text-lg py-3 sm:py-4 pl-12 pr-4 focus:outline-none"
             aria-label="Search input"
           />
+          <div className="flex items-center justify-between px-4 pb-2 pt-1 text-[11px] sm:text-xs text-slate-600">
+            <div className="flex items-center gap-2">
+              <span className="uppercase tracking-wide font-semibold text-slate-500">Scope:</span>
+              <button
+                type="button"
+                onClick={() => setScopeAllVersions(false)}
+                className={`px-2 py-0.5 rounded border text-xs font-medium ${!scopeAllVersions ? 'bg-blue-600 border-blue-600 text-white' : 'bg-slate-100 border-slate-300 text-slate-600 hover:bg-slate-200'}`}
+                aria-pressed={!scopeAllVersions}
+              >Current</button>
+              <button
+                type="button"
+                onClick={() => setScopeAllVersions(true)}
+                className={`px-2 py-0.5 rounded border text-xs font-medium ${scopeAllVersions ? 'bg-blue-600 border-blue-600 text-white' : 'bg-slate-100 border-slate-300 text-slate-600 hover:bg-slate-200'}`}
+                aria-pressed={scopeAllVersions}
+              >All Versions</button>
+            </div>
+            <div className="hidden sm:flex items-center gap-1 text-slate-400">
+              <span>Press</span>
+              <kbd className="px-1 py-0.5 bg-slate-100 border border-slate-300 rounded text-[10px]">Esc</kbd>
+              <span>to close</span>
+            </div>
+          </div>
         </div>
         {query.length > 1 && (
           <div className="flex-1 overflow-y-auto min-h-0">
@@ -187,8 +224,18 @@ const Search: React.FC = () => {
                         activeIndex === index ? 'bg-blue-100' : 'hover:bg-slate-100'
                       }`}
                     >
-                      <div className="font-semibold text-slate-800 text-sm sm:text-base">
+                      <div className="flex items-center gap-2 font-semibold text-slate-800 text-sm sm:text-base">
                         <Highlight text={result.pageTitle} query={query} />
+                        {result.version && result.version !== config.versions.current && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-slate-200 text-[10px] font-medium uppercase tracking-wide text-slate-700">
+                            {result.version}
+                          </span>
+                        )}
+                        {!result.version && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-blue-100 text-[10px] font-medium uppercase tracking-wide text-blue-700">
+                            {config.versions.current}
+                          </span>
+                        )}
                       </div>
                       <div className="text-xs sm:text-sm text-slate-600 mb-1">
                         <Highlight text={result.heading} query={query} />

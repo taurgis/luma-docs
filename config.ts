@@ -13,6 +13,19 @@ export const config = {
     description: "Modern documentation platform built with React and MDX",
     version: "1.0.0",
   },
+  // Versioning (multi-version documentation support)
+  versions: {
+    // The label of the version currently represented by root-level `pages/` content
+    current: "v1.0", // label for root-level content (current stable)
+    // If true, expose a version switcher UI component
+    enableSwitcher: true,
+    // Strategy: 'folder' means historical versions live under /versions/<version>/
+    strategy: 'folder' as const,
+    // Optional: list of retired versions to hide from switcher (still directly reachable)
+    hidden: [] as string[],
+    // Display ordering override (otherwise sorted descending semver with 'next' first)
+    order: [] as string[],
+  },
 
   // Branding
   branding: {

@@ -8,6 +8,7 @@ export interface SearchableItem {
   headingId: string | null;
   content: string;
   description?: string;
+  version?: string | null;
 }
 
 export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
@@ -17,7 +18,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Welcome to Luma Docs",
     "headingId": "welcome-to-luma-docs",
     "content": "Welcome to Luma Docs Luma Docs is a modern, fast, and beautiful documentation platform built with React, MDX, and Vite. It provides a seamless experience for both content creators and readers.",
-    "description": "A modern documentation platform built with React and MDX. Features automatic routing, static generation, and GitHub Pages deployment."
+    "description": "A modern documentation platform built with React and MDX. Features automatic routing, static generation, and GitHub Pages deployment.",
+    "version": null
   },
   {
     "path": "/",
@@ -25,7 +27,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Features",
     "headingId": "features",
     "content": "Features MDX Support: Write content in MDX format with the full power of React components Automatic Routing: Pages are automatically added to routes based on file structure Fast Static Generation: Built with Vite React SSG for lightning-fast performance GitHub Pages Ready: Optimized for deployment o",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/",
@@ -33,7 +36,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Getting Started",
     "headingId": "getting-started",
     "content": "Getting Started To get started with Luma Docs, simply create MDX files in the directory. Each file will automatically become a page in your documentation site.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/",
@@ -41,7 +45,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "File Structure",
     "headingId": "file-structure",
     "content": "File Structure",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/",
@@ -49,7 +54,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Frontmatter",
     "headingId": "frontmatter",
     "content": "Frontmatter Each MDX file can include frontmatter to specify metadata: : The page title (used in navigation and SEO) : Page description for SEO : Sort order for navigation (lower numbers appear first)",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/",
@@ -57,7 +63,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Next Steps",
     "headingId": "next-steps",
     "content": "Next Steps Create your first MDX page Customize the navigation structure Deploy to GitHub Pages Welcome to the future of documentation!",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -65,7 +72,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Code Components",
     "headingId": "code-components",
     "content": "Code Components",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -73,7 +81,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Code Fences",
     "headingId": "code-fences",
     "content": "Code Fences Standard fenced code blocks ( tsx function HelloWorld() { const message = \"Hello, Luma Docs!\"; return <h1>{message}</h1>; } // Invoke to avoid unused var lint complaint in MDX processing context HelloWorld(); ```",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -81,7 +90,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Inline Code",
     "headingId": "inline-code",
     "content": "Inline Code Use the <Code>InlineCode</Code> component for short code snippets within text. You can also use <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> to show keyboard shortcuts.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -89,7 +99,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Code Tabs",
     "headingId": "code-tabs",
     "content": "Code Tabs The component is perfect for showing the same functionality in different languages: <CodeTabs tabs={[ { label: \"React\", language: \"tsx\", code: , }, { label: \"Vue\", language: \"vue\", code: , }, { label: \"Svelte\", language: \"svelte\", code: , }, ]} groupId=\"button-examples\" />",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -97,7 +108,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Content Components",
     "headingId": "content-components",
     "content": "Content Components",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -105,7 +117,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Callouts",
     "headingId": "callouts",
     "content": "Callouts Callouts help highlight important information with semantic colors and icons: <Callout type=\"info\" title=\"Information\"> This is an informational callout. Use it to provide additional context or helpful tips to your readers. </Callout> <Callout type=\"warning\" title=\"Warning\"> This is a warni",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -113,7 +126,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Collapsibles",
     "headingId": "collapsibles",
     "content": "Collapsibles Collapsible sections help organize content and improve page readability: <Collapsible title=\"Basic Usage\" defaultOpen> This collapsible is open by default. You can put any content here, including other components, code blocks, or formatted text. <ul> <li>List items work great</li> <li>M",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -121,7 +135,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Typography Components",
     "headingId": "typography-components",
     "content": "Typography Components",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -129,7 +144,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Headings",
     "headingId": "headings",
     "content": "Headings The typography system provides consistent styling for all heading levels:",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -137,7 +153,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "H1: Main Page Title",
     "headingId": "h1-main-page-title",
     "content": "H1: Main Page Title",
-    "description": "Explore the enhanced component library available in Luma Docs, including code blocks, callouts, collapsibles, and more."
+    "description": "Explore the enhanced component library available in Luma Docs, including code blocks, callouts, collapsibles, and more.",
+    "version": null
   },
   {
     "path": "/components/",
@@ -145,7 +162,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "H2: Major Section Header",
     "headingId": "h2-major-section-header",
     "content": "H2: Major Section Header",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -153,7 +171,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "H3: Subsection Header",
     "headingId": "h3-subsection-header",
     "content": "H3: Subsection Header",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -161,7 +180,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "H4: Minor Section Header",
     "headingId": "h4-minor-section-header",
     "content": "H4: Minor Section Header",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -169,7 +189,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "H5: Small Section Header",
     "headingId": "h5-small-section-header",
     "content": "H5: Small Section Header",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -177,7 +198,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "H6: Smallest Header",
     "headingId": "h6-smallest-header",
     "content": "H6: Smallest Header",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -185,7 +207,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Text Styles",
     "headingId": "text-styles",
     "content": "Text Styles Bold text and italic text are supported, along with and links. > This is a blockquote. Use it for highlighting quotes, testimonials, or important excerpts from other sources.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -193,7 +216,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Interactive Examples",
     "headingId": "interactive-examples",
     "content": "Interactive Examples",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -201,7 +225,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Combining Components",
     "headingId": "combining-components",
     "content": "Combining Components You can combine multiple components to create rich, interactive documentation: <Collapsible title=\"Complete API Example\" intent=\"info\" defaultOpen> <Callout type=\"tip\" title=\"Best Practice\"> Always validate your API inputs and handle errors gracefully. </Callout> <CodeTabs tabs=",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/components/",
@@ -209,7 +234,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Usage",
     "headingId": "usage",
     "content": "Usage Import any of these components in your MDX files: All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/getting-started/",
@@ -217,7 +243,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Getting Started",
     "headingId": "getting-started",
     "content": "Getting Started This guide will help you get up and running with Luma Docs quickly.",
-    "description": "Learn how to get started with Luma Docs - installation, development, and deployment guide"
+    "description": "Learn how to get started with Luma Docs - installation, development, and deployment guide",
+    "version": null
   },
   {
     "path": "/getting-started/",
@@ -225,7 +252,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "SEO Features",
     "headingId": "seo-features",
     "content": "SEO Features Luma Docs now includes comprehensive SEO support through frontmatter metadata. You can specify SEO attributes in your MDX files: You can also override SEO settings directly in your MDX content using the component: <SEO title=\"Custom Page Title Override\" description=\"This description wil",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/getting-started/",
@@ -233,7 +261,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Installation",
     "headingId": "installation",
     "content": "Installation Clone or download the Luma Docs template Install dependencies: Start the development server:",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/getting-started/",
@@ -241,7 +270,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Creating Content",
     "headingId": "creating-content",
     "content": "Creating Content Content is written in MDX format, which allows you to combine Markdown with React components.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/getting-started/",
@@ -249,7 +279,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Basic Markdown",
     "headingId": "basic-markdown",
     "content": "Basic Markdown You can use all standard Markdown features: Bold text Italic text Links",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/getting-started/",
@@ -257,7 +288,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Code Blocks",
     "headingId": "code-blocks",
     "content": "Code Blocks",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/getting-started/",
@@ -265,7 +297,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "React Components",
     "headingId": "react-components",
     "content": "React Components You can also use React components directly in your MDX:",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/getting-started/",
@@ -273,7 +306,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Navigation",
     "headingId": "navigation",
     "content": "Navigation Navigation is automatically generated based on your file structure and frontmatter. Pages are sorted by the field in frontmatter, then alphabetically.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/getting-started/",
@@ -281,7 +315,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Deployment",
     "headingId": "deployment",
     "content": "Deployment To deploy to GitHub Pages: Build the site: Deploy the folder to your GitHub Pages branch The site is configured to work with GitHub Pages subfolder deployments (e.g., ).",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/",
@@ -289,7 +324,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Guides",
     "headingId": "guides",
     "content": "Guides Welcome to the Luma Docs guides section. Here you'll find comprehensive tutorials and guides to help you make the most of your documentation site.",
-    "description": "Comprehensive guides for using Luma Docs"
+    "description": "Comprehensive guides for using Luma Docs",
+    "version": null
   },
   {
     "path": "/guides/",
@@ -297,7 +333,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Available Guides",
     "headingId": "available-guides",
     "content": "Available Guides Advanced Features - Learn about advanced features and customization Deployment - Different deployment options and strategies Customization - How to customize the look and feel",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/",
@@ -305,7 +342,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "What You'll Learn",
     "headingId": "what-youll-learn",
     "content": "What You'll Learn In these guides, you'll discover: How to organize your content effectively Advanced MDX features and React component integration Customization options for styling and layout Best practices for documentation SEO optimization techniques",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/",
@@ -313,7 +351,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Community",
     "headingId": "community",
     "content": "Community Have questions or want to contribute? Check out our community resources and contribution guidelines.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/advanced/",
@@ -321,7 +360,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Advanced Features",
     "headingId": "advanced-features",
     "content": "Advanced Features Luma Docs comes with several advanced features that make it powerful and flexible for documentation sites.",
-    "description": "Learn about advanced features and capabilities of Luma Docs including search, routing, and customization"
+    "description": "Learn about advanced features and capabilities of Luma Docs including search, routing, and customization",
+    "version": null
   },
   {
     "path": "/guides/advanced/",
@@ -329,7 +369,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "MDX Components",
     "headingId": "mdx-components",
     "content": "MDX Components You can create custom React components and use them in your MDX files. This allows for rich, interactive documentation.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/advanced/",
@@ -337,7 +378,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Example: Callout Component",
     "headingId": "example-callout-component",
     "content": "Example: Callout Component You could create a callout component like this:",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/advanced/",
@@ -345,7 +387,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Code Highlighting",
     "headingId": "code-highlighting",
     "content": "Code Highlighting Code blocks are automatically highlighted using Prism.js with support for many languages:",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/advanced/",
@@ -353,7 +396,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Table of Contents",
     "headingId": "table-of-contents",
     "content": "Table of Contents The table of contents is automatically generated from your headings (h2 and h3) and appears in the right sidebar on desktop.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/advanced/",
@@ -361,7 +405,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Search",
     "headingId": "search",
     "content": "Search The built-in search functionality indexes all your content and provides fast, client-side search results.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/advanced/",
@@ -369,7 +414,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Performance",
     "headingId": "performance",
     "content": "Performance Static Generation: All pages are pre-rendered at build time Code Splitting: JavaScript is automatically split into smaller chunks Optimized Assets: Images and other assets are optimized for fast loading Minimal Runtime: Very little JavaScript is required for the site to function",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/guides/advanced/",
@@ -377,7 +423,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "SEO Optimization",
     "headingId": "seo-optimization",
     "content": "SEO Optimization Automatic sitemap generation Meta tags from frontmatter Structured data markup Fast loading times These features combine to create a documentation platform that's both powerful for authors and fast for readers.",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -385,7 +432,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "SEO Examples",
     "headingId": "seo-examples",
     "content": "SEO Examples This page demonstrates all the SEO features available in Luma Docs.",
-    "description": "Comprehensive examples of SEO features in Luma Docs including frontmatter metadata and inline SEO components"
+    "description": "Comprehensive examples of SEO features in Luma Docs including frontmatter metadata and inline SEO components",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -393,7 +441,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Frontmatter SEO Attributes",
     "headingId": "frontmatter-seo-attributes",
     "content": "Frontmatter SEO Attributes You can set SEO metadata in your MDX file's frontmatter:",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -401,7 +450,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Inline SEO Override",
     "headingId": "inline-seo-override",
     "content": "Inline SEO Override You can also override SEO metadata for specific sections using the component: <SEO title=\"Special Section - SEO Examples\" description=\"This section has custom SEO metadata that overrides the frontmatter\" keywords=\"custom, override, section, special\" ogType=\"article\" twitterCard=\"",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -409,7 +459,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Available SEO Fields",
     "headingId": "available-seo-fields",
     "content": "Available SEO Fields",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -417,7 +468,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Basic Meta Tags",
     "headingId": "basic-meta-tags",
     "content": "Basic Meta Tags - Page title (used in and Open Graph) - Meta description for search engines - Comma-separated keywords - Content author - Canonical URL for the page - Robots directive (or use )",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -425,7 +477,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Open Graph Meta Tags",
     "headingId": "open-graph-meta-tags",
     "content": "Open Graph Meta Tags - \"website\" or \"article\" - URL to Open Graph image",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -433,7 +486,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Twitter Card Meta Tags",
     "headingId": "twitter-card-meta-tags",
     "content": "Twitter Card Meta Tags - \"summary\" or \"summarylargeimage\" - Twitter handle of content creator - Twitter handle of website",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -441,7 +495,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Article-Specific Meta Tags",
     "headingId": "article-specific-meta-tags",
     "content": "Article-Specific Meta Tags - ISO 8601 publication date - ISO 8601 modification date - Article section/category - Array of tags (can also be comma-separated string)",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -449,7 +504,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "How It Works",
     "headingId": "how-it-works",
     "content": "How It Works Route Generation: The script extracts SEO metadata from frontmatter SEO Component: The component renders all meta tags using 's Static Generation: During SSG build, all meta tags are included in the static HTML Dynamic Override: Inline components can override frontmatter values",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -457,7 +513,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "SEO Best Practices",
     "headingId": "seo-best-practices",
     "content": "SEO Best Practices",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -465,7 +522,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Titles",
     "headingId": "titles",
     "content": "Titles Keep titles under 60 characters Include primary keywords Make them unique and descriptive",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -473,7 +531,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Descriptions",
     "headingId": "descriptions",
     "content": "Descriptions Keep descriptions between 120-160 characters Include a compelling call-to-action Summarize the page content accurately",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -481,7 +540,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Open Graph Images",
     "headingId": "open-graph-images",
     "content": "Open Graph Images Use 1200x630 pixel images Include text overlays for better social sharing Ensure images are relevant to content",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -489,7 +549,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Keywords",
     "headingId": "keywords",
     "content": "Keywords Use 3-10 relevant keywords Avoid keyword stuffing Focus on user intent",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -497,7 +558,8 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Structured Data",
     "headingId": "structured-data",
     "content": "Structured Data Luma Docs automatically generates JSON-LD structured data Article pages get Article schema Website pages get WebPage schema",
-    "description": ""
+    "description": "",
+    "version": null
   },
   {
     "path": "/seo-examples/",
@@ -505,6 +567,70 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "Generated Meta Tags",
     "headingId": "generated-meta-tags",
     "content": "Generated Meta Tags This page generates the following types of meta tags: Basic Meta Tags: title, description, keywords, author, robots Open Graph: og:title, og:description, og:type, og:image, og:url Twitter Cards: twitter:card, twitter:title, twitter:description, twitter:image Article Meta: article",
-    "description": ""
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/v0.8/",
+    "pageTitle": "Legacy Home (v0.8)",
+    "heading": "Luma Docs v0.8",
+    "headingId": "luma-docs-v08",
+    "content": "Luma Docs v0.8 Early pre-1.0 version of the docs platform.",
+    "description": "Snapshot of the documentation home for version 0.8",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/",
+    "pageTitle": "Legacy Home (v0.8)",
+    "heading": "Characteristics",
+    "headingId": "characteristics",
+    "content": "Characteristics Basic MDX routing prototype No version switcher Minimal styling",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/",
+    "pageTitle": "Legacy Home (v0.8)",
+    "heading": "Upgrading",
+    "headingId": "upgrading",
+    "content": "Upgrading Move to v0.9 or 1.0+ to get improved build scripts and search.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/getting-started/",
+    "pageTitle": "Getting Started (v0.8)",
+    "heading": "Getting Started (v0.8)",
+    "headingId": "getting-started-v08",
+    "content": "Getting Started (v0.8) Feature set was still evolving; expect configuration differences versus later versions.",
+    "description": "Setup guide for v0.8",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.9/",
+    "pageTitle": "Legacy Home (v0.9)",
+    "heading": "Luma Docs v0.9",
+    "headingId": "luma-docs-v09",
+    "content": "Luma Docs v0.9 Transition release preparing for the stable 1.0 line.",
+    "description": "Snapshot for version 0.9",
+    "version": "v0.9"
+  },
+  {
+    "path": "/v0.9/",
+    "pageTitle": "Legacy Home (v0.9)",
+    "heading": "Improvements since 0.8",
+    "headingId": "improvements-since-08",
+    "content": "Improvements since 0.8 More robust route generation Added early search indexing groundwork Expanded component set",
+    "description": "",
+    "version": "v0.9"
+  },
+  {
+    "path": "/v0.9/getting-started/",
+    "pageTitle": "Getting Started (v0.9)",
+    "heading": "Getting Started (v0.9)",
+    "headingId": "getting-started-v09",
+    "content": "Getting Started (v0.9) Use 1.0+ for finalized configuration conventions.",
+    "description": "Setup guide for v0.9",
+    "version": "v0.9"
   }
 ];
