@@ -1,54 +1,88 @@
-name: Deploy to GitHub Pages
+name: Docs CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
+  workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read   # checkout
+  pages: write     # deployment
+  id-token: write  # required by deploy-pages
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Derive base path & site metadata
+        id: meta
+        shell: bash
+        run: |
+          REPO="${GITHUB_REPOSITORY#*/}"
+            OWNER="${GITHUB_REPOSITORY%%/*}"
+          if [[ "$REPO" == *.github.io ]]; then
+            BASE="/"
+            SITE_URL="https://$REPO"        # root user/org site
+          else
+            BASE="/$REPO/"                  # repo subfolder
+            SITE_URL="https://$OWNER.github.io"  # root domain for sitemap
+          fi
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          echo "site_url=$SITE_URL" >> "$GITHUB_OUTPUT"
+          echo "repo=$REPO" >> "$GITHUB_OUTPUT"
+          echo "owner=$OWNER" >> "$GITHUB_OUTPUT"
+          echo "Derived base: $BASE"
+          echo "Site URL: $SITE_URL"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --prefer-offline --no-audit
 
-      - name: Build for GitHub Pages subfolder deployment
-        run: npm run build:subfolder
+      - name: Lint & Typecheck
+        run: |
+          npm run lint
+          npm run type-check
 
-      - name: Setup Pages
-        if: github.ref == 'refs/heads/main'
-        uses: actions/configure-pages@v4
+      - name: Build (unified base path)
+        env:
+          VITE_FORCE_BASE: ${{ steps.meta.outputs.base }}
+          SITE_URL: ${{ steps.meta.outputs.site_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: npm run build
 
-      - name: Upload artifact
-        if: github.ref == 'refs/heads/main'
+      # Optional hook for link / a11y checks (uncomment to enable)
+      # - name: Link check
+      #   run: npx lychee --no-progress dist
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
-      - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main'
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4

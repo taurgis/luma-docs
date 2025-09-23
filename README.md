@@ -277,6 +277,46 @@ For a complete showcase of all components with live examples, visit the [Compone
 - `npm run lint:fix` - Run ESLint with automatic fixing
 - `npm run type-check` - Run TypeScript type checking
 
+### Unified Base Path Handling
+
+Base path detection (root vs subfolder like `/luma-docs/`) is now centralized in `scripts/resolve-base-path.mjs` and consumed directly by `vite.config.ts`, build scripts, runtime helpers, and the sitemap generator.
+
+Resolution priority (first match wins):
+1. `VITE_FORCE_BASE` – explicit override (e.g. `/docs/` or `/preview/`)
+2. `VITE_BASE_PATH` – externally provided resolved base
+3. `GITHUB_REPOSITORY` – if repository ends with `.github.io` => root `/`; else `/<repo>/`
+4. Git remote `origin` – same logic as above (local dev convenience)
+5. Fallback `/`
+
+All returned values are normalized to begin with `/` and (if not root) end with `/`.
+
+Runtime: `getBasePath()` (in `utils/basePath.ts`) simply returns the build-time value; `createPath()` prefixes internal links safely.
+
+Sitemap: `generate-sitemap.js` uses the same resolver and expects `SITE_URL` to be the domain only (without the subfolder). If you mistakenly include the subfolder, it will de‑duplicate.
+
+Examples:
+```bash
+# Force a temporary docs path
+VITE_FORCE_BASE=/docs/ npm run dev
+
+# Build for a preview namespace
+VITE_FORCE_BASE=/preview/ npm run build
+
+# Standard GitHub Pages (auto-detect /<repo>/)
+npm run build:subfolder
+
+# Root deployment (username.github.io repo or custom domain)
+VITE_FORCE_BASE=/ npm run build
+
+# Custom domain with subfolder
+SITE_URL=https://example.com VITE_FORCE_BASE=/product-docs/ npm run build
+```
+
+Benefits:
+- Single source of truth (no drift between scripts)
+- Easy future migration (e.g. to Cloudflare Pages or Netlify)
+- Deterministic behavior across dev, build, preview, and sitemap generation
+
 ### Project Structure (Simplified)
 
 ```

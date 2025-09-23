@@ -42,6 +42,9 @@ else
     echo "🌐 Subfolder deployment expected: https://$USERNAME.github.io$BASE_PATH"
 fi
 
+# Export for downstream node scripts (sitemap, etc.)
+export VITE_BASE_PATH="$BASE_PATH"
+
 # Clean the dist directory
 rm -rf dist/
 

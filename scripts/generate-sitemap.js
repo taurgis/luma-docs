@@ -14,22 +14,34 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { resolveBasePath } from './resolve-base-path.mjs';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Resolve base path once for consistency with Vite build
+const resolvedBasePath = resolveBasePath();
+
+// Determine site root (no trailing slash) separate from base path
+// If SITE_URL includes the repo path already (common earlier pattern), attempt to strip it to avoid duplication.
+let siteUrl = process.env.SITE_URL || 'https://yourdomain.com';
+siteUrl = siteUrl.replace(/\/$/, '');
+
+// If siteUrl ends with the resolvedBasePath (minus trailing slash) strip it so we can recombine consistently.
+if (resolvedBasePath !== '/') {
+  const withoutTrailing = resolvedBasePath.replace(/\/$/, '');
+  if (siteUrl.endsWith(withoutTrailing)) {
+    siteUrl = siteUrl.slice(0, -withoutTrailing.length);
+    siteUrl = siteUrl.replace(/\/$/, '');
+  }
+}
+
 // Configuration
 const config = {
-  // Default base URL - can be overridden via environment variables
-  baseUrl: process.env.SITE_URL || 'https://yourdomain.com',
-  
-  // Base path for subfolder deployments (e.g., '/luma-docs/')
-  basePath: process.env.VITE_BASE_PATH || process.env.BASE_URL || '/',
-  
-  // Default sitemap settings
+  baseUrl: siteUrl, // root domain (no subfolder)
+  basePath: resolvedBasePath, // subfolder (possibly '/')
   defaultPriority: '0.8',
   defaultChangefreq: 'monthly',
-  
-  // Priority overrides for specific paths
   priorityOverrides: {
     '/': { priority: '1.0', changefreq: 'weekly' },
     '/getting-started/': { priority: '0.9', changefreq: 'monthly' },
