@@ -25,23 +25,18 @@ jobs:
 
       - name: Derive base path & site metadata
         id: meta
-        shell: bash
         run: |
-          REPO="${GITHUB_REPOSITORY#*/}"
-            OWNER="${GITHUB_REPOSITORY%%/*}"
-          if [[ "$REPO" == *.github.io ]]; then
-            BASE="/"
-            SITE_URL="https://$REPO"        # root user/org site
-          else
-            BASE="/$REPO/"                  # repo subfolder
-            SITE_URL="https://$OWNER.github.io"  # root domain for sitemap
-          fi
+          META=$(node ./scripts/resolve-base-path.mjs --json)
+          echo "Meta: $META"
+          BASE=$(echo "$META" | jq -r '.basePath')
+          SITE_URL=$(echo "$META" | jq -r '.siteUrl')
+          OWNER=$(echo "$META" | jq -r '.owner')
+          REPO=$(echo "$META" | jq -r '.repo')
           echo "base=$BASE" >> "$GITHUB_OUTPUT"
           echo "site_url=$SITE_URL" >> "$GITHUB_OUTPUT"
           echo "repo=$REPO" >> "$GITHUB_OUTPUT"
           echo "owner=$OWNER" >> "$GITHUB_OUTPUT"
-          echo "Derived base: $BASE"
-          echo "Site URL: $SITE_URL"
+          echo "Derived base: $BASE (site: $SITE_URL)"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# NOTE: This script is retained for local convenience only.
+# CI no longer uses `npm run build:subfolder`; instead it calls the generic
+# `npm run build` with `VITE_FORCE_BASE` (handled by the unified resolver).
+# Prefer: VITE_FORCE_BASE=/your-base/ npm run build
+
 # Build for subfolder deployment (like GitHub Pages)
 # Usage: ./build-subfolder.sh [repo-name]
 # If no repo-name is provided, it will try to detect from git remote or use current directory name
@@ -34,7 +39,7 @@ else
     fi
 fi
 
-echo "🚀 Building site (base: $BASE_PATH)"
+echo "🚀 (Legacy helper) Building site (base: $BASE_PATH)"
 echo "📁 Repository: $USERNAME/$REPO_NAME"
 if [[ "$BASE_PATH" == "/" ]]; then
     echo "🌐 Root Pages deployment expected (username.github.io)"

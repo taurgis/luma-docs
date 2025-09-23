@@ -1,4 +1,3 @@
-import React from 'react';
 import type { RouteRecord } from 'vite-react-ssg';
 
 import Layout from './components/Layout';

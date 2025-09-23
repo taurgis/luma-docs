@@ -14,25 +14,19 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { resolveBasePath } from './resolve-base-path.mjs';
+import { resolveBasePath, resolveSiteUrl } from './resolve-base-path.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Resolve base path once for consistency with Vite build
+// Resolve base path & site URL (custom domain aware)
 const resolvedBasePath = resolveBasePath();
-
-// Determine site root (no trailing slash) separate from base path
-// If SITE_URL includes the repo path already (common earlier pattern), attempt to strip it to avoid duplication.
-let siteUrl = process.env.SITE_URL || 'https://yourdomain.com';
-siteUrl = siteUrl.replace(/\/$/, '');
-
-// If siteUrl ends with the resolvedBasePath (minus trailing slash) strip it so we can recombine consistently.
+let siteUrl = resolveSiteUrl();
+// If user mistakenly appended base path to siteUrl, de-dupe.
 if (resolvedBasePath !== '/') {
   const withoutTrailing = resolvedBasePath.replace(/\/$/, '');
   if (siteUrl.endsWith(withoutTrailing)) {
-    siteUrl = siteUrl.slice(0, -withoutTrailing.length);
-    siteUrl = siteUrl.replace(/\/$/, '');
+    siteUrl = siteUrl.slice(0, -withoutTrailing.length).replace(/\/$/, '');
   }
 }
 

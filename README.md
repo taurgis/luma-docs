@@ -264,9 +264,10 @@ For a complete showcase of all components with live examples, visit the [Compone
 - `npm run dev` - Start development server with hot reload (includes route generation and CSS build)
 - `npm run dev:subfolder` - Start development server configured for subfolder deployment
 - `npm run build` - Build for production (includes route generation, CSS build, search index, and sitemap)
-- `npm run build:subfolder` - Build for subfolder deployment (GitHub Pages)
+- `npm run build:subfolder` - (Legacy/local) Build for subfolder deployment (CI now uses `npm run build` + `VITE_FORCE_BASE`)
 - `npm run preview` - Preview production build locally
-- `npm run preview:subfolder` - Preview subfolder build locally
+- `npm run preview:subfolder` - Preview legacy subfolder build (static example)
+- `npm run preview:resolved` - Preview using dynamically resolved base path (preferred)
 - `npm run generate:routes` - Generate routes from MDX files in pages directory
 - `npm run build:css` - Build Tailwind CSS from source
 - `npm run build:css:watch` - Watch mode for CSS development
