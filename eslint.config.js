@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import * as mdx from 'eslint-plugin-mdx';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
@@ -10,7 +11,41 @@ export default tseslint.config(
   // Base configurations
   js.configs.recommended,
   ...tseslint.configs.recommended,
-  
+
+  // MDX flat configuration
+  {
+    ...mdx.flat,
+    // Enable linting of code blocks within MDX
+    processor: mdx.createRemarkProcessor({
+      lintCodeBlocks: true,
+      languageMapper: {},
+    }),
+  },
+
+  // MDX code blocks configuration
+  {
+    ...mdx.flatCodeBlocks,
+    rules: {
+      ...mdx.flatCodeBlocks.rules,
+      // Code quality rules for code blocks
+      'no-var': 'error',
+      'prefer-const': 'error',
+    },
+  },
+
+  // Additional configuration for MDX files
+  {
+    files: ['**/*.mdx'],
+    rules: {
+      // MDX imports are often used in content and may not be detected by parser
+      '@typescript-eslint/no-unused-vars': 'off',
+      'no-unused-vars': 'off',
+      // MDX content can have React components without explicit imports
+      'react/jsx-no-undef': 'off',
+      'react/no-unescaped-entities': 'off',
+    },
+  },
+
   // Global settings
   {
     settings: {
@@ -115,17 +150,6 @@ export default tseslint.config(
     },
   },
 
-  // Configuration for MDX files
-  {
-    files: ['**/*.mdx'],
-    rules: {
-      // Disable rules that don't make sense for MDX
-      'react/jsx-no-undef': 'off',
-      'react/no-unescaped-entities': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
-    },
-  },
-
   // Configuration for script files
   {
     files: ['scripts/**/*.js'],
@@ -174,7 +198,7 @@ export default tseslint.config(
       'public/**',
       '*.min.js',
       'coverage/**',
-      '**/*.mdx', // Ignore all MDX files
+      // Note: MDX files are now linted with mdx plugin
     ],
   }
 );

@@ -20,8 +20,8 @@
     "search:validate": "node scripts/search-dev.js validate",
     "deploy:gh-pages": "./scripts/deploy-gh-pages.sh",
     "clean": "rm -rf dist/ node_modules/.vite/",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.mdx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx,.mdx --fix",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@eslint/markdown": "^7.3.0",
     "@mdx-js/rollup": "^3.0.1",
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^22.14.0",
@@ -45,6 +46,7 @@
     "eslint": "^9.36.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-mdx": "^3.6.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.4.0",
