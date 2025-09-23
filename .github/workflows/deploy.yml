@@ -36,9 +36,6 @@ jobs:
         run: npm ci
 
       - name: Build for GitHub Pages subfolder deployment
-        # Set process.env.SITE_URL to our github pages URL
-        env:
-          SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.repository }}
         run: npm run build:subfolder
 
       - name: Setup Pages

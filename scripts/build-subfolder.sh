@@ -54,7 +54,7 @@ rm -rf dist/
 # Generate routes, build CSS, and other assets
 npm run generate:routes
 npm run build:css
-npm run generate:search-index
+SITE_URL=https://$USERNAME.github.io/$REPO_NAME/ npm run generate:search-index
 npm run generate:sitemap
 
 # Build the site with dynamic subfolder base path
