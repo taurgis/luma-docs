@@ -107,9 +107,17 @@ jobs:
 
       - name: Smoke test base path & routes
         run: |
-          EXPECT_INDEX="dist${{ steps.base.outputs.base_path }}index.html"
+          # Vite does NOT create a physical subdirectory for the base path; index is always at dist/index.html
+          EXPECT_INDEX="dist/index.html"
           if [ ! -f "$EXPECT_INDEX" ]; then
             echo "::error::Expected index not found at $EXPECT_INDEX"; exit 1; fi
+          BASE="${{ steps.base.outputs.base_path }}"
+          if [ "$BASE" != "/" ]; then
+            # Verify that emitted asset/script/link URLs are prefixed with the configured base path
+            if ! grep -E "(src|href)=\"${BASE}assets/" "$EXPECT_INDEX" >/dev/null; then
+              echo "::error::Index.html does not reference assets with base path prefix '$BASE'"; grep -E "(src|href)=\"/" "$EXPECT_INDEX" | head -n20; exit 1;
+            fi
+          fi
           ROUTE_COUNT=$(find dist -name '*.html' | wc -l | tr -d ' ')
           if [ "$ROUTE_COUNT" -lt 1 ]; then
             echo "::error::Zero HTML routes generated"; exit 1; fi
