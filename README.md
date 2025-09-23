@@ -10,6 +10,9 @@ A modern, fast, and beautiful documentation platform built with React 19, MDX, V
 
 - **React 19** with TypeScript for modern development
 - **MDX Support**: Write content in MDX format with the full power of React components
+- **Enhanced Component Library**: Rich set of components including CodeBlock, Callouts, Collapsibles, and CodeTabs
+- **Advanced Typography**: Comprehensive typography system with semantic HTML elements
+- **Interactive Code Examples**: Syntax highlighting with copy functionality and multi-language tabs
 - **Comprehensive SEO**: Dynamic meta tags, Open Graph, Twitter Cards, JSON-LD structured data, and automatic sitemap generation
 - **Automatic Routing**: Pages are automatically added to routes based on file structure using `vite-react-ssg`
 - **Fast Static Generation**: Built with Vite React SSG for lightning-fast performance and SEO optimization
@@ -18,7 +21,7 @@ A modern, fast, and beautiful documentation platform built with React 19, MDX, V
 - **Search Functionality**: Built-in search index generation to help users find content quickly
 - **Table of Contents**: Automatic table of contents generation from headings with smooth scrolling
 - **Mobile Responsive**: Fully responsive design that works perfectly on all devices
-- **Code Highlighting**: Prism.js integration for beautiful syntax highlighting
+- **Code Highlighting**: Prism.js integration with dynamic loading and copy functionality
 - **SEO Optimized**: Automatic sitemap.xml generation, meta tags, and structured data for better search rankings
 - **Performance Optimized**: Code splitting, lazy loading, and optimized bundle sizes
 
@@ -193,6 +196,111 @@ Navigation is automatically generated based on your file structure and frontmatt
 - Files are grouped by their top-level directory
 - Within groups, pages are sorted by `order` field, then alphabetically
 - The `title` from frontmatter is used as the navigation label
+
+## Enhanced Component Library
+
+Luma Docs includes a rich set of React components designed specifically for documentation. Import any of these components in your MDX files:
+
+```jsx
+import { 
+  Callout, 
+  CodeBlock, 
+  Collapsible, 
+  CodeTabs, 
+  PageTitle, 
+  PageSubtitle 
+} from '../components';
+```
+
+### Code Components
+
+#### CodeBlock
+Advanced syntax highlighting with copy functionality:
+
+```jsx
+<CodeBlock
+  code={`function hello() { console.log("Hello World!"); }`}
+  language="javascript"
+  title="Hello World Example"
+  showLineNumbers={true}
+/>
+```
+
+#### CodeTabs
+Display code examples in multiple languages:
+
+```jsx
+<CodeTabs
+  tabs={[
+    { label: "JavaScript", language: "js", code: "const x = 1;" },
+    { label: "TypeScript", language: "ts", code: "const x: number = 1;" }
+  ]}
+  groupId="example"
+/>
+```
+
+#### Inline Code
+Use `<Code>text</Code>` for inline code or `<Kbd>Ctrl</Kbd>` for keyboard shortcuts.
+
+### Content Components
+
+#### Callouts
+Highlight important information with semantic styling:
+
+```jsx
+<Callout type="info" title="Information">
+  This is an informational callout.
+</Callout>
+
+<Callout type="warning" title="Warning">
+  This alerts users to potential issues.
+</Callout>
+
+<Callout type="success" title="Success">
+  Confirms successful operations.
+</Callout>
+
+<Callout type="danger" title="Important">
+  Critical information that must not be ignored.
+</Callout>
+
+<Callout type="tip" title="Pro Tip">
+  Helpful advice and best practices.
+</Callout>
+```
+
+#### Collapsibles
+Organize content in expandable sections:
+
+```jsx
+<Collapsible title="Advanced Configuration" intent="info" defaultOpen>
+  Content that can be collapsed to save space.
+</Collapsible>
+```
+
+### Typography Components
+
+Enhanced typography with consistent styling:
+
+```jsx
+<PageTitle>Main Page Title</PageTitle>
+<PageSubtitle>Descriptive subtitle</PageSubtitle>
+<H2>Section Header</H2>
+<H3>Subsection Header</H3>
+<Lead>Lead paragraph text</Lead>
+<Body>Regular body text</Body>
+```
+
+### Component Features
+
+- **TypeScript Support**: All components are fully typed
+- **Accessibility**: Built with ARIA attributes and keyboard navigation
+- **Responsive Design**: Works perfectly on all device sizes  
+- **Consistent Styling**: Follows design system patterns
+- **Performance Optimized**: Dynamic imports and code splitting
+- **Dark Mode Ready**: Prepared for future dark mode support
+
+For a complete showcase of all components with live examples, visit the [Component Showcase](/components/) page.
 
 ## Development
 

@@ -2,6 +2,154 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Prism.js theme for light mode */
+/* Override default Prism styles with a clean, light theme */
+
+pre[class*="language-"] {
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 1rem !important;
+  overflow: visible;
+}
+
+code[class*="language-"] {
+  background: transparent !important;
+  text-shadow: none;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #374151 !important; /* slate-700 */
+  padding: 0 !important;
+}
+
+/* Tokens */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #6b7280 !important; /* slate-500 */
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: #6b7280 !important; /* slate-500 */
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #dc2626 !important; /* red-600 */
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #059669 !important; /* emerald-600 */
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #0891b2 !important; /* cyan-600 */
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #7c3aed !important; /* violet-600 */
+}
+
+.token.function,
+.token.class-name {
+  color: #ea580c !important; /* orange-600 */
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #dc2626 !important; /* red-600 */
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+/* JSON specific */
+.token.key {
+  color: #60a5fa !important; /* blue-400 */
+}
+
+/* YAML specific */
+.token.title {
+  color: #60a5fa !important; /* blue-400 */
+}
+
+/* Bash/Shell specific */
+.token.command {
+  color: #34d399 !important; /* emerald-400 */
+}
+
+.token.parameter {
+  color: #f87171 !important; /* red-400 */
+}
+
+/* JSX/TSX specific */
+.token.tag .token.punctuation {
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+.token.tag .token.script-punctuation {
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+.token.tag .token.attr-name {
+  color: #fb923c !important; /* orange-400 */
+}
+
+.token.tag .token.attr-value > .token.punctuation {
+  color: #34d399 !important; /* emerald-400 */
+}
+
+.token.tag .token.attr-value > .token.punctuation:first-child {
+  color: #34d399 !important; /* emerald-400 */
+}
+
+/* TypeScript specific */
+.token.type-annotation {
+  color: #60a5fa !important; /* blue-400 */
+}
+
+.token.type {
+  color: #a78bfa !important; /* violet-400 */
+}
+
+/* Special handling for inline code vs code blocks */
+:not(pre) > code[class*="language-"] {
+  background: #f1f5f9 !important;
+  color: #1e293b !important;
+  padding: 0.125rem 0.25rem !important;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
 /* Custom scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
@@ -43,23 +191,10 @@
 
 .prose pre {
   overflow-x: auto;
-  border-radius: 0.5rem;
 }
 
 .prose code {
   font-size: 0.875em;
-}
-
-/* Code block styling */
-pre[class*="language-"] {
-  margin: 1.5em 0;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-}
-
-code[class*="language-"] {
-  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
 /* Navigation active states */

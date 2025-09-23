@@ -12,6 +12,158 @@ export interface SearchableItem {
 
 export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Code Components",
+    "headingId": "code-components",
+    "content": "Code Components",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "CodeBlock",
+    "headingId": "codeblock",
+    "content": "CodeBlock The component provides syntax highlighting with copy functionality and language detection: <CodeBlock code={ } language=\"tsx\" title=\"Hello World Component\" />",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Inline Code",
+    "headingId": "inline-code",
+    "content": "Inline Code Use the <Code>InlineCode</Code> component for short code snippets within text. You can also use <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> to show keyboard shortcuts.",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Code Tabs",
+    "headingId": "code-tabs",
+    "content": "Code Tabs The component is perfect for showing the same functionality in different languages: <CodeTabs tabs={[ { label: \"React\", language: \"tsx\", code: }, { label: \"Vue\", language: \"vue\", code: }, { label: \"Svelte\", language: \"svelte\", code: } ]} groupId=\"button-examples\" />",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Content Components",
+    "headingId": "content-components",
+    "content": "Content Components",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Callouts",
+    "headingId": "callouts",
+    "content": "Callouts Callouts help highlight important information with semantic colors and icons: <Callout type=\"info\" title=\"Information\"> This is an informational callout. Use it to provide additional context or helpful tips to your readers. </Callout> <Callout type=\"warning\" title=\"Warning\"> This is a warni",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Collapsibles",
+    "headingId": "collapsibles",
+    "content": "Collapsibles Collapsible sections help organize content and improve page readability: <Collapsible title=\"Basic Usage\" defaultOpen> This collapsible is open by default. You can put any content here, including other components, code blocks, or formatted text. List items work great Multiple paragraphs",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Typography Components",
+    "headingId": "typography-components",
+    "content": "Typography Components",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Headings",
+    "headingId": "headings",
+    "content": "Headings The typography system provides consistent styling for all heading levels:",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H1: Main Page Title",
+    "headingId": "h1-main-page-title",
+    "content": "H1: Main Page Title",
+    "description": "Explore the enhanced component library available in Luma Docs, including code blocks, callouts, collapsibles, and more."
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H2: Major Section Header",
+    "headingId": "h2-major-section-header",
+    "content": "H2: Major Section Header",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H3: Subsection Header",
+    "headingId": "h3-subsection-header",
+    "content": "H3: Subsection Header",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H4: Minor Section Header",
+    "headingId": "h4-minor-section-header",
+    "content": "H4: Minor Section Header",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H5: Small Section Header",
+    "headingId": "h5-small-section-header",
+    "content": "H5: Small Section Header",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H6: Smallest Header",
+    "headingId": "h6-smallest-header",
+    "content": "H6: Smallest Header",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Text Styles",
+    "headingId": "text-styles",
+    "content": "Text Styles Bold text and italic text are supported, along with and links. > This is a blockquote. Use it for highlighting quotes, testimonials, or important excerpts from other sources.",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Interactive Examples",
+    "headingId": "interactive-examples",
+    "content": "Interactive Examples",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Combining Components",
+    "headingId": "combining-components",
+    "content": "Combining Components You can combine multiple components to create rich, interactive documentation: <Collapsible title=\"Complete API Example\" intent=\"info\" defaultOpen> <Callout type=\"tip\" title=\"Best Practice\"> Always validate your API inputs and handle errors gracefully. </Callout> <CodeTabs tabs=",
+    "description": ""
+  },
+  {
+    "path": "/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Usage",
+    "headingId": "usage",
+    "content": "Usage Import any of these components in your MDX files: <CodeBlock code={ } language=\"mdx\" title=\"MDX Component Import\" /> All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices.",
+    "description": ""
+  },
+  {
     "path": "/getting-started/",
     "pageTitle": "Getting Started",
     "heading": "Getting Started",
