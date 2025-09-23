@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import config from '../config';
-import { routeMeta } from '../src/generated-routes';
+import { routeMeta, type RouteMeta } from '../src/generated-routes';
 
 interface Crumb {
   name: string;
@@ -27,7 +27,7 @@ function buildBreadcrumbs(pathname: string): Crumb[] {
   segments.forEach((seg) => {
     cumulative.push(seg);
     const partial = `/${cumulative.join('/')}`;
-    const route = routeMeta.find(r => normalize(r.path) === normalize(partial));
+  const route = routeMeta.find((r: RouteMeta) => normalize(r.path) === normalize(partial));
     const title = route?.title || seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     // Use route slug if available for consistent trailing slash style
     const navPath = route?.slug || `${partial}/`;

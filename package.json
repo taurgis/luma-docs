@@ -22,7 +22,7 @@
     "clean": "rm -rf dist/ node_modules/.vite/",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.mdx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx,.mdx --fix",
-    "type-check": "tsc --noEmit"
+  "type-check": "npm run generate:routes && tsc --noEmit"
   },
   "dependencies": {
     "@mdx-js/react": "^3.0.1",

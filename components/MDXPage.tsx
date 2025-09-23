@@ -2,7 +2,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import config from '../config';
-import { routeMeta } from '../src/generated-routes';
+import { routeMeta, type RouteMeta } from '../src/generated-routes';
 import { getBasePath } from '../utils/basePath';
 import SEO from './SEO';
 // Narrowed SEO meta shape
@@ -52,7 +52,7 @@ const MDXPage: React.FC<MDXPageProps> = ({ children, meta: explicitMeta }) => {
   const location = useLocation();
   
   // Find the route metadata for the current path
-  const currentMeta = routeMeta.find(route => {
+  const currentMeta = routeMeta.find((route: RouteMeta) => {
     const routePath = route.path;
     const currentPath = location.pathname;
     
@@ -105,7 +105,7 @@ const MDXPage: React.FC<MDXPageProps> = ({ children, meta: explicitMeta }) => {
     segments.forEach(seg => {
       acc.push(seg);
       const partial = `/${acc.join('/')}`;
-      const route = routeMeta.find(r => r.path.replace(/\/$/, '') === partial.replace(/\/$/, ''));
+  const route = routeMeta.find((r: RouteMeta) => r.path.replace(/\/$/, '') === partial.replace(/\/$/, ''));
       const title = route?.title || seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
       breadcrumbs?.push({ name: title, path: route?.slug || `${partial}/` });
     });

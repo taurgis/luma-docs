@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 import config from '../config';
-import { routeMeta } from '../src/generated-routes';
+import { routeMeta, type RouteMeta } from '../src/generated-routes';
 
 import Search from './Search';
 import VersionBadge from './VersionBadge';
@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
   };
 
   // Group routes by their top-level path
-  const groupedRoutes = routeMeta.reduce((groups, route) => {
+  const groupedRoutes = routeMeta.reduce<Record<string, RouteMeta[]>>((groups, route: RouteMeta) => {
     if (route.path === '/') {
       if (!groups['Getting Started']) {
         groups['Getting Started'] = [];
@@ -36,7 +36,7 @@ const Sidebar: React.FC = () => {
       groups[groupName].push(route);
     }
     return groups;
-  }, {} as Record<string, typeof routeMeta>);
+  }, {});
 
   // Sort routes within each group by order, then by title
   Object.keys(groupedRoutes).forEach(groupName => {

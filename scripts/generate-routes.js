@@ -135,19 +135,50 @@ function generateRouteFile(routes, outputPath) {
     .filter(route => route.slug !== '/' && route.slug.endsWith('/'))
     .map(route => `  {
     path: '${route.path}',
-    element: <Navigate to="${route.path}/" replace />
+    element: <Navigate to="${route.path}/" replace />,
+    meta: { path: '${route.path}', slug: '${route.slug}', title: ${JSON.stringify(route.meta.title || route.slug)}, ogType: 'website' }
   }`).join(',\n');
 
   const fileContent = `// This file is auto-generated. Do not edit manually.
-import React from 'react';
+// Regenerate via: npm run generate:routes
 import { Navigate } from 'react-router-dom';
+import type { ReactNode } from 'react';
 ${imports}
 
-export const routes = [
+// Route & SEO metadata interfaces (duplicated each generation for type-safety)
+export interface RouteMeta {
+  title?: string;
+  description?: string;
+  order?: number;
+  path: string; // path without trailing slash (except root)
+  slug: string; // canonical navigation slug (with trailing slash except root)
+  keywords?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  twitterCard?: 'summary' | 'summary_large_image';
+  twitterCreator?: string;
+  twitterSite?: string;
+  author?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  robots?: string;
+  noindex?: boolean;
+  section?: string;
+  tags?: string[];
+}
+
+export interface RouteDefinition {
+  path: string;
+  element: ReactNode;
+  meta: RouteMeta;
+}
+
+export const routes: RouteDefinition[] = [
 ${routeObjects}${redirects ? `,\n${  redirects}` : ''}
 ];
 
-export const routeMeta = [
+export const routeMeta: RouteMeta[] = [
 ${routes.map(route => `  ${JSON.stringify(route.meta)}`).join(',\n')}
 ];
 `;
