@@ -175,7 +175,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   };
 
   return (
-    <div className={`${className}`}>
+    <div className={`group relative ${className}`}>
       {/* Header with title and language */}
       {(title) && (
         <div className="flex items-center justify-between bg-slate-100 text-slate-800 px-4 py-2 text-sm font-medium rounded-t-lg border border-slate-200 border-b-0">
@@ -192,7 +192,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           {/* Copy button */}
           <button
             onClick={handleCopy}
-            className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 rounded hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-200 p-1 rounded hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             aria-label="Copy code to clipboard"
           >
             {copied ? (
@@ -204,8 +204,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         </div>
       )}
       
-      {/* Code container */}
-      <div>
+  {/* Code container */}
+  <div>
         <pre className={`
           overflow-x-auto p-4 text-sm leading-relaxed
           bg-slate-50 text-slate-800 border border-slate-200
@@ -246,7 +246,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         {!title && !withinTabs && (
           <button
             onClick={handleCopy}
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 rounded bg-slate-200 hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity duration-200 p-1 rounded bg-slate-200 hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             aria-label="Copy code to clipboard"
           >
             {copied ? (

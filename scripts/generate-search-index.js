@@ -30,14 +30,16 @@ function filePathToRoute(filePath) {
   // Remove .mdx extension
   let route = relativePath.replace(/\.mdx$/, '');
   
-  // Convert index files to directory paths
-  if (route === 'index' || route.endsWith('/index')) {
-    route = route.replace(/\/index$/, '') || '/';
+  // Convert index files to directory paths (root index should become '/')
+  if (route === 'index') {
+    route = '/';
+  } else if (route.endsWith('/index')) {
+    route = route.slice(0, -('/index'.length)) || '/';
   }
   
   // Ensure route starts with /
   if (!route.startsWith('/')) {
-    route = `/${  route}`;
+    route = `/${route}`;
   }
   
   // Ensure route ends with / (except for root)

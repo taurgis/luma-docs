@@ -23,6 +23,7 @@ A modern, fast, and beautiful documentation platform built with React 19, MDX, V
 - **Breadcrumb Navigation**: Automatic breadcrumbs derived from the current route path
 - **Error Boundary**: Built-in fault isolation with developer-friendly stack display in development
 - **Structured Data**: JSON-LD for page + optional BreadcrumbList for enhanced SEO
+
 ### New Enhancements (Recent Updates)
 
 The template now includes:
@@ -33,6 +34,7 @@ The template now includes:
 - Breadcrumb JSON-LD structured data (toggle with `config.features.structuredDataBreadcrumbs`)
 
 These changes are backward compatible. Disable any feature in `config.ts` if not desired.
+
 - **Mobile Responsive**: Fully responsive design that works perfectly on all devices
 - **Code Highlighting**: Prism.js integration with dynamic loading and copy functionality
 - **SEO Optimized**: Automatic sitemap.xml generation, meta tags, and structured data for better search rankings
@@ -58,17 +60,20 @@ Explore the demo to see how your documentation site will look and feel!
 🌐 **[Try the Live Demo](https://taurgis.github.io/luma-docs/)** first to see what you're building!
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/taurgis/luma-docs.git
    cd luma-docs
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Generate routes and start development server**
+
    ```bash
    npm run dev
    ```
@@ -101,7 +106,6 @@ title: "Page Title"
 description: "Page description for SEO"
 order: 1
 ---
-
 # Your Content Here
 
 You can use standard Markdown syntax and React components.
@@ -122,17 +126,17 @@ Luma Docs includes comprehensive SEO support through frontmatter metadata:
 title: "Your Page Title"
 description: "Your page description for search engines"
 keywords: "keyword1, keyword2, keyword3"
-ogType: "article"  # or "website"
-twitterCard: "summary_large_image"  # or "summary"
+ogType: "article" # or "website"
+twitterCard: "summary_large_image" # or "summary"
 twitterCreator: "@yourusername"
 twitterSite: "@yoursite"
 author: "Author Name"
 publishedTime: "2024-01-01T00:00:00Z"
 modifiedTime: "2024-01-15T10:00:00Z"
 section: "Your Section"
-tags: ["tag1", "tag2", "tag3"]  # Array or comma-separated string
+tags: ["tag1", "tag2", "tag3"] # Array or comma-separated string
 canonical: "/your-canonical-url/"
-robots: "index, follow"  # or use noindex: true
+robots: "index, follow" # or use noindex: true
 order: 1
 ---
 ```
@@ -169,7 +173,7 @@ You can also override SEO metadata directly in your MDX content using the `<SEO>
 ```mdx
 # Your Page Content
 
-<SEO 
+<SEO
   title="Custom Page Title Override"
   description="This description will override the frontmatter description"
   keywords="custom, override, seo"
@@ -215,19 +219,20 @@ Navigation is automatically generated based on your file structure and frontmatt
 Luma Docs includes a rich set of React components designed specifically for documentation. Import any of these components in your MDX files:
 
 ```jsx
-import { 
-  Callout, 
-  CodeBlock, 
-  Collapsible, 
-  CodeTabs, 
-  PageTitle, 
-  PageSubtitle 
-} from '../components';
+import {
+  Callout,
+  CodeBlock,
+  Collapsible,
+  CodeTabs,
+  PageTitle,
+  PageSubtitle,
+} from "../components";
 ```
 
 ### Code Components
 
 #### CodeBlock
+
 Advanced syntax highlighting with copy functionality:
 
 ```jsx
@@ -240,24 +245,27 @@ Advanced syntax highlighting with copy functionality:
 ```
 
 #### CodeTabs
+
 Display code examples in multiple languages:
 
 ```jsx
 <CodeTabs
   tabs={[
     { label: "JavaScript", language: "js", code: "const x = 1;" },
-    { label: "TypeScript", language: "ts", code: "const x: number = 1;" }
+    { label: "TypeScript", language: "ts", code: "const x: number = 1;" },
   ]}
   groupId="example"
 />
 ```
 
 #### Inline Code
+
 Use `<Code>text</Code>` for inline code or `<Kbd>Ctrl</Kbd>` for keyboard shortcuts.
 
 ### Content Components
 
 #### Callouts
+
 Highlight important information with semantic styling:
 
 ```jsx
@@ -283,6 +291,7 @@ Highlight important information with semantic styling:
 ```
 
 #### Collapsibles
+
 Organize content in expandable sections:
 
 ```jsx
@@ -308,7 +317,7 @@ Enhanced typography with consistent styling:
 
 - **TypeScript Support**: All components are fully typed
 - **Accessibility**: Built with ARIA attributes and keyboard navigation
-- **Responsive Design**: Works perfectly on all device sizes  
+- **Responsive Design**: Works perfectly on all device sizes
 - **Consistent Styling**: Follows design system patterns
 - **Performance Optimized**: Dynamic imports and code splitting
 - **Dark Mode Ready**: Prepared for future dark mode support
@@ -385,29 +394,33 @@ For a complete showcase of all components with live examples, visit the [Compone
 The site is optimized for GitHub Pages deployment with intelligent subfolder support:
 
 1. **Automated Deployment**
+
    ```bash
    npm run deploy:gh-pages
    ```
+
    This script automatically builds and deploys to GitHub Pages.
 
 2. **Manual Deployment**
+
    ```bash
    # Build with automatic base path detection
    npm run build:subfolder
-   
+
    # Or specify repository name manually
    ./scripts/build-subfolder.sh your-repo-name
    ```
 
 3. **GitHub Actions** (Recommended for production)
    Create `.github/workflows/deploy.yml`:
+
    ```yaml
    name: Deploy to GitHub Pages
-   
+
    on:
      push:
-       branches: [ main ]
-   
+       branches: [main]
+
    jobs:
      deploy:
        runs-on: ubuntu-latest
@@ -416,8 +429,8 @@ The site is optimized for GitHub Pages deployment with intelligent subfolder sup
          - name: Setup Node.js
            uses: actions/setup-node@v4
            with:
-             node-version: '18'
-             cache: 'npm'
+             node-version: "18"
+             cache: "npm"
          - run: npm ci
          - run: npm run build:subfolder
          - name: Deploy to GitHub Pages
@@ -426,7 +439,7 @@ The site is optimized for GitHub Pages deployment with intelligent subfolder sup
              github_token: ${{ secrets.GITHUB_TOKEN }}
              publish_dir: ./dist
    ```
-   
+
    **Example:** See this exact setup in action at [taurgis.github.io/luma-docs](https://taurgis.github.io/luma-docs/)
 
 ### Other Platforms
@@ -504,7 +517,7 @@ export const config = {
   // Site Information
   site: {
     name: "Your Site Name",
-    title: "Your Site Title", 
+    title: "Your Site Title",
     description: "Your site description",
     version: "1.0.0",
   },

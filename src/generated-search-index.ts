@@ -12,6 +12,54 @@ export interface SearchableItem {
 
 export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
+    "path": "/",
+    "pageTitle": "Welcome to Luma Docs",
+    "heading": "Welcome to Luma Docs",
+    "headingId": "welcome-to-luma-docs",
+    "content": "Welcome to Luma Docs Luma Docs is a modern, fast, and beautiful documentation platform built with React, MDX, and Vite. It provides a seamless experience for both content creators and readers.",
+    "description": "A modern documentation platform built with React and MDX. Features automatic routing, static generation, and GitHub Pages deployment."
+  },
+  {
+    "path": "/",
+    "pageTitle": "Welcome to Luma Docs",
+    "heading": "Features",
+    "headingId": "features",
+    "content": "Features MDX Support: Write content in MDX format with the full power of React components Automatic Routing: Pages are automatically added to routes based on file structure Fast Static Generation: Built with Vite React SSG for lightning-fast performance GitHub Pages Ready: Optimized for deployment o",
+    "description": ""
+  },
+  {
+    "path": "/",
+    "pageTitle": "Welcome to Luma Docs",
+    "heading": "Getting Started",
+    "headingId": "getting-started",
+    "content": "Getting Started To get started with Luma Docs, simply create MDX files in the directory. Each file will automatically become a page in your documentation site.",
+    "description": ""
+  },
+  {
+    "path": "/",
+    "pageTitle": "Welcome to Luma Docs",
+    "heading": "File Structure",
+    "headingId": "file-structure",
+    "content": "File Structure",
+    "description": ""
+  },
+  {
+    "path": "/",
+    "pageTitle": "Welcome to Luma Docs",
+    "heading": "Frontmatter",
+    "headingId": "frontmatter",
+    "content": "Frontmatter Each MDX file can include frontmatter to specify metadata: : The page title (used in navigation and SEO) : Page description for SEO : Sort order for navigation (lower numbers appear first)",
+    "description": ""
+  },
+  {
+    "path": "/",
+    "pageTitle": "Welcome to Luma Docs",
+    "heading": "Next Steps",
+    "headingId": "next-steps",
+    "content": "Next Steps Create your first MDX page Customize the navigation structure Deploy to GitHub Pages Welcome to the future of documentation!",
+    "description": ""
+  },
+  {
     "path": "/components/",
     "pageTitle": "Component Showcase",
     "heading": "Code Components",
@@ -24,7 +72,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Component Showcase",
     "heading": "Code Fences",
     "headingId": "code-fences",
-    "content": "Code Fences Standard fenced code blocks ( tsx function HelloWorld() { const message = \"Hello, Luma Docs!\"; return <h1>{message}</h1>; } ```",
+    "content": "Code Fences Standard fenced code blocks ( tsx function HelloWorld() { const message = \"Hello, Luma Docs!\"; return <h1>{message}</h1>; } // Invoke to avoid unused var lint complaint in MDX processing context HelloWorld(); ```",
     "description": ""
   },
   {
@@ -329,54 +377,6 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "heading": "SEO Optimization",
     "headingId": "seo-optimization",
     "content": "SEO Optimization Automatic sitemap generation Meta tags from frontmatter Structured data markup Fast loading times These features combine to create a documentation platform that's both powerful for authors and fast for readers.",
-    "description": ""
-  },
-  {
-    "path": "/index/",
-    "pageTitle": "Welcome to Luma Docs",
-    "heading": "Welcome to Luma Docs",
-    "headingId": "welcome-to-luma-docs",
-    "content": "Welcome to Luma Docs Luma Docs is a modern, fast, and beautiful documentation platform built with React, MDX, and Vite. It provides a seamless experience for both content creators and readers.",
-    "description": "A modern documentation platform built with React and MDX. Features automatic routing, static generation, and GitHub Pages deployment."
-  },
-  {
-    "path": "/index/",
-    "pageTitle": "Welcome to Luma Docs",
-    "heading": "Features",
-    "headingId": "features",
-    "content": "Features MDX Support: Write content in MDX format with the full power of React components Automatic Routing: Pages are automatically added to routes based on file structure Fast Static Generation: Built with Vite React SSG for lightning-fast performance GitHub Pages Ready: Optimized for deployment o",
-    "description": ""
-  },
-  {
-    "path": "/index/",
-    "pageTitle": "Welcome to Luma Docs",
-    "heading": "Getting Started",
-    "headingId": "getting-started",
-    "content": "Getting Started To get started with Luma Docs, simply create MDX files in the directory. Each file will automatically become a page in your documentation site.",
-    "description": ""
-  },
-  {
-    "path": "/index/",
-    "pageTitle": "Welcome to Luma Docs",
-    "heading": "File Structure",
-    "headingId": "file-structure",
-    "content": "File Structure",
-    "description": ""
-  },
-  {
-    "path": "/index/",
-    "pageTitle": "Welcome to Luma Docs",
-    "heading": "Frontmatter",
-    "headingId": "frontmatter",
-    "content": "Frontmatter Each MDX file can include frontmatter to specify metadata: : The page title (used in navigation and SEO) : Page description for SEO : Sort order for navigation (lower numbers appear first)",
-    "description": ""
-  },
-  {
-    "path": "/index/",
-    "pageTitle": "Welcome to Luma Docs",
-    "heading": "Next Steps",
-    "headingId": "next-steps",
-    "content": "Next Steps Create your first MDX page Customize the navigation structure Deploy to GitHub Pages Welcome to the future of documentation!",
     "description": ""
   },
   {

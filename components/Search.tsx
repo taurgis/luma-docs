@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { searchDocs, SearchResult } from '../utils/search';
@@ -6,19 +7,23 @@ import { searchDocs, SearchResult } from '../utils/search';
 const Highlight: React.FC<{ text: string; query: string }> = ({ text, query }) => {
   if (!query) {return <>{text}</>;}
   const parts = text.split(new RegExp(`(${query})`, 'gi'));
-  return (
-    <>
-      {parts.map((part, i) =>
-        part.toLowerCase() === query.toLowerCase() ? (
-          <mark key={i} className="bg-blue-200 text-blue-800 font-semibold rounded px-0.5">
-            {part}
-          </mark>
-        ) : (
-          part
-        )
-      )}
-    </>
-  );
+  // Create stable keys by incrementing a ref counter (avoids pure index usage rule)
+  const keyed: React.ReactNode[] = [];
+  let counter = 0; // resets each render, acceptable for highlight because list not persisted
+  for (const part of parts) {
+    const isMatch = part.toLowerCase() === query.toLowerCase();
+    const keyBase = `${part}-${counter++}`;
+    if (isMatch) {
+      keyed.push(
+        <mark key={keyBase} className="bg-blue-200 text-blue-800 font-semibold rounded px-0.5">
+          {part}
+        </mark>
+      );
+    } else {
+      keyed.push(<React.Fragment key={keyBase}>{part}</React.Fragment>);
+    }
+  }
+  return <>{keyed}</>;
 };
 
 const SearchIcon: React.FC<{ className?: string }> = ({ className = "w-4 h-4" }) => (
@@ -59,6 +64,28 @@ const Search: React.FC = () => {
     setActiveIndex(-1);
   }, []);
 
+  const handleNavigation = useCallback((path: string, heading?: string, headingId?: string | null) => {
+    const targetPath = path;
+    let hashFragment = '';
+    if (headingId) {
+      hashFragment = headingId;
+    } else if (heading && heading !== targetPath.split('/').pop()) {
+      const generatedId = heading
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      if (generatedId) { hashFragment = generatedId; }
+    }
+    if (hashFragment) {
+      navigate(`${targetPath}#${hashFragment}`);
+    } else {
+      navigate(targetPath);
+    }
+    closeSearch();
+  }, [navigate, closeSearch]);
+
   useEffect(() => {
     // Only run on client side
     if (typeof window === 'undefined') {return;}
@@ -91,7 +118,7 @@ const Search: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, results.length, activeIndex, openSearch, closeSearch]);
+  }, [isOpen, results, activeIndex, openSearch, closeSearch, handleNavigation]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -123,36 +150,67 @@ const Search: React.FC = () => {
     setActiveIndex(0);
   };
   
-  const handleNavigation = (path: string, heading?: string, headingId?: string | null) => {
-    // Use the actual headingId if available, otherwise generate one from the heading
-    const targetPath = path;
-    let hashFragment = '';
-    
-    if (headingId) {
-      hashFragment = headingId;
-    } else if (heading && heading !== targetPath.split('/').pop()) {
-      // Convert heading to a URL-safe ID as fallback
-      const generatedId = heading
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-        .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
-      
-      if (generatedId) {
-        hashFragment = generatedId;
-      }
-    }
-    
-    // Navigate to the path first, then handle hash navigation
-    if (hashFragment) {
-      navigate(`${targetPath  }#${  hashFragment}`);
-    } else {
-      navigate(targetPath);
-    }
-    
-    closeSearch();
-  };
+  // handleNavigation now memoized above
+
+  const modal = isOpen && typeof document !== 'undefined' ? createPortal(
+    <div className="fixed inset-0 z-[1000] flex justify-center items-start pt-4 sm:pt-20 p-4" aria-modal="true" role="dialog" aria-label="Search dialog">
+      <div
+        className="fixed inset-0 bg-slate-900/65 backdrop-blur-sm"
+        role="button"
+        tabIndex={0}
+        aria-label="Close search"
+        onClick={closeSearch}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { closeSearch(); } }}
+      />
+      <div className="relative z-[1001] bg-white w-full max-w-2xl rounded-lg shadow-xl max-h-[90vh] flex flex-col border border-slate-200">
+        <div className="relative flex-shrink-0">
+          <SearchIcon className="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-slate-400" />
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={handleSearch}
+            placeholder="Search documentation..."
+            className="w-full text-base sm:text-lg py-3 sm:py-4 pl-12 pr-4 border-b border-slate-200 focus:outline-none"
+            aria-label="Search input"
+          />
+        </div>
+        {query.length > 1 && (
+          <div className="flex-1 overflow-y-auto min-h-0">
+            {results.length > 0 ? (
+              <ul ref={resultsRef} className="p-3 sm:p-4 space-y-2" role="listbox" aria-label="Search results">
+                {results.map((result, index) => (
+                  <li key={`${result.path}-${result.heading}`} role="option" aria-selected={activeIndex === index}>
+                    <button
+                      onClick={() => handleNavigation(result.path, result.heading, result.headingId)}
+                      className={`w-full text-left p-3 rounded-md transition-colors ${
+                        activeIndex === index ? 'bg-blue-100' : 'hover:bg-slate-100'
+                      }`}
+                    >
+                      <div className="font-semibold text-slate-800 text-sm sm:text-base">
+                        <Highlight text={result.pageTitle} query={query} />
+                      </div>
+                      <div className="text-xs sm:text-sm text-slate-600 mb-1">
+                        <Highlight text={result.heading} query={query} />
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-500 overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                        <Highlight text={result.snippet} query={query} />
+                      </p>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="p-6 sm:p-8 text-center text-slate-500 text-sm sm:text-base">
+                No results found for &quot;{query}&quot;
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+    </div>,
+    document.body
+  ) : null;
 
   return (
     <>
@@ -169,57 +227,7 @@ const Search: React.FC = () => {
           ⌘K
         </div>
       </div>
-
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex justify-center items-start pt-4 sm:pt-20 p-4" aria-modal="true">
-          <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm" onClick={closeSearch}></div>
-          <div className="relative bg-white w-full max-w-2xl rounded-lg shadow-lg max-h-[90vh] flex flex-col">
-            <div className="relative flex-shrink-0">
-              <SearchIcon className="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-slate-400" />
-              <input
-                ref={inputRef}
-                type="text"
-                value={query}
-                onChange={handleSearch}
-                placeholder="Search documentation..."
-                className="w-full text-base sm:text-lg py-3 sm:py-4 pl-12 pr-4 border-b border-slate-200 focus:outline-none"
-              />
-            </div>
-            {query.length > 1 && (
-              <div className="flex-1 overflow-y-auto min-h-0">
-                {results.length > 0 ? (
-                  <ul ref={resultsRef} className="p-3 sm:p-4 space-y-2">
-                    {results.map((result, index) => (
-                      <li key={`${result.path}-${result.heading}`}>
-                        <button
-                          onClick={() => handleNavigation(result.path, result.heading, result.headingId)}
-                          className={`w-full text-left p-3 rounded-md transition-colors ${
-                            activeIndex === index ? 'bg-blue-100' : 'hover:bg-slate-100'
-                          }`}
-                        >
-                          <div className="font-semibold text-slate-800 text-sm sm:text-base">
-                            <Highlight text={result.pageTitle} query={query} />
-                          </div>
-                          <div className="text-xs sm:text-sm text-slate-600 mb-1">
-                            <Highlight text={result.heading} query={query} />
-                          </div>
-                          <p className="text-xs sm:text-sm text-slate-500 overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
-                            <Highlight text={result.snippet} query={query} />
-                          </p>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="p-6 sm:p-8 text-center text-slate-500 text-sm sm:text-base">
-                    No results found for &quot;{query}&quot;
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {modal}
     </>
   );
 };
