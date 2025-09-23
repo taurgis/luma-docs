@@ -6,28 +6,58 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Skip deploy (build/verify only)"
+        required: false
+        default: "false"
 
+# Minimal global permissions; elevate only in deploy job
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
+# Separate concurrency groups for PRs vs main to avoid canceling main deploys
 concurrency:
-  group: pages-${{ github.ref }}
+  group: pages-${{ github.ref }}-${{ github.event.pull_request.number || 'main' }}
   cancel-in-progress: true
 
 jobs:
-  build:
+  quality:
+    name: Quality Gates (lint & types)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        # NOTE: For supply-chain hardening pin actions with commit SHAs (left as version tag here for brevity)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install deps
+        env:
+          CI: true
+        run: npm ci --prefer-offline --no-audit
+      - name: Lint & Typecheck (strict)
+        env:
+            CI: true
+        run: |
+          npm run lint -- --max-warnings=0
+          npm run type-check
 
-      - name: Derive SITE_URL (owner.github.io or CNAME)
+  build:
+    name: Build & Verify
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Derive SITE_URL (CNAME or owner.github.io)
         id: site
         run: |
           if [ -f CNAME ]; then
-            DOMAIN=$(head -n1 CNAME | tr -d '\r')
+            DOMAIN=$(head -n1 CNAME | tr -d '\r[:space:]')
             echo "Using custom domain from CNAME: $DOMAIN"
             echo "site_url=https://$DOMAIN" >> "$GITHUB_OUTPUT"
           else
@@ -41,30 +71,98 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
+      - name: Install deps
+        env:
+          CI: true
         run: npm ci --prefer-offline --no-audit
 
-      - name: Lint & Typecheck
+      - name: Resolve base path
+        id: base
         run: |
-          npm run lint
-          npm run type-check
+          BASE=$(node scripts/resolve-base-path.mjs || echo "/")
+          # Ensure leading and trailing slash formatting consistency
+          case "$BASE" in
+            /*) : ;; *) BASE="/$BASE" ;; esac
+          [[ "$BASE" == */ ]] || BASE="$BASE/"
+          echo "Resolved base path: $BASE"
+          echo "base_path=$BASE" >> "$GITHUB_OUTPUT"
 
-      - name: Build (auto base detection)
+      - name: Cache build intermediates
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules/.vite
+            .cache
+          key: vite-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ steps.base.outputs.base_path }}
+          restore-keys: |
+            vite-${{ runner.os }}-
+
+      - name: Build (auto base)
         env:
-          # Auto-detected: custom domain (CNAME) or fallback owner.github.io
           SITE_URL: ${{ steps.site.outputs.site_url }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          VITE_BASE_PATH: ${{ steps.base.outputs.base_path }}
+          CI: true
         run: npm run build
 
-      - name: Upload artifact
+      - name: Smoke test base path & routes
+        run: |
+          EXPECT_INDEX="dist${{ steps.base.outputs.base_path }}index.html"
+          if [ ! -f "$EXPECT_INDEX" ]; then
+            echo "::error::Expected index not found at $EXPECT_INDEX"; exit 1; fi
+          ROUTE_COUNT=$(find dist -name '*.html' | wc -l | tr -d ' ')
+          if [ "$ROUTE_COUNT" -lt 1 ]; then
+            echo "::error::Zero HTML routes generated"; exit 1; fi
+          echo "HTML route count: $ROUTE_COUNT"
+
+      - name: Sitemap host consistency
+        run: |
+          if [ ! -f dist/sitemap.xml ]; then
+            echo "::warning::No sitemap.xml present"; exit 0; fi
+          HOSTS=$(grep -Eo 'https?://[^/" ]+' dist/sitemap.xml | sort -u)
+          echo "Sitemap hosts: $HOSTS"
+            # Warn (not fail) on mismatch
+          if ! echo "$HOSTS" | grep -q "${{ steps.site.outputs.site_url }}"; then
+            echo "::warning::Sitemap host mismatch (expected ${{ steps.site.outputs.site_url }})"; fi
+
+      - name: Bundle metrics & thresholds
+        run: |
+          echo "Dist size (summary):"; du -sh dist || true
+          echo "Largest JS assets:"; find dist -name '*.js' -type f -print0 | xargs -0 du -h 2>/dev/null | sort -h | tail -n 15 || true
+          SEARCH_FILE=$(find dist -type f -name 'generated-search-index*' | head -n1 || true)
+          if [ -n "$SEARCH_FILE" ]; then
+            SIZE=$( (stat -c%s "$SEARCH_FILE" 2>/dev/null || stat -f%z "$SEARCH_FILE") )
+            echo "Search index file: $SEARCH_FILE ($SIZE bytes)"
+            # Soft threshold warning
+            if [ "$SIZE" -gt 1200000 ]; then
+              echo "::warning::Search index > 1.2MB; consider pruning or splitting"; fi
+            # Hard fail threshold (defensive upper bound)
+            if [ "$SIZE" -gt 2500000 ]; then
+              echo "::error::Search index exceeds 2.5MB hard cap"; exit 1; fi
+          else
+            echo "::warning::No generated search index asset found"
+          fi
+
+      - name: Upload build artifact (for PR review)
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+          retention-days: 7
+
+      - name: Upload Pages artifact (main only)
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && inputs.dry_run != 'true'
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
