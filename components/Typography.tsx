@@ -28,9 +28,9 @@ export const PageSubtitle: React.FC<{ children: React.ReactNode; className?: str
   children, 
   className = '' 
 }) => (
-  <p className={`mt-4 text-xl text-slate-600 mb-10 ${className}`}>
+  <div className={`mt-4 text-xl text-slate-600 mb-10 ${className}`}>
     {children}
-  </p>
+  </div>
 );
 
 export const H2: React.FC<HeadingProps> = ({ id, children, className = '' }) => (

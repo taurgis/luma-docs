@@ -119,10 +119,10 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
   const activeTab = normalized[activeIndex];
 
   return (
-    <div className={cx('not-prose', className)}>
+    <div className={cx('not-prose mb-6', className)}>
       {/* Tab Navigation */}
-      <div className="border-b border-gray-200 bg-gray-50 rounded-t-lg">
-        <div className={cx('flex', dense ? 'space-x-1 p-1' : 'space-x-4 px-4')}>
+      <div className="bg-slate-100 rounded-t-lg border-b border-slate-200">
+        <div className="flex space-x-1 p-1">
           {normalized.map((tab, index) => {
             const isActive = index === activeIndex;
             return (
@@ -130,15 +130,10 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
                 key={tab.id}
                 onClick={() => handleTabClick(index)}
                 className={cx(
-                  'relative text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset',
-                  dense ? 'px-3 py-2 rounded' : 'px-1 py-3 border-b-2',
+                  'px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1',
                   isActive
-                    ? dense
-                      ? 'bg-white text-blue-600 shadow-sm border border-gray-200'
-                      : 'border-blue-500 text-blue-600'
-                    : dense
-                      ? 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
                 )}
                 aria-selected={isActive}
                 role="tab"
