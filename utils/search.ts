@@ -45,6 +45,7 @@ const getSearchIndex = (): SearchableItem[] => {
       return GENERATED_SEARCH_INDEX;
     }
   } catch (error) {
+    // eslint-disable-next-line no-console -- non-fatal fallback notice
     console.warn('Failed to load generated search index, using fallback:', error);
   }
   

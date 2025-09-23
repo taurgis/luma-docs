@@ -37,7 +37,7 @@ tags: ["tag1", "tag2", "tag3"]
 
 You can also override SEO settings directly in your MDX content using the `<SEO>` component:
 
-<SEO 
+<SEO
   title="Custom Page Title Override"
   description="This description will override the frontmatter description"
   keywords="custom, override, seo"
@@ -67,7 +67,7 @@ Content is written in MDX format, which allows you to combine Markdown with Reac
 You can use all standard Markdown features:
 
 - **Bold text**
-- *Italic text*
+- _Italic text_
 - [Links](https://example.com)
 - `Inline code`
 
@@ -79,7 +79,7 @@ function hello(name) {
 }
 
 // Usage example
-console.log(hello('World'));
+hello("World"); // => "Hello, World!"
 ```
 
 ### React Components
@@ -87,9 +87,7 @@ console.log(hello('World'));
 You can also use React components directly in your MDX:
 
 ```jsx
-<div className="bg-blue-100 p-4 rounded">
-  This is a custom component!
-</div>
+<div className="bg-blue-100 p-4 rounded">This is a custom component!</div>
 ```
 
 ## Navigation

@@ -60,6 +60,7 @@ function slugToRoutePath(slug: string): string {
 
 export function generateRoutes(pagesDir: string): RouteInfo[] {
   if (!fs.existsSync(pagesDir)) {
+    // eslint-disable-next-line no-console -- build-time diagnostic only
     console.warn(`Pages directory ${pagesDir} does not exist`);
     return [];
   }
@@ -147,5 +148,6 @@ ${routes.map(route => `  ${JSON.stringify(route.meta)}`).join(',\n')}
 `;
 
   fs.writeFileSync(outputPath, fileContent, 'utf-8');
+  // eslint-disable-next-line no-console -- build-time informational output
   console.log(`Generated routes file: ${outputPath}`);
 }
