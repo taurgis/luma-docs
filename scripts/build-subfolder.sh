@@ -54,8 +54,8 @@ rm -rf dist/
 # Generate routes, build CSS, and other assets
 npm run generate:routes
 npm run build:css
-SITE_URL=https://$USERNAME.github.io/$REPO_NAME/ npm run generate:search-index
-npm run generate:sitemap
+npm run generate:search-index
+SITE_URL="https://$USERNAME.github.io/$REPO_NAME/" npm run generate:sitemap
 
 # Build the site with dynamic subfolder base path
 VITE_BASE_PATH="/$REPO_NAME/" npx vite-react-ssg build --base="/$REPO_NAME/"
