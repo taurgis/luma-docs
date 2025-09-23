@@ -1,0 +1,130 @@
+---
+title: "SEO Examples"
+description: "Comprehensive examples of SEO features in Luma Docs including frontmatter metadata and inline SEO components"
+keywords: "SEO, examples, frontmatter, metadata, Open Graph, Twitter Cards, JSON-LD"
+ogType: "article"
+twitterCard: "summary_large_image"
+twitterCreator: "@lumadocs"
+twitterSite: "@lumadocs"
+author: "Luma Docs Team"
+publishedTime: "2024-01-10T12:00:00Z"
+modifiedTime: "2024-01-20T15:30:00Z"
+section: "SEO Examples"
+tags: ["seo", "metadata", "examples", "documentation"]
+canonical: "/seo-examples/"
+robots: "index, follow"
+noindex: false
+order: 3
+---
+
+# SEO Examples
+
+This page demonstrates all the SEO features available in Luma Docs.
+
+## Frontmatter SEO Attributes
+
+You can set SEO metadata in your MDX file's frontmatter:
+
+```yaml
+---
+title: "SEO Examples"
+description: "Comprehensive examples of SEO features"
+keywords: "SEO, examples, frontmatter, metadata"
+ogType: "article"
+twitterCard: "summary_large_image"
+twitterCreator: "@lumadocs"
+twitterSite: "@lumadocs"
+author: "Luma Docs Team"
+publishedTime: "2024-01-10T12:00:00Z"
+modifiedTime: "2024-01-20T15:30:00Z"
+section: "SEO Examples"
+tags: ["seo", "metadata", "examples"]
+canonical: "/seo-examples/"
+robots: "index, follow"
+noindex: false
+---
+```
+
+## Inline SEO Override
+
+You can also override SEO metadata for specific sections using the `<SEO>` component:
+
+<SEO 
+  title="Special Section - SEO Examples"
+  description="This section has custom SEO metadata that overrides the frontmatter"
+  keywords="custom, override, section, special"
+  ogType="article"
+  twitterCard="summary"
+/>
+
+## Available SEO Fields
+
+### Basic Meta Tags
+- `title` - Page title (used in `<title>` and Open Graph)
+- `description` - Meta description for search engines
+- `keywords` - Comma-separated keywords
+- `author` - Content author
+- `canonical` - Canonical URL for the page
+- `robots` - Robots directive (or use `noindex: true`)
+
+### Open Graph Meta Tags
+- `ogType` - "website" or "article"
+- `ogImage` - URL to Open Graph image
+
+### Twitter Card Meta Tags
+- `twitterCard` - "summary" or "summary_large_image"
+- `twitterCreator` - Twitter handle of content creator
+- `twitterSite` - Twitter handle of website
+
+### Article-Specific Meta Tags
+- `publishedTime` - ISO 8601 publication date
+- `modifiedTime` - ISO 8601 modification date
+- `section` - Article section/category
+- `tags` - Array of tags (can also be comma-separated string)
+
+## How It Works
+
+1. **Route Generation**: The `generate-routes.js` script extracts SEO metadata from frontmatter
+2. **SEO Component**: The `<SEO>` component renders all meta tags using `vite-react-ssg`'s `<Head>`
+3. **Static Generation**: During SSG build, all meta tags are included in the static HTML
+4. **Dynamic Override**: Inline `<SEO>` components can override frontmatter values
+
+## SEO Best Practices
+
+### Titles
+- Keep titles under 60 characters
+- Include primary keywords
+- Make them unique and descriptive
+
+### Descriptions
+- Keep descriptions between 120-160 characters
+- Include a compelling call-to-action
+- Summarize the page content accurately
+
+### Open Graph Images
+- Use 1200x630 pixel images
+- Include text overlays for better social sharing
+- Ensure images are relevant to content
+
+### Keywords
+- Use 3-10 relevant keywords
+- Avoid keyword stuffing
+- Focus on user intent
+
+### Structured Data
+- Luma Docs automatically generates JSON-LD structured data
+- Article pages get Article schema
+- Website pages get WebPage schema
+
+## Generated Meta Tags
+
+This page generates the following types of meta tags:
+
+1. **Basic Meta Tags**: title, description, keywords, author, robots
+2. **Open Graph**: og:title, og:description, og:type, og:image, og:url
+3. **Twitter Cards**: twitter:card, twitter:title, twitter:description, twitter:image
+4. **Article Meta**: article:published_time, article:modified_time, article:section, article:tag
+5. **JSON-LD**: Structured data for search engines
+6. **Canonical**: Link to canonical URL
+
+All of these are automatically included in the static HTML during the build process, ensuring excellent SEO performance for your documentation site.

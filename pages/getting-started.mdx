@@ -1,0 +1,108 @@
+---
+title: "Getting Started"
+description: "Learn how to get started with Luma Docs - installation, development, and deployment guide"
+keywords: "getting started, installation, development, setup, Luma Docs tutorial"
+ogType: "article"
+twitterCard: "summary_large_image"
+author: "Luma Docs Team"
+publishedTime: "2024-01-01T00:00:00Z"
+modifiedTime: "2024-01-15T10:00:00Z"
+section: "Guides"
+tags: ["tutorial", "setup", "installation", "development"]
+order: 2
+---
+
+# Getting Started
+
+This guide will help you get up and running with Luma Docs quickly.
+
+## SEO Features
+
+Luma Docs now includes comprehensive SEO support through frontmatter metadata. You can specify SEO attributes in your MDX files:
+
+```yaml
+---
+title: "Your Page Title"
+description: "Your page description for search engines"
+keywords: "keyword1, keyword2, keyword3"
+ogType: "article"
+ogImage: "/path/to/your/image.png"
+twitterCard: "summary_large_image"
+author: "Author Name"
+publishedTime: "2024-01-01T00:00:00Z"
+section: "Your Section"
+tags: ["tag1", "tag2", "tag3"]
+---
+```
+
+You can also override SEO settings directly in your MDX content using the `<SEO>` component:
+
+<SEO 
+  title="Custom Page Title Override"
+  description="This description will override the frontmatter description"
+  keywords="custom, override, seo"
+/>
+
+## Installation
+
+1. Clone or download the Luma Docs template
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+## Creating Content
+
+Content is written in MDX format, which allows you to combine Markdown with React components.
+
+### Basic Markdown
+
+You can use all standard Markdown features:
+
+- **Bold text**
+- *Italic text*
+- [Links](https://example.com)
+- `Inline code`
+
+### Code Blocks
+
+```javascript
+function hello(name) {
+  return `Hello, ${name}!`;
+}
+```
+
+### React Components
+
+You can also use React components directly in your MDX:
+
+```jsx
+<div className="bg-blue-100 p-4 rounded">
+  This is a custom component!
+</div>
+```
+
+## Navigation
+
+Navigation is automatically generated based on your file structure and frontmatter. Pages are sorted by the `order` field in frontmatter, then alphabetically.
+
+## Deployment
+
+To deploy to GitHub Pages:
+
+1. Build the site:
+
+```bash
+npm run build
+```
+
+2. Deploy the `dist` folder to your GitHub Pages branch
+
+The site is configured to work with GitHub Pages subfolder deployments (e.g., `username.github.io/repository-name`).
