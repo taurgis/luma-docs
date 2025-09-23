@@ -1,6 +1,7 @@
 import { MDXProvider } from '@mdx-js/react';
 import React from 'react';
 
+import CodeBlock from './CodeBlock';
 import MDXPage from './MDXPage';
 
 // Custom components for MDX
@@ -29,19 +30,40 @@ const components = {
       {...props} 
     />
   ),
-  pre: (props: any) => (
-    <pre className="overflow-x-auto" {...props} />
-  ),
-  code: (props: any) => {
-    // If it's a code block (has className), render as-is
-    if (props.className) {
-      return <code {...props} />;
+  // Handle fenced code blocks at the <pre> level to avoid nested <pre> tags
+  pre: (props: any) => {
+    const child = props.children;
+    // Typical MDX structure: <pre><code class="language-xyz">code...</code></pre>
+    if (child && typeof child === 'object' && 'props' in child) {
+      const codeEl: any = child;
+      const raw = codeEl.props.children;
+      const className: string = codeEl.props.className || '';
+      const isCodeBlock = /language-/.test(className);
+      if (isCodeBlock) {
+        const match = className.match(/language-([\w-]+)/);
+        const language = match ? match[1] : 'text';
+        const code = typeof raw === 'string' ? raw : String(raw);
+        return <CodeBlock code={code} language={language} />;
+      }
+      // Multi-line without language -> still use CodeBlock for consistency
+      if (typeof raw === 'string' && raw.includes('\n')) {
+        return <CodeBlock code={raw} language="text" />;
+      }
     }
-    // Otherwise, it's inline code
+    // Fallback (unlikely) - raw pre
+    return <pre className="overflow-x-auto" {...props} />;
+  },
+  // Inline code only (no language-* class & single-line)
+  code: (props: any) => {
+    const { children, className = '' } = props;
+    if (/language-/.test(className)) {
+      // Should have been handled by pre; fallback safety
+      return children;
+    }
     return (
-      <code 
-        className="bg-slate-100 text-slate-800 px-1 py-0.5 rounded text-sm font-mono" 
-        {...props} 
+      <code
+        className="bg-slate-100 text-slate-800 px-1 py-0.5 rounded text-sm font-mono"
+        {...props}
       />
     );
   },

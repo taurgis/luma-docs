@@ -3,7 +3,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { CopyIcon, CheckIcon } from './icons';
 
 // Dynamic Prism import to prevent SSR issues
-let Prism: any = null;
+// Define a minimal shape for Prism we rely on to avoid 'any'.
+interface PrismStatic {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  highlight: (code: string, grammar: any, language: string) => string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  languages: Record<string, any>;
+}
+// Use a broader type union to allow deferred assignment.
+let Prism: PrismStatic | null = null;
 
 interface CodeBlockProps {
   code: string;
@@ -11,6 +19,7 @@ interface CodeBlockProps {
   title?: string;
   showLineNumbers?: boolean;
   className?: string;
+  withinTabs?: boolean; // when inside CodeTabs, suppress top rounding even if no title
 }
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ 
@@ -18,7 +27,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   language, 
   title,
   showLineNumbers = false,
-  className = '' 
+  className = '',
+  withinTabs = false
 }) => {
   const [copied, setCopied] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -104,7 +114,10 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
             // Silently continue if specific language fails to load
           }
         } catch (error) {
-          console.warn('Failed to load Prism:', error);
+          if (process.env.NODE_ENV !== 'production') {
+            // eslint-disable-next-line no-console
+            console.warn('Failed to load Prism:', error);
+          }
           return;
         }
       }
@@ -196,8 +209,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         <pre className={`
           overflow-x-auto p-4 text-sm leading-relaxed
           bg-slate-50 text-slate-800 border border-slate-200
-          ${title || language 
-            ? 'rounded-tl-none rounded-tr-none rounded-bl-lg rounded-br-lg border-t-0' 
+          ${(title || withinTabs)
+            ? 'rounded-tl-none rounded-tr-none rounded-bl-lg rounded-br-lg border-t-0'
             : 'rounded-lg'
           }
           ${showLineNumbers ? 'pl-12' : ''}
@@ -217,16 +230,20 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         {/* Line numbers */}
         {showLineNumbers && (
           <div className="absolute top-0 left-0 p-4 text-sm leading-relaxed text-slate-400 select-none pointer-events-none">
-            {code.trim().split('\n').map((_, index) => (
-              <div key={index} className="text-right pr-4">
-                {index + 1}
-              </div>
-            ))}
+            {code.trim().split('\n').map((_, index) => {
+              const key = `${index + 1}`; // line numbers are stable
+              return (
+                <div key={key} className="text-right pr-4">
+                  {index + 1}
+                </div>
+              );
+            })}
           </div>
         )}
         
         {/* Copy button for code-only blocks */}
-        {!title && !language && (
+        {/* Show copy button for any non-titled standalone block (language or not) */}
+        {!title && !withinTabs && (
           <button
             onClick={handleCopy}
             className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-1 rounded bg-slate-200 hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"

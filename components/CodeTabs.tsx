@@ -156,6 +156,7 @@ const CodeTabs: React.FC<CodeTabsProps> = ({ tabs, initial, groupId, className, 
             language={activeTab.language}
             title={activeTab.title}
             className="rounded-t-none"
+            withinTabs
           />
         )}
       </div>

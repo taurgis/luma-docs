@@ -36,6 +36,7 @@ export default tseslint.config(
   // Additional configuration for MDX files
   {
     files: ['**/*.mdx'],
+    ignores: ['README.md'], // README.md is regular markdown, not MDX
     rules: {
       // MDX imports are often used in content and may not be detected by parser
       '@typescript-eslint/no-unused-vars': 'off',
@@ -43,6 +44,8 @@ export default tseslint.config(
       // MDX content can have React components without explicit imports
       'react/jsx-no-undef': 'off',
       'react/no-unescaped-entities': 'off',
+      // Code blocks in MDX may have variables that appear unused
+      'no-undef': 'off',
     },
   },
 
@@ -198,6 +201,7 @@ export default tseslint.config(
       'public/**',
       '*.min.js',
       'coverage/**',
+      'README.md', // Regular markdown, not MDX
       // Note: MDX files are now linted with mdx plugin
     ],
   }

@@ -168,8 +168,8 @@ export const Pre: React.FC<{ children: React.ReactNode; className?: string }> = 
   className = '' 
 }) => (
   <pre className={`
-    bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto
-    text-sm font-mono leading-relaxed
+    bg-slate-50 text-slate-800 p-4 rounded-lg overflow-x-auto
+    text-sm font-mono leading-relaxed border border-slate-200
     ${className}
   `}>
     {children}

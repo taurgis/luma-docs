@@ -22,9 +22,9 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/components/",
     "pageTitle": "Component Showcase",
-    "heading": "CodeBlock",
-    "headingId": "codeblock",
-    "content": "CodeBlock The component provides syntax highlighting with copy functionality and language detection: <CodeBlock code={ } language=\"tsx\" title=\"Hello World Component\" />",
+    "heading": "Code Fences",
+    "headingId": "code-fences",
+    "content": "Code Fences Standard fenced code blocks ( tsx function HelloWorld() { const message = \"Hello, Luma Docs!\"; return <h1>{message}</h1>; } ```",
     "description": ""
   },
   {
@@ -40,7 +40,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Component Showcase",
     "heading": "Code Tabs",
     "headingId": "code-tabs",
-    "content": "Code Tabs The component is perfect for showing the same functionality in different languages: <CodeTabs tabs={[ { label: \"React\", language: \"tsx\", code: }, { label: \"Vue\", language: \"vue\", code: }, { label: \"Svelte\", language: \"svelte\", code: } ]} groupId=\"button-examples\" />",
+    "content": "Code Tabs The component is perfect for showing the same functionality in different languages: <CodeTabs tabs={[ { label: \"React\", language: \"tsx\", code: , }, { label: \"Vue\", language: \"vue\", code: , }, { label: \"Svelte\", language: \"svelte\", code: , }, ]} groupId=\"button-examples\" />",
     "description": ""
   },
   {
@@ -64,7 +64,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Component Showcase",
     "heading": "Collapsibles",
     "headingId": "collapsibles",
-    "content": "Collapsibles Collapsible sections help organize content and improve page readability: <Collapsible title=\"Basic Usage\" defaultOpen> This collapsible is open by default. You can put any content here, including other components, code blocks, or formatted text. List items work great Multiple paragraphs",
+    "content": "Collapsibles Collapsible sections help organize content and improve page readability: <Collapsible title=\"Basic Usage\" defaultOpen> This collapsible is open by default. You can put any content here, including other components, code blocks, or formatted text. <ul> <li>List items work great</li> <li>M",
     "description": ""
   },
   {
@@ -160,7 +160,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Component Showcase",
     "heading": "Usage",
     "headingId": "usage",
-    "content": "Usage Import any of these components in your MDX files: <CodeBlock code={ } language=\"mdx\" title=\"MDX Component Import\" /> All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices.",
+    "content": "Usage Import any of these components in your MDX files: All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices.",
     "description": ""
   },
   {
