@@ -39,14 +39,26 @@ const SEO: React.FC<SEOProps> = ({
     ? `${title} | ${config.site.name}`
     : `${config.site.title}`;
 
-  // Determine canonical URL
-  let fullCanonical = baseUrl;
-  if (canonical !== undefined) {
-    if (canonical === '' || canonical === '/') {
-      fullCanonical = baseUrl;
-    } else {
-      fullCanonical = `${baseUrl}${canonical.startsWith('/') ? canonical : `/${  canonical}`}`;
+  // Determine canonical URL (normalize to avoid double slashes)
+  const joinUrl = (base: string, path: string) => {
+    if (!base) {
+      return path || '';
     }
+    // If path already absolute URL, return it normalized
+    if (/^https?:\/\//i.test(path)) {
+      return path.replace(/([^:])\/+/g, '$1/');
+    }
+    const cleanBase = base.replace(/\/+$/, '');
+    if (!path || path === '/') {
+      return `${cleanBase}/`;
+    }
+    const cleanPath = path.replace(/^\/+/, '');
+    return `${cleanBase}/${cleanPath}`;
+  };
+
+  let fullCanonical = baseUrl ? baseUrl.replace(/\/+$/, '/') : '';
+  if (canonical !== undefined) {
+    fullCanonical = joinUrl(baseUrl, canonical);
   }
 
   // Default robots behavior

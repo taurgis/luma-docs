@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://taurgis.github.io/luma-docs/sitemap.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
