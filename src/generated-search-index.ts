@@ -67,177 +67,6 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "version": null
   },
   {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Code Components",
-    "headingId": "code-components",
-    "content": "Code Components",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Code Fences",
-    "headingId": "code-fences",
-    "content": "Code Fences Standard fenced code blocks ( tsx function HelloWorld() { const message = \"Hello, Luma Docs!\"; return <h1>{message}</h1>; } // Invoke to avoid unused var lint complaint in MDX processing context HelloWorld(); ```",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Inline Code",
-    "headingId": "inline-code",
-    "content": "Inline Code Use the <Code>InlineCode</Code> component for short code snippets within text. You can also use <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> to show keyboard shortcuts.",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Code Tabs",
-    "headingId": "code-tabs",
-    "content": "Code Tabs The component is perfect for showing the same functionality in different languages: <CodeTabs tabs={[ { label: \"React\", language: \"tsx\", code: , }, { label: \"Vue\", language: \"vue\", code: , }, { label: \"Svelte\", language: \"svelte\", code: , }, ]} groupId=\"button-examples\" />",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Content Components",
-    "headingId": "content-components",
-    "content": "Content Components",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Callouts",
-    "headingId": "callouts",
-    "content": "Callouts Callouts help highlight important information with semantic colors and icons: <Callout type=\"info\" title=\"Information\"> This is an informational callout. Use it to provide additional context or helpful tips to your readers. </Callout> <Callout type=\"warning\" title=\"Warning\"> This is a warni",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Collapsibles",
-    "headingId": "collapsibles",
-    "content": "Collapsibles Collapsible sections help organize content and improve page readability: <Collapsible title=\"Basic Usage\" defaultOpen> This collapsible is open by default. You can put any content here, including other components, code blocks, or formatted text. <ul> <li>List items work great</li> <li>M",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Typography Components",
-    "headingId": "typography-components",
-    "content": "Typography Components",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Headings",
-    "headingId": "headings",
-    "content": "Headings The typography system provides consistent styling for all heading levels:",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "H1: Main Page Title",
-    "headingId": "h1-main-page-title",
-    "content": "H1: Main Page Title",
-    "description": "Explore the enhanced component library available in Luma Docs, including code blocks, callouts, collapsibles, and more.",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "H2: Major Section Header",
-    "headingId": "h2-major-section-header",
-    "content": "H2: Major Section Header",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "H3: Subsection Header",
-    "headingId": "h3-subsection-header",
-    "content": "H3: Subsection Header",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "H4: Minor Section Header",
-    "headingId": "h4-minor-section-header",
-    "content": "H4: Minor Section Header",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "H5: Small Section Header",
-    "headingId": "h5-small-section-header",
-    "content": "H5: Small Section Header",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "H6: Smallest Header",
-    "headingId": "h6-smallest-header",
-    "content": "H6: Smallest Header",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Text Styles",
-    "headingId": "text-styles",
-    "content": "Text Styles Bold text and italic text are supported, along with and links. > This is a blockquote. Use it for highlighting quotes, testimonials, or important excerpts from other sources.",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Interactive Examples",
-    "headingId": "interactive-examples",
-    "content": "Interactive Examples",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Combining Components",
-    "headingId": "combining-components",
-    "content": "Combining Components You can combine multiple components to create rich, interactive documentation: <Collapsible title=\"Complete API Example\" intent=\"info\" defaultOpen> <Callout type=\"tip\" title=\"Best Practice\"> Always validate your API inputs and handle errors gracefully. </Callout> <CodeTabs tabs=",
-    "description": "",
-    "version": null
-  },
-  {
-    "path": "/components/",
-    "pageTitle": "Component Showcase",
-    "heading": "Usage",
-    "headingId": "usage",
-    "content": "Usage Import any of these components in your MDX files: All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices.",
-    "description": "",
-    "version": null
-  },
-  {
     "path": "/getting-started/",
     "pageTitle": "Getting Started",
     "heading": "Getting Started",
@@ -427,6 +256,384 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "version": null
   },
   {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Code Components",
+    "headingId": "code-components",
+    "content": "Code Components",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Code Fences",
+    "headingId": "code-fences",
+    "content": "Code Fences Standard fenced code blocks ( tsx function HelloWorld() { const message = \"Hello, Luma Docs!\"; return <h1>{message}</h1>; } // Invoke to avoid unused var lint complaint in MDX processing context HelloWorld(); ```",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Inline Code",
+    "headingId": "inline-code",
+    "content": "Inline Code Use the <Code>InlineCode</Code> component for short code snippets within text. You can also use <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> to show keyboard shortcuts.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Code Tabs",
+    "headingId": "code-tabs",
+    "content": "Code Tabs The component is perfect for showing the same functionality in different languages: <CodeTabs tabs={[ { label: \"React\", language: \"tsx\", code: , }, { label: \"Vue\", language: \"vue\", code: , }, { label: \"Svelte\", language: \"svelte\", code: , }, ]} groupId=\"button-examples\" />",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Content Components",
+    "headingId": "content-components",
+    "content": "Content Components",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Callouts",
+    "headingId": "callouts",
+    "content": "Callouts Callouts help highlight important information with semantic colors and icons: <Callout type=\"info\" title=\"Information\"> This is an informational callout. Use it to provide additional context or helpful tips to your readers. </Callout> <Callout type=\"warning\" title=\"Warning\"> This is a warni",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Collapsibles",
+    "headingId": "collapsibles",
+    "content": "Collapsibles Collapsible sections help organize content and improve page readability: <Collapsible title=\"Basic Usage\" defaultOpen> This collapsible is open by default. You can put any content here, including other components, code blocks, or formatted text. <ul> <li>List items work great</li> <li>M",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Typography Components",
+    "headingId": "typography-components",
+    "content": "Typography Components",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Headings",
+    "headingId": "headings",
+    "content": "Headings The typography system provides consistent styling for all heading levels:",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H1: Main Page Title",
+    "headingId": "h1-main-page-title",
+    "content": "H1: Main Page Title",
+    "description": "Explore the enhanced component library available in Luma Docs, including code blocks, callouts, collapsibles, and more.",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H2: Major Section Header",
+    "headingId": "h2-major-section-header",
+    "content": "H2: Major Section Header",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H3: Subsection Header",
+    "headingId": "h3-subsection-header",
+    "content": "H3: Subsection Header",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H4: Minor Section Header",
+    "headingId": "h4-minor-section-header",
+    "content": "H4: Minor Section Header",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H5: Small Section Header",
+    "headingId": "h5-small-section-header",
+    "content": "H5: Small Section Header",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H6: Smallest Header",
+    "headingId": "h6-smallest-header",
+    "content": "H6: Smallest Header",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Text Styles",
+    "headingId": "text-styles",
+    "content": "Text Styles Bold text and italic text are supported, along with and links. > This is a blockquote. Use it for highlighting quotes, testimonials, or important excerpts from other sources.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Interactive Examples",
+    "headingId": "interactive-examples",
+    "content": "Interactive Examples",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Combining Components",
+    "headingId": "combining-components",
+    "content": "Combining Components You can combine multiple components to create rich, interactive documentation: <Collapsible title=\"Complete API Example\" intent=\"info\" defaultOpen> <Callout type=\"tip\" title=\"Best Practice\"> Always validate your API inputs and handle errors gracefully. </Callout> <CodeTabs tabs=",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Usage",
+    "headingId": "usage",
+    "content": "Usage Import any of these components in your MDX files: All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Versioning",
+    "headingId": "versioning",
+    "content": "Versioning Luma Docs includes a folder‑based multi-version documentation system designed to keep the current documentation clean while preserving historical releases for reference.",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Core Concepts",
+    "headingId": "core-concepts",
+    "content": "Core Concepts | Concept | Description | | ------------------- | ----------------------------------------------------------------------------------------- | | Current Version | Content in – label comes from (e.g. ) | | Archived Versions | Snapshots stored under (e.g. ) | | Version Metadata | Every ro",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Directory Structure",
+    "headingId": "directory-structure",
+    "content": "Directory Structure Each MDX file from an archived version keeps its original relative path, so a page that was in the current version becomes in the archive.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Configuration (`config.ts`)",
+    "headingId": "configuration-configts",
+    "content": "Configuration ( )",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Creating a Snapshot",
+    "headingId": "creating-a-snapshot",
+    "content": "Creating a Snapshot You can snapshot manually or use the automated helper script.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Automated (Recommended)",
+    "headingId": "automated-recommended",
+    "content": "Automated (Recommended) ```bash",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Snapshot current root content into versions/v1.0",
+    "headingId": "snapshot-current-root-content-into-versionsv10",
+    "content": "Snapshot current root content into versions/v1.0 npm run snapshot:version -- v1.0",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Snapshot and bump current label to v1.1 (so pages/ becomes v1.1)",
+    "headingId": "snapshot-and-bump-current-label-to-v11-so-pages-becomes-v11",
+    "content": "Snapshot and bump current label to v1.1 (so pages/ becomes v1.1) npm run snapshot:version -- v1.0 --bump v1.1 `` vMAJOR[.MINOR[.PATCH]] pages/ versions/<label>/ src/generated-versions.ts --bump <next> config.ts` + regenerates routes",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Manual Workflow (Alternative)",
+    "headingId": "manual-workflow-alternative",
+    "content": "Manual Workflow (Alternative) ```bash NEWVER=v1.0 mkdir -p versions/$NEWVER rsync -a pages/ versions/$NEW_VER/",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "(Optional) update config.ts if starting work on next version",
+    "headingId": "optional-update-configts-if-starting-work-on-next-version",
+    "content": "(Optional) update config.ts if starting work on next version bash npm run generate:versions && npm run generate:routes && npm run generate:search-index ```",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Navigation Behavior",
+    "headingId": "navigation-behavior",
+    "content": "Navigation Behavior Sidebar displays only the pages for the active version (prevents cross-version noise) Version switcher hides automatically if there are no archived versions Archived versions can be excluded from the switcher via",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Search Behavior",
+    "headingId": "search-behavior",
+    "content": "Search Behavior | Scope | Effect | | ------------ | ------------------------------------------------------------------------ | | Current | Only routes where | | All Versions | Includes archived results (archived entries show a neutral version pill) | Each search index entry includes a field. Version",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "SEO & Indexing",
+    "headingId": "seo-indexing",
+    "content": "SEO & Indexing Archived pages automatically receive: An in-page banner clarifying the content is from an older version (unless frontmatter sets ) If you want to direct search engines toward the current equivalent, add a frontmatter field in the archived page pointing to the current URL.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Frontmatter Overrides",
+    "headingId": "frontmatter-overrides",
+    "content": "Frontmatter Overrides You can still customize per-page metadata in archived versions—Luma Docs does not lock or mutate frontmatter when snapshotting. Useful overrides: : Add a legacy qualifier (e.g. \"Getting Started (v0.9)\") : Preserve indexing for key legacy pages : Point to current equivalent",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Release Flow Example",
+    "headingId": "release-flow-example",
+    "content": "Release Flow Example ```bash",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Finish development of v1.0 in pages/",
+    "headingId": "finish-development-of-v10-in-pages",
+    "content": "Finish development of v1.0 in pages/",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Snapshot and bump to start v1.1",
+    "headingId": "snapshot-and-bump-to-start-v11",
+    "content": "Snapshot and bump to start v1.1 npm run snapshot:version -- v1.0 --bump v1.1",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Commit changes",
+    "headingId": "commit-changes",
+    "content": "Commit changes git add . git commit -m \"chore: snapshot v1.0 and bump current to v1.1\"",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Continue editing pages/ (now labeled v1.1 automatically)",
+    "headingId": "continue-editing-pages-now-labeled-v11-automatically",
+    "content": "Continue editing pages/ (now labeled v1.1 automatically) ```",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Safety & Idempotency",
+    "headingId": "safety-idempotency",
+    "content": "Safety & Idempotency The snapshot script refuses to overwrite an existing folder Labels must follow the pattern Route and versions files are regenerated to avoid stale metadata",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "FAQ",
+    "headingId": "faq",
+    "content": "FAQ Q: Can I remove an archived version? Yes—delete , run and rebuild. (Links to that version will 404.) Q: Can I hide a version but keep it accessible? Add the label to ; it stays routable but disappears from the switcher. Q: Does search index get huge over time? Potentially. You can prune very old",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Future Enhancements",
+    "headingId": "future-enhancements",
+    "content": "Future Enhancements Planned ideas: Cross-version diff component Version comparison landing page Sitemap prioritization / exclusion for archived versions",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Summary",
+    "headingId": "summary",
+    "content": "Summary The versioning system keeps the present focused while preserving history—automatic UI cues, search scoping, and SEO protections ensure users find the right content without confusion. <Callout type=\"tip\" title=\"Pro Tip\"> Use during snapshot to eliminate a manual edit to{\" \"} <code>config.ts</",
+    "description": "",
+    "version": null
+  },
+  {
     "path": "/seo-examples/",
     "pageTitle": "SEO Examples",
     "heading": "SEO Examples",
@@ -572,7 +779,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   },
   {
     "path": "/v0.8/",
-    "pageTitle": "Legacy Home (v0.8)",
+    "pageTitle": "Legacy Home",
     "heading": "Luma Docs v0.8",
     "headingId": "luma-docs-v08",
     "content": "Luma Docs v0.8 Early pre-1.0 version of the docs platform.",
@@ -581,7 +788,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   },
   {
     "path": "/v0.8/",
-    "pageTitle": "Legacy Home (v0.8)",
+    "pageTitle": "Legacy Home",
     "heading": "Characteristics",
     "headingId": "characteristics",
     "content": "Characteristics Basic MDX routing prototype No version switcher Minimal styling",
@@ -590,7 +797,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   },
   {
     "path": "/v0.8/",
-    "pageTitle": "Legacy Home (v0.8)",
+    "pageTitle": "Legacy Home",
     "heading": "Upgrading",
     "headingId": "upgrading",
     "content": "Upgrading Move to v0.9 or 1.0+ to get improved build scripts and search.",
@@ -599,7 +806,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   },
   {
     "path": "/v0.8/getting-started/",
-    "pageTitle": "Getting Started (v0.8)",
+    "pageTitle": "Getting Started",
     "heading": "Getting Started (v0.8)",
     "headingId": "getting-started-v08",
     "content": "Getting Started (v0.8) Feature set was still evolving; expect configuration differences versus later versions.",
@@ -607,8 +814,494 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "version": "v0.8"
   },
   {
+    "path": "/v0.8/guides/",
+    "pageTitle": "Guides",
+    "heading": "Guides",
+    "headingId": "guides",
+    "content": "Guides Welcome to the Luma Docs guides section. Here you'll find comprehensive tutorials and guides to help you make the most of your documentation site.",
+    "description": "Comprehensive guides for using Luma Docs",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/",
+    "pageTitle": "Guides",
+    "heading": "Available Guides",
+    "headingId": "available-guides",
+    "content": "Available Guides Advanced Features - Learn about advanced features and customization Deployment - Different deployment options and strategies Customization - How to customize the look and feel",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/",
+    "pageTitle": "Guides",
+    "heading": "What You'll Learn",
+    "headingId": "what-youll-learn",
+    "content": "What You'll Learn In these guides, you'll discover: How to organize your content effectively Advanced MDX features and React component integration Customization options for styling and layout Best practices for documentation SEO optimization techniques",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/",
+    "pageTitle": "Guides",
+    "heading": "Community",
+    "headingId": "community",
+    "content": "Community Have questions or want to contribute? Check out our community resources and contribution guidelines.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/advanced/",
+    "pageTitle": "Advanced Features",
+    "heading": "Advanced Features",
+    "headingId": "advanced-features",
+    "content": "Advanced Features Luma Docs comes with several advanced features that make it powerful and flexible for documentation sites.",
+    "description": "Learn about advanced features and capabilities of Luma Docs including search, routing, and customization",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/advanced/",
+    "pageTitle": "Advanced Features",
+    "heading": "MDX Components",
+    "headingId": "mdx-components",
+    "content": "MDX Components You can create custom React components and use them in your MDX files. This allows for rich, interactive documentation.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/advanced/",
+    "pageTitle": "Advanced Features",
+    "heading": "Example: Callout Component",
+    "headingId": "example-callout-component",
+    "content": "Example: Callout Component You could create a callout component like this:",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/advanced/",
+    "pageTitle": "Advanced Features",
+    "heading": "Code Highlighting",
+    "headingId": "code-highlighting",
+    "content": "Code Highlighting Code blocks are automatically highlighted using Prism.js with support for many languages:",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/advanced/",
+    "pageTitle": "Advanced Features",
+    "heading": "Table of Contents",
+    "headingId": "table-of-contents",
+    "content": "Table of Contents The table of contents is automatically generated from your headings (h2 and h3) and appears in the right sidebar on desktop.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/advanced/",
+    "pageTitle": "Advanced Features",
+    "heading": "Search",
+    "headingId": "search",
+    "content": "Search The built-in search functionality indexes all your content and provides fast, client-side search results.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/advanced/",
+    "pageTitle": "Advanced Features",
+    "heading": "Performance",
+    "headingId": "performance",
+    "content": "Performance Static Generation: All pages are pre-rendered at build time Code Splitting: JavaScript is automatically split into smaller chunks Optimized Assets: Images and other assets are optimized for fast loading Minimal Runtime: Very little JavaScript is required for the site to function",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/advanced/",
+    "pageTitle": "Advanced Features",
+    "heading": "SEO Optimization",
+    "headingId": "seo-optimization",
+    "content": "SEO Optimization Automatic sitemap generation Meta tags from frontmatter Structured data markup Fast loading times These features combine to create a documentation platform that's both powerful for authors and fast for readers.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Code Components",
+    "headingId": "code-components",
+    "content": "Code Components",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Code Fences",
+    "headingId": "code-fences",
+    "content": "Code Fences Standard fenced code blocks ( tsx function HelloWorld() { const message = \"Hello, Luma Docs!\"; return <h1>{message}</h1>; } // Invoke to avoid unused var lint complaint in MDX processing context HelloWorld(); ```",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Inline Code",
+    "headingId": "inline-code",
+    "content": "Inline Code Use the <Code>InlineCode</Code> component for short code snippets within text. You can also use <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> to show keyboard shortcuts.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Code Tabs",
+    "headingId": "code-tabs",
+    "content": "Code Tabs The component is perfect for showing the same functionality in different languages: <CodeTabs tabs={[ { label: \"React\", language: \"tsx\", code: , }, { label: \"Vue\", language: \"vue\", code: , }, { label: \"Svelte\", language: \"svelte\", code: , }, ]} groupId=\"button-examples\" />",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Content Components",
+    "headingId": "content-components",
+    "content": "Content Components",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Callouts",
+    "headingId": "callouts",
+    "content": "Callouts Callouts help highlight important information with semantic colors and icons: <Callout type=\"info\" title=\"Information\"> This is an informational callout. Use it to provide additional context or helpful tips to your readers. </Callout> <Callout type=\"warning\" title=\"Warning\"> This is a warni",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Collapsibles",
+    "headingId": "collapsibles",
+    "content": "Collapsibles Collapsible sections help organize content and improve page readability: <Collapsible title=\"Basic Usage\" defaultOpen> This collapsible is open by default. You can put any content here, including other components, code blocks, or formatted text. <ul> <li>List items work great</li> <li>M",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Typography Components",
+    "headingId": "typography-components",
+    "content": "Typography Components",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Headings",
+    "headingId": "headings",
+    "content": "Headings The typography system provides consistent styling for all heading levels:",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H1: Main Page Title",
+    "headingId": "h1-main-page-title",
+    "content": "H1: Main Page Title",
+    "description": "Explore the enhanced component library available in Luma Docs, including code blocks, callouts, collapsibles, and more.",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H2: Major Section Header",
+    "headingId": "h2-major-section-header",
+    "content": "H2: Major Section Header",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H3: Subsection Header",
+    "headingId": "h3-subsection-header",
+    "content": "H3: Subsection Header",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H4: Minor Section Header",
+    "headingId": "h4-minor-section-header",
+    "content": "H4: Minor Section Header",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H5: Small Section Header",
+    "headingId": "h5-small-section-header",
+    "content": "H5: Small Section Header",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "H6: Smallest Header",
+    "headingId": "h6-smallest-header",
+    "content": "H6: Smallest Header",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Text Styles",
+    "headingId": "text-styles",
+    "content": "Text Styles Bold text and italic text are supported, along with and links. > This is a blockquote. Use it for highlighting quotes, testimonials, or important excerpts from other sources.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Interactive Examples",
+    "headingId": "interactive-examples",
+    "content": "Interactive Examples",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Combining Components",
+    "headingId": "combining-components",
+    "content": "Combining Components You can combine multiple components to create rich, interactive documentation: <Collapsible title=\"Complete API Example\" intent=\"info\" defaultOpen> <Callout type=\"tip\" title=\"Best Practice\"> Always validate your API inputs and handle errors gracefully. </Callout> <CodeTabs tabs=",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/components/",
+    "pageTitle": "Component Showcase",
+    "heading": "Usage",
+    "headingId": "usage",
+    "content": "Usage Import any of these components in your MDX files: All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Versioning",
+    "headingId": "versioning",
+    "content": "Versioning Luma Docs includes a folder‑based multi-version documentation system designed to keep the current documentation clean while preserving historical releases for reference.",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Core Concepts",
+    "headingId": "core-concepts",
+    "content": "Core Concepts | Concept | Description | | ------------------- | ----------------------------------------------------------------------------------------- | | Current Version | Content in – label comes from (e.g. ) | | Archived Versions | Snapshots stored under (e.g. ) | | Version Metadata | Every ro",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Directory Structure",
+    "headingId": "directory-structure",
+    "content": "Directory Structure Each MDX file from an archived version keeps its original relative path, so a page that was in the current version becomes in the archive.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Configuration (`config.ts`)",
+    "headingId": "configuration-configts",
+    "content": "Configuration ( )",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Creating a Snapshot",
+    "headingId": "creating-a-snapshot",
+    "content": "Creating a Snapshot You can snapshot manually or use the automated helper script.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Automated (Recommended)",
+    "headingId": "automated-recommended",
+    "content": "Automated (Recommended) ```bash",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Snapshot current root content into versions/v1.0",
+    "headingId": "snapshot-current-root-content-into-versionsv10",
+    "content": "Snapshot current root content into versions/v1.0 npm run snapshot:version -- v1.0",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Snapshot and bump current label to v1.1 (so pages/ becomes v1.1)",
+    "headingId": "snapshot-and-bump-current-label-to-v11-so-pages-becomes-v11",
+    "content": "Snapshot and bump current label to v1.1 (so pages/ becomes v1.1) npm run snapshot:version -- v1.0 --bump v1.1 `` vMAJOR[.MINOR[.PATCH]] pages/ versions/<label>/ src/generated-versions.ts --bump <next> config.ts` + regenerates routes",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Manual Workflow (Alternative)",
+    "headingId": "manual-workflow-alternative",
+    "content": "Manual Workflow (Alternative) ```bash NEWVER=v1.0 mkdir -p versions/$NEWVER rsync -a pages/ versions/$NEW_VER/",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "(Optional) update config.ts if starting work on next version",
+    "headingId": "optional-update-configts-if-starting-work-on-next-version",
+    "content": "(Optional) update config.ts if starting work on next version bash npm run generate:versions && npm run generate:routes && npm run generate:search-index ```",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Navigation Behavior",
+    "headingId": "navigation-behavior",
+    "content": "Navigation Behavior Sidebar displays only the pages for the active version (prevents cross-version noise) Version switcher hides automatically if there are no archived versions Archived versions can be excluded from the switcher via",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Search Behavior",
+    "headingId": "search-behavior",
+    "content": "Search Behavior | Scope | Effect | | ------------ | ------------------------------------------------------------------------ | | Current | Only routes where | | All Versions | Includes archived results (archived entries show a neutral version pill) | Each search index entry includes a field. Version",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "SEO & Indexing",
+    "headingId": "seo-indexing",
+    "content": "SEO & Indexing Archived pages automatically receive: An in-page banner clarifying the content is from an older version (unless frontmatter sets ) If you want to direct search engines toward the current equivalent, add a frontmatter field in the archived page pointing to the current URL.",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Frontmatter Overrides",
+    "headingId": "frontmatter-overrides",
+    "content": "Frontmatter Overrides You can still customize per-page metadata in archived versions—Luma Docs does not lock or mutate frontmatter when snapshotting. Useful overrides: : Add a legacy qualifier (e.g. \"Getting Started (v0.9)\") : Preserve indexing for key legacy pages : Point to current equivalent",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Release Flow Example",
+    "headingId": "release-flow-example",
+    "content": "Release Flow Example ```bash",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Finish development of v1.0 in pages/",
+    "headingId": "finish-development-of-v10-in-pages",
+    "content": "Finish development of v1.0 in pages/",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Snapshot and bump to start v1.1",
+    "headingId": "snapshot-and-bump-to-start-v11",
+    "content": "Snapshot and bump to start v1.1 npm run snapshot:version -- v1.0 --bump v1.1",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Commit changes",
+    "headingId": "commit-changes",
+    "content": "Commit changes git add . git commit -m \"chore: snapshot v1.0 and bump current to v1.1\"",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Continue editing pages/ (now labeled v1.1 automatically)",
+    "headingId": "continue-editing-pages-now-labeled-v11-automatically",
+    "content": "Continue editing pages/ (now labeled v1.1 automatically) ```",
+    "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Safety & Idempotency",
+    "headingId": "safety-idempotency",
+    "content": "Safety & Idempotency The snapshot script refuses to overwrite an existing folder Labels must follow the pattern Route and versions files are regenerated to avoid stale metadata",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "FAQ",
+    "headingId": "faq",
+    "content": "FAQ Q: Can I remove an archived version? Yes—delete , run and rebuild. (Links to that version will 404.) Q: Can I hide a version but keep it accessible? Add the label to ; it stays routable but disappears from the switcher. Q: Does search index get huge over time? Potentially. You can prune very old",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Future Enhancements",
+    "headingId": "future-enhancements",
+    "content": "Future Enhancements Planned ideas: Cross-version diff component Version comparison landing page Sitemap prioritization / exclusion for archived versions",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
+    "path": "/v0.8/guides/versioning/",
+    "pageTitle": "Versioning",
+    "heading": "Summary",
+    "headingId": "summary",
+    "content": "Summary The versioning system keeps the present focused while preserving history—automatic UI cues, search scoping, and SEO protections ensure users find the right content without confusion. <Callout type=\"tip\" title=\"Pro Tip\"> Use during snapshot to eliminate a manual edit to{\" \"} <code>config.ts</",
+    "description": "",
+    "version": "v0.8"
+  },
+  {
     "path": "/v0.9/",
-    "pageTitle": "Legacy Home (v0.9)",
+    "pageTitle": "Legacy Home",
     "heading": "Luma Docs v0.9",
     "headingId": "luma-docs-v09",
     "content": "Luma Docs v0.9 Transition release preparing for the stable 1.0 line.",
@@ -617,7 +1310,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   },
   {
     "path": "/v0.9/",
-    "pageTitle": "Legacy Home (v0.9)",
+    "pageTitle": "Legacy Home",
     "heading": "Improvements since 0.8",
     "headingId": "improvements-since-08",
     "content": "Improvements since 0.8 More robust route generation Added early search indexing groundwork Expanded component set",
@@ -626,7 +1319,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   },
   {
     "path": "/v0.9/getting-started/",
-    "pageTitle": "Getting Started (v0.9)",
+    "pageTitle": "Getting Started",
     "heading": "Getting Started (v0.9)",
     "headingId": "getting-started-v09",
     "content": "Getting Started (v0.9) Use 1.0+ for finalized configuration conventions.",

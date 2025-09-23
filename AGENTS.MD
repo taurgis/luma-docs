@@ -1,6 +1,6 @@
 # AI Agent Personas for Luma Docs
 
-This document defines specialized AI agent personas for the Luma Docs documentation platform - a modern React 19 + MDX + Vite React SSG + Tailwind CSS documentation system with automatic route generation, search functionality, and optimized deployment workflows.
+This document defines specialized AI agent personas for the Luma Docs documentation platform - a modern React 19 + MDX + Vite React SSG + Tailwind CSS documentation system with automatic route generation, multi-version documentation, version-aware search, and optimized deployment workflows.
 
 ## 📚 GitHub Pages Expert
 
@@ -49,11 +49,12 @@ build_optimization:
 
 ### Specialized Knowledge
 
-- **Luma Docs Build Process**: Understanding of the integrated build pipeline
+- **Luma Docs Build Process**: Understanding of the integrated build pipeline (routes → css → search → sitemap → SSG)
 - **Route Generation**: Knowledge of automatic route generation from MDX files
 - **Search Index**: Handling of generated search indexes in deployment
 - **Sitemap Generation**: SEO optimization through automated sitemap creation
 - **Asset Management**: Proper handling of CSS, JS, and static assets in subfolder deployments
+- **Versioning**: Folder-based archived versions (`versions/<label>/`) and current root pages with automatic base path + version metadata reconciliation
 
 ---
 
@@ -122,11 +123,12 @@ interface LumaDocsExpertise {
 
 ### Content Generation Systems
 
-- **Route Generation**: `scripts/generate-routes.js` – Automatic route discovery from MDX files and frontmatter extraction
-- **Search Indexing**: `scripts/generate-search-index.js` – Content extraction and search optimization
+- **Route Generation**: `scripts/generate-routes.js` – Automatic route discovery from MDX files and frontmatter extraction (adds `version` metadata)
+- **Search Indexing**: `scripts/generate-search-index.js` – Content extraction and search optimization (includes version field)
 - **Sitemap Creation**: `scripts/generate-sitemap.js` – SEO-friendly sitemap generation
 - **SEO Meta Rendering**: `components/SEO.tsx` – React component emits meta tags & JSON-LD during SSG (no separate HTML injection script)
 - **Asset Processing**: Tailwind CSS compilation (via `npm run build:css`) and optimization
+- **Versions Generation**: `scripts/generate-versions.js` – Emits `src/generated-versions.ts` from folders under `versions/`
 
 ### Performance Focus
 
@@ -331,11 +333,12 @@ The `update-html-template.js` script processes the HTML template during build:
 
 Both agents should understand the current Luma Docs build sequence (no separate HTML template mutation step):
 
-1. `generate:routes` – Scan `pages/` directory and create `src/generated-routes.tsx` (includes frontmatter / SEO metadata)
-2. `build:css` – Compile Tailwind CSS with Typography plugin
-3. `generate:search-index` – Extract content and build search index
-4. `generate:sitemap` – Create SEO-friendly `sitemap.xml`
-5. `vite-react-ssg build` – Generate static HTML with React hydration & SEO meta tags injected via `components/SEO.tsx`
+1. `generate:versions` – Detect archived version folders and emit `src/generated-versions.ts`
+2. `generate:routes` – Scan `pages/` (current) and `versions/*` (archived) to create `src/generated-routes.tsx` with per-route `version` metadata
+3. `build:css` – Compile Tailwind CSS with Typography plugin
+4. `generate:search-index` – Extract content + versioned routes and build search index (with `version` field)
+5. `generate:sitemap` – Create SEO-friendly `sitemap.xml` (can be extended to handle archived exclusion)
+6. `vite-react-ssg build` – Generate static HTML with React hydration & SEO meta tags injected via `components/SEO.tsx`
 
 ### Directory Structure Expertise
 
@@ -348,12 +351,22 @@ Both agents should understand the current Luma Docs build sequence (no separate 
 
 ### Environment Configuration
 
-- **Base Path Handling**: Dynamic detection from git remotes or environment variables (`VITE_BASE_PATH`, `GITHUB_REPOSITORY`)
-- **Multi-Environment Support**: Standard dev (`npm run dev`), subfolder dev via env (`VITE_FORCE_BASE=/repo/ npm run dev`), production & GitHub Pages subfolder builds (`VITE_FORCE_BASE=/repo/ npm run build`)
-- **Content Processing**: MDX + frontmatter, automatic navigation generation and breadcrumb derivation
-- **Configuration System**: Centralized `config.ts` controlling branding, links, feature flags (e.g. `breadcrumbs`, `structuredDataBreadcrumbs`, `search`)
+- **Base Path Handling**: Dynamic detection from git remotes or environment variables (`VITE_FORCE_BASE`, `GITHUB_REPOSITORY`) using a resolver consumed by Vite build + scripts
+- **Versioning**: Root `pages/` are current (`config.versions.current`); archived versions live under `versions/<label>/` and auto-generate a version list + route metadata
+- **Version Switcher**: Hidden automatically when no archived versions; provides seamless navigation between current and archived docs
+- **Version Switch Fallback**: If the requested page path does not exist in the target version (after a restructure or rename) the system gracefully redirects to that version's root to avoid 404 dead ends
+- **Search Scope Toggle**: In-modal control to limit queries to current or include all archived versions (archived results show version pills)
+- **Archived Page Banner**: Automatic banner + `noindex` meta on archived pages (overridable via frontmatter)
+- **Content Processing**: MDX + frontmatter with version-aware navigation filtering
+- **Configuration System**: Centralized `config.ts` controlling branding, links, features, and version labels
 - **Performance Optimization**: Code splitting, lazy loading, and caching strategies
-- **SEO Delivery**: Meta tags & JSON-LD generated at SSG time via `components/SEO.tsx` (replaces earlier template injection concept)
+- **SEO Delivery**: Meta tags & JSON-LD generated at SSG time via `components/SEO.tsx`
+
+### Recently Updated Behaviors (Keep Docs in Sync)
+
+- **Navigation Parity for Archived Versions**: Archived sidebars strip the `/vX.Y/` prefix; historical docs appear structurally identical to current docs (no extra top-level version bucket). Agents should avoid reintroducing duplicated version group wrappers.
+- **Group Heading Links & Flattening**: Headings become links when an `index.mdx` exists; single-page groups are flattened to reduce noise.
+- **Fallback Logic on Version Switch**: Implemented path existence check + root redirect—agents troubleshooting 404 reports should confirm this logic hasn't been bypassed by custom routing changes.
 
 ---
 

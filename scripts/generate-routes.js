@@ -47,35 +47,32 @@ function slugToRoutePath(slug) {
   return slug.endsWith('/') ? slug.slice(0, -1) : slug;
 }
 
-function processDir(pagesDir, versionPrefix = '', versionLabel) {
-  if (!fs.existsSync(pagesDir)) { return []; }
-  const mdxFiles = getMdxFiles(pagesDir);
+function processDir(contentDir, versionPrefix = '', versionLabel, importRoot) {
+  if (!fs.existsSync(contentDir)) { return []; }
+  const mdxFiles = getMdxFiles(contentDir);
   const routes = [];
 
   for (const file of mdxFiles) {
-    const fullPath = path.join(pagesDir, file);
+    const fullPath = path.join(contentDir, file);
     const content = fs.readFileSync(fullPath, 'utf-8');
     const { data: frontmatter } = matter(content);
-    
+
     let slug = pathToSlug(file);
     let routePath = slugToRoutePath(slug);
-
     if (versionPrefix) {
-      // Ensure versioned slugs are nested: /v1.0/... (keep trailing slash behavior)
       slug = `${versionPrefix}${slug === '/' ? '' : slug.slice(1)}`;
       routePath = `${versionPrefix}${routePath === '/' ? '' : routePath.slice(1)}`.replace(/\/$/, '');
     }
-    
-    // Convert file path to component import path
-    const componentPath = file.replace(/\.mdx$/, '.mdx').replace(/\\/g, '/');
-    
+
+    // Preserve original relative structure under either pages/ or versions/<ver>/
+    const componentPath = `${importRoot}/${file}`.replace(/\\/g, '/');
+
     const meta = {
       title: frontmatter.title || path.basename(file, '.mdx'),
       description: frontmatter.description,
       order: frontmatter.order || 0,
       path: routePath,
       slug,
-      // Enhanced SEO metadata
       keywords: frontmatter.keywords,
       canonical: frontmatter.canonical,
       ogImage: frontmatter.ogImage,
@@ -89,15 +86,15 @@ function processDir(pagesDir, versionPrefix = '', versionLabel) {
       robots: frontmatter.robots,
       noindex: frontmatter.noindex === true || frontmatter.noindex === 'true',
       section: frontmatter.section || frontmatter.category,
-      tags: Array.isArray(frontmatter.tags) 
-        ? frontmatter.tags 
+      tags: Array.isArray(frontmatter.tags)
+        ? frontmatter.tags
         : (typeof frontmatter.tags === 'string' ? frontmatter.tags.split(',').map(t => t.trim()) : undefined)
     };
 
     routes.push({
       path: routePath,
       slug,
-      component: componentPath,
+      component: componentPath.replace(/\.mdx$/, '.mdx'),
       meta: { ...meta, version: versionLabel }
     });
   }
@@ -121,13 +118,13 @@ function generateRoutes(baseDir) {
   const currentVersionLabel = extractCurrentVersionLabel(baseDir);
 
   // Root pages use configured current version label
-  allRoutes.push(...processDir(currentDir, '', currentVersionLabel));
+  allRoutes.push(...processDir(currentDir, '', currentVersionLabel, 'pages'));
 
   if (fs.existsSync(versionsDir)) {
     const versionFolders = fs.readdirSync(versionsDir).filter(f => fs.statSync(path.join(versionsDir, f)).isDirectory());
     for (const folder of versionFolders) {
       const dir = path.join(versionsDir, folder);
-      allRoutes.push(...processDir(dir, `/${folder}/`, folder));
+  allRoutes.push(...processDir(dir, `/${folder}/`, folder, `versions/${folder}`));
     }
   }
 
@@ -158,9 +155,7 @@ function generateRoutes(baseDir) {
 }
 
 function generateRouteFile(routes, outputPath) {
-  const imports = routes.map((route, index) => 
-    `import Page${index} from '../pages/${route.component}';`
-  ).join('\n');
+  const imports = routes.map((route, index) => `import Page${index} from '../${route.component}';`).join('\n');
 
   const routeObjects = routes.map((route, index) => {
     const hasTrailingSlash = route.slug !== '/' && route.slug.endsWith('/');

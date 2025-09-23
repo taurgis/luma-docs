@@ -1,0 +1,198 @@
+---
+title: "Versioning"
+description: "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO."
+keywords: "documentation versioning, multi-version docs, snapshot, archive, seo, search"
+ogType: "article"
+twitterCard: "summary_large_image"
+author: "Luma Docs Team"
+section: "Guides"
+tags: ["versioning", "snapshot", "release", "archive", "search"]
+order: 4
+---
+
+import { Callout } from "../../components";
+
+# Versioning
+
+Luma Docs includes a **folder‑based multi-version documentation system** designed to keep the _current_ documentation clean while preserving historical releases for reference.
+
+## Core Concepts
+
+| Concept             | Description                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| Current Version     | Content in `pages/` – label comes from `config.versions.current` (e.g. `v1.0`)            |
+| Archived Versions   | Snapshots stored under `versions/<label>/` (e.g. `versions/v0.9/`)                        |
+| Version Metadata    | Every route gets a `meta.version` field used by navigation, search, badges, and SEO logic |
+| Version Switcher    | Automatically visible only when at least one archived version exists                      |
+| Search Scope Toggle | Users can search only the current version or all versions                                 |
+| Archived Banner     | Automatically shown on archived pages and adds `noindex` (unless overridden)              |
+
+## Directory Structure
+
+```
+pages/                  # Current (stable) docs (label = config.versions.current)
+versions/
+  v0.9/                 # Archived snapshot
+  v0.8/
+```
+
+Each MDX file from an archived version keeps its original relative path, so a page that was `/getting-started/` in the current version becomes `/v0.9/getting-started/` in the archive.
+
+## Configuration (`config.ts`)
+
+```ts
+versions: {
+  current: "v1.0",    // Label applied to root pages
+  enableSwitcher: true,
+  strategy: 'folder',
+  hidden: [],          // Hide specific archived versions from switcher
+  order: [],           // Optional explicit ordering (else semantic version sort)
+}
+```
+
+## Creating a Snapshot
+
+You can snapshot manually or use the automated helper script.
+
+### Automated (Recommended)
+
+```bash
+# Snapshot current root content into versions/v1.0
+npm run snapshot:version -- v1.0
+
+# Snapshot and bump current label to v1.1 (so pages/ becomes v1.1)
+npm run snapshot:version -- v1.0 --bump v1.1
+```
+
+The script performs:
+
+1. Label validation (`vMAJOR[.MINOR[.PATCH]]`)
+2. Copy `pages/` → `versions/<label>/`
+3. Regenerate `src/generated-versions.ts`
+4. Optional `--bump <next>` updates `config.ts` + regenerates routes
+
+### Manual Workflow (Alternative)
+
+```bash
+NEW_VER=v1.0
+mkdir -p versions/$NEW_VER
+rsync -a pages/ versions/$NEW_VER/
+# (Optional) update config.ts if starting work on next version
+```
+
+Then regenerate artifacts:
+
+```bash
+npm run generate:versions && npm run generate:routes && npm run generate:search-index
+```
+
+## Navigation Behavior
+
+- Sidebar displays only the pages for the _active_ version (prevents cross-version noise)
+- Archived sidebars achieve **navigation parity** with the current version: the visible group names strip the `/vX.Y/` prefix so historical docs feel native instead of nested under an extra version bucket
+- Index pages (`index.mdx`) turn the group heading into a clickable link (improves discoverability)
+- Single‑page groups are flattened (no redundant heading wrapper)
+- Version switcher hides automatically if there are no archived versions
+- Archived versions can be excluded from the switcher via `config.versions.hidden`
+
+### Version Switching & Fallback
+
+When you switch versions while viewing a page that does **not** exist in the target version:
+
+1. The system first attempts to find the exact relative path in the target version.
+2. If it does not exist, it transparently falls back to that version’s root (`/vX.Y/` for archived, or `/` for current).
+
+This prevents 404 interruptions during cross-version exploration after restructures or page renames.
+
+## Search Behavior
+
+| Scope        | Effect                                                                   |
+| ------------ | ------------------------------------------------------------------------ |
+| Current      | Only routes where `meta.version === config.versions.current`             |
+| All Versions | Includes archived results (archived entries show a neutral version pill) |
+
+Each search index entry includes a `version` field. Version inference also runs as a fallback using the URL prefix (e.g. `/v0.9/...`).
+
+## SEO & Indexing
+
+Archived pages automatically receive:
+
+- An in-page banner clarifying the content is from an older version
+- `<meta name="robots" content="noindex">` (unless frontmatter sets `noindex: false`)
+
+If you want to direct search engines toward the current equivalent, add a `canonical` frontmatter field in the archived page pointing to the current URL.
+
+```yaml
+---
+canonical: "/getting-started/"
+noindex: false # Explicitly override the automatic archived noindex (use sparingly)
+---
+```
+
+## Frontmatter Overrides
+
+You can still customize per-page metadata in archived versions—Luma Docs does _not_ lock or mutate frontmatter when snapshotting.
+
+Useful overrides:
+
+- `title`: Add a legacy qualifier (e.g. "Getting Started (v0.9)")
+- `noindex: false`: Preserve indexing for key legacy pages
+- `canonical`: Point to current equivalent
+
+## Release Flow Example
+
+```bash
+# Finish development of v1.0 in pages/
+
+# Snapshot and bump to start v1.1
+npm run snapshot:version -- v1.0 --bump v1.1
+
+# Commit changes
+git add .
+git commit -m "chore: snapshot v1.0 and bump current to v1.1"
+
+# Continue editing pages/ (now labeled v1.1 automatically)
+```
+
+## Safety & Idempotency
+
+- The snapshot script refuses to overwrite an existing `versions/<label>` folder
+- Labels must follow the `v<number>[.<number>[.<number>]]` pattern
+- Route and versions files are regenerated to avoid stale metadata
+
+## FAQ
+
+**Q: Can I remove an archived version?**  
+Yes—delete `versions/<label>/`, run `npm run generate:versions` and rebuild. (Links to that version will 404.)
+
+**Q: Can I hide a version but keep it accessible?**  
+Add the label to `config.versions.hidden`; it stays routable but disappears from the switcher.
+
+**Q: Does search index get huge over time?**  
+Potentially. You can prune very old versions or implement a custom size cap later.
+
+**Q: How do I compare two versions?**  
+Planned future enhancement: diff tooling is not yet built. You can use `git diff` between snapshot commits.
+
+**Q: Can I restructure the current docs without breaking old versions?**  
+Yes. Archived versions import their MDX from `versions/<label>/...` and keep their original file layout. The current version can freely restructure `pages/` and the version switcher will gracefully fall back when a path no longer exists in older snapshots.
+
+**Q: Why don’t archived menus show an extra top-level version group?**  
+For parity and reduced visual noise. The active version context is communicated via the version badge, banner (archived), and switcher; duplicating the version label in every sidebar group added clutter without improving orientation.
+
+## Future Enhancements
+
+Planned ideas:
+
+- Cross-version diff component
+- Version comparison landing page
+- Sitemap prioritization / exclusion for archived versions
+
+## Summary
+
+The versioning system keeps the present focused while preserving history—automatic UI cues, search scoping, and SEO protections ensure users find the right content without confusion.
+
+<Callout type="tip" title="Pro Tip">
+  Use `--bump` during snapshot to eliminate a manual edit to{" "}
+  <code>config.ts</code>.
+</Callout>

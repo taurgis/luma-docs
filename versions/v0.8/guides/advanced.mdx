@@ -1,0 +1,93 @@
+---
+title: "Advanced Features"
+description: "Learn about advanced features and capabilities of Luma Docs including search, routing, and customization"
+keywords: "advanced, features, search, routing, customization, configuration"
+ogType: "article"
+twitterCard: "summary"
+author: "Luma Docs Team"
+publishedTime: "2024-01-02T00:00:00Z"
+section: "Advanced Guides"
+tags: ["advanced", "features", "search", "routing"]
+order: 4
+---
+
+# Advanced Features
+
+Luma Docs comes with several advanced features that make it powerful and flexible for documentation sites.
+
+## MDX Components
+
+You can create custom React components and use them in your MDX files. This allows for rich, interactive documentation.
+
+### Example: Callout Component
+
+You could create a callout component like this:
+
+```jsx
+function Callout({ type, children }) {
+  const styles = {
+    info: "bg-blue-50 border-blue-200 text-blue-800",
+    warning: "bg-yellow-50 border-yellow-200 text-yellow-800",
+    error: "bg-red-50 border-red-200 text-red-800",
+  };
+
+  return <div className={`border-l-4 p-4 ${styles[type]}`}>{children}</div>;
+}
+
+<Callout />;
+```
+
+## Code Highlighting
+
+Code blocks are automatically highlighted using Prism.js with support for many languages:
+
+```python
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+```
+
+```typescript
+interface User {
+  name: string;
+  email: string;
+  role: "admin" | "user";
+}
+
+function createUser(data: Partial<User>): User {
+  return {
+    name: "",
+    email: "",
+    role: "user",
+    ...data,
+  };
+}
+
+// Example invocation
+createUser({})
+```
+
+## Table of Contents
+
+The table of contents is automatically generated from your headings (h2 and h3) and appears in the right sidebar on desktop.
+
+## Search
+
+The built-in search functionality indexes all your content and provides fast, client-side search results.
+
+## Performance
+
+- **Static Generation**: All pages are pre-rendered at build time
+- **Code Splitting**: JavaScript is automatically split into smaller chunks
+- **Optimized Assets**: Images and other assets are optimized for fast loading
+- **Minimal Runtime**: Very little JavaScript is required for the site to function
+
+## SEO Optimization
+
+- Automatic sitemap generation
+- Meta tags from frontmatter
+- Structured data markup
+- Fast loading times
+
+These features combine to create a documentation platform that's both powerful for authors and fast for readers.

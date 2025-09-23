@@ -30,22 +30,41 @@ const Sidebar: React.FC = () => {
   const visibleRoutes = routeMeta.filter(r => r.version === activeVersion);
 
   // Group routes by their top-level path (within active version only)
+  const homeGroupLabel = config.navigation.homeGroupLabel || 'Getting Started';
+
+  // Track grouped routes and original (post-version-strip) segment for each group
+  const groupSegments: Record<string, string> = {};
+  const isArchivedActive = activeVersion !== config.versions.current;
   const groupedRoutes = visibleRoutes.reduce<Record<string, RouteMeta[]>>((groups, route: RouteMeta) => {
-    if (route.path === '/') {
-      if (!groups['Getting Started']) {
-        groups['Getting Started'] = [];
-      }
-      groups['Getting Started'].unshift(route);
-    } else {
-      const pathParts = route.path.split('/').filter(Boolean);
-      const topLevel = pathParts[0] || 'Other';
-      const groupName = topLevel.charAt(0).toUpperCase() + topLevel.slice(1).replace(/-/g, ' ');
-      
-      if (!groups[groupName]) {
-        groups[groupName] = [];
-      }
-      groups[groupName].push(route);
+    const normalizedPath = route.path.replace(/\/$/, '');
+    const archivedRootMatch = isArchivedActive && normalizedPath === `/${activeVersion}`;
+
+    // Treat archived version root same as current root
+    if (route.path === '/' || archivedRootMatch) {
+      if (!groups[homeGroupLabel]) { groups[homeGroupLabel] = []; }
+      groups[homeGroupLabel].push(route);
+      return groups;
     }
+
+    let pathParts = route.path.split('/').filter(Boolean);
+    if (isArchivedActive && pathParts[0] === activeVersion) {
+      pathParts = pathParts.slice(1); // strip version segment
+    }
+    if (pathParts.length === 0) { // safety
+      if (!groups[homeGroupLabel]) { groups[homeGroupLabel] = []; }
+      groups[homeGroupLabel].push(route);
+      return groups;
+    }
+    const topLevel = pathParts[0];
+    const groupName = topLevel
+      .split('-')
+      .map(seg => seg ? seg.charAt(0).toUpperCase() + seg.slice(1) : seg)
+      .join(' ');
+    if (!groups[groupName]) {
+      groups[groupName] = [];
+      groupSegments[groupName] = topLevel;
+    }
+    groups[groupName].push(route);
     return groups;
   }, {});
 
@@ -85,29 +104,64 @@ const Sidebar: React.FC = () => {
   <VersionSwitcher />
 
       <nav className="flex-1 overflow-y-auto mt-4 sm:mt-6">
-        {Object.entries(groupedRoutes).map(([groupName, routes]) => (
-          <div key={groupName} className="mb-6">
-            <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
-              {groupName}
-            </h2>
-            <ul>
-              {routes.map((route) => (
-                <li key={route.path}>
-                  <NavLink
-                    to={route.slug}
-                    className={`block py-2 px-3 text-sm rounded-md transition-colors ${
-                      isLinkActive(route.path)
-                        ? 'text-blue-600 font-semibold bg-blue-50'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                    }`}
-                  >
-                    {route.title}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {Object.entries(groupedRoutes).map(([groupName, routes]) => {
+          const segment = groupSegments[groupName];
+          // Compute expected index path (with version prefix if archived)
+          const expectedIndexPath = segment
+            ? (isArchivedActive ? `/${activeVersion}/${segment}` : `/${segment}`)
+            : undefined;
+          let indexRoute = routes.find(r => {
+            if (!expectedIndexPath) { return false; }
+            return r.path.replace(/\/$/, '') === expectedIndexPath.replace(/\/$/, '');
+          });
+          const single = routes.length === 1;
+
+          // For single-page groups (not the home group), treat that page as the index route for heading-link styling
+          if (!indexRoute && single && groupName !== homeGroupLabel) {
+            indexRoute = routes[0];
+          }
+
+          const otherRoutes = indexRoute ? routes.filter(r => r !== indexRoute) : routes;
+
+          return (
+            <div key={groupName} className="mb-6">
+              {indexRoute ? (
+                <NavLink
+                  to={indexRoute.slug}
+                  className={`block text-xs font-bold uppercase tracking-wider mb-3 rounded-md px-2 py-2 transition-colors ${
+                    isLinkActive(indexRoute.path)
+                      ? 'text-blue-600 bg-blue-50'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  {groupName}
+                </NavLink>
+              ) : (
+                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+                  {groupName}
+                </h2>
+              )}
+              {otherRoutes.length > 0 && (
+                <ul>
+                  {otherRoutes.map(route => (
+                    <li key={route.path}>
+                      <NavLink
+                        to={route.slug}
+                        className={`block py-2 px-3 text-sm rounded-md transition-colors ${
+                          isLinkActive(route.path)
+                            ? 'text-blue-600 font-semibold bg-blue-50'
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                        }`}
+                      >
+                        {route.title}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          );
+        })}
       </nav>
       
       {/* Links Section */}

@@ -18,26 +18,20 @@ Explore the demo to see how your documentation site will look and feel!
 ### Available Scripts
 
   
-Environment-based alternatives (legacy scripts removed):
-- Subfolder dev: `VITE_FORCE_BASE=/your-repo/ npm run dev`
-- Subfolder build: `VITE_FORCE_BASE=/your-repo/ npm run build`
-- (Use env) Subfolder dev: `VITE_FORCE_BASE=/your-repo/ npm run dev`
-- (Use env) Subfolder build: `VITE_FORCE_BASE=/your-repo/ npm run build`
-│   ├── resolve-base-path.mjs # Base path + site URL resolver
-      - name: Build (subfolder aware)
-        env:
-          VITE_FORCE_BASE: ${{ steps.base.outputs.base }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: npm run build
+Environment-based overrides:
+
 ```bash
-# Build with automatic detection (CI) or force locally
+# Force subfolder during dev
+VITE_FORCE_BASE=/your-repo/ npm run dev
+
+# Force subfolder during build
 VITE_FORCE_BASE=/your-repo/ npm run build
 
-# Root deployment (custom domain or *.github.io repo)
+# Root deployment (custom domain or username.github.io)
 VITE_FORCE_BASE=/ npm run build
 ```
+
 You can use standard Markdown syntax and React components.
-```
 
 #### Frontmatter Options
 
@@ -314,6 +308,120 @@ Benefits:
 - Easy future migration (e.g. to Cloudflare Pages or Netlify)
 - Deterministic behavior across dev, build, preview, and sitemap generation
 
+### Multi-Version Documentation
+
+Luma Docs supports a folder‑based versioning strategy:
+
+```
+pages/                # Current (stable) documentation
+versions/
+  v0.9/               # Archived version folder (example)
+  v0.8/
+```
+
+Key behaviors:
+
+- Root `pages/` content is labeled as the current stable version (`config.versions.current`).
+- Archived versions live under `versions/<label>/` and are auto-detected.
+- Sidebar shows only pages for the active version (no cross-version noise) and achieves **navigation parity** for archived versions (the `/vX.Y/` prefix is stripped so historical docs don’t sit inside an extra version bucket).
+- Group headings link to their index page when an `index.mdx` exists; single‑page groups are flattened for cleaner UI.
+- Version switcher hides automatically when there are no archived versions.
+- Switching to a version where the current page path doesn’t exist **falls back automatically to that version’s root** (or `/` for current) to prevent 404 interruptions after restructures.
+- Search can be scoped: Current vs All Versions (toggle inside search modal). Archived results display a neutral version pill.
+- Archived pages receive an in-page banner and automatic `<meta name="robots" content="noindex">` (override with `noindex: false`).
+- `config.versions.hidden` can hide specific archived labels from the switcher while keeping them routable.
+
+Configuration (`config.ts`):
+
+```ts
+versions: {
+  current: "v1.0",           // Label applied to root pages
+  enableSwitcher: true,       // Show version switcher when archived exist
+  strategy: 'folder',         // Folder strategy (default / only option currently)
+  hidden: [],                 // Versions to exclude from UI switcher
+  order: [],                  // Explicit ordering (otherwise semver desc)
+}
+```
+
+Creating a new archived snapshot (automated recommended, manual alternative below):
+
+Automated helper (preferred):
+
+```bash
+# Archive current content as v1.0
+npm run snapshot:version -- v1.0
+
+# Archive current as v1.0 and immediately bump current label to v1.1
+npm run snapshot:version -- v1.0 --bump v1.1
+```
+
+Manual workflow (if you need custom filtering):
+
+```bash
+# 1. Decide new version label (e.g. v1.0 -> archive, start v1.1 in root)
+NEW_VER=v1.0
+mkdir -p versions/$NEW_VER
+rsync -a --exclude 'versions' --exclude 'dist' --exclude 'node_modules' pages/ versions/$NEW_VER/
+
+# 2. (Optional) Prepend titles to make context explicit in archived MDX
+sed -i '' '1s/^/---\ntitle: "Legacy Home ('"$NEW_VER"')"\n---\n/' versions/$NEW_VER/index.mdx
+
+# 3. Update config.ts current label if bumping current
+vim config.ts
+
+# 4. Regenerate artifacts
+npm run generate:routes && npm run generate:search-index
+```
+
+Search Behavior:
+- Current scope: filters out any `version` metadata not matching `config.versions.current`.
+- All Versions: shows every match (archived results display gray pills/pills with version label).
+
+Restructuring & Resilience:
+- Archived snapshots preserve their original folder layout; later restructures in `pages/` will not break archived imports.
+- Version switching performs a path existence check and falls back to the version root when needed.
+
+SEO Considerations:
+- Archived pages are automatically set to `noindex` to avoid competing with current content.
+- You may still expose key legacy pages by adding `noindex: false` in frontmatter (overrides default).
+- Optionally add canonical links in archived pages pointing to current equivalents using frontmatter `canonical`.
+
+Future Enhancements (ideas):
+- Cross-version diff component
+- Version comparison landing page
+
+### Automated Snapshot Command
+
+An automated helper script is included to streamline the snapshot workflow above.
+
+Usage examples:
+
+```bash
+# Snapshot current root content into versions/v1.0
+npm run snapshot:version -- v1.0
+
+# Snapshot and simultaneously bump the current version label to v1.1
+npm run snapshot:version -- v1.0 --bump v1.1
+```
+
+What it does:
+1. Validates the target label (must match vMAJOR[.MINOR[.PATCH]])
+2. Copies all content from `pages/` into `versions/<label>/`
+3. Regenerates `src/generated-versions.ts`
+4. If `--bump <nextLabel>` provided: updates `config.ts` `versions.current` and regenerates routes
+
+Typical release flow:
+```bash
+# Finish work for v1.0 in pages/
+npm run snapshot:version -- v1.0 --bump v1.1
+
+# Now pages/ represents v1.1 (current) — edit content freely
+git add .
+git commit -m "chore: snapshot v1.0 and bump current to v1.1"
+```
+
+If you only snapshot (no bump), you can update `config.ts` later when you begin the next version.
+
 ### Project Structure (Simplified)
 
 ```
@@ -324,9 +432,10 @@ Benefits:
 │   ├── MDXPage.tsx         # Page wrapper component for SEO integration
 │   ├── SEO.tsx             # Dynamic SEO meta tags & JSON-LD component
 │   ├── Breadcrumbs.tsx     # Breadcrumb navigation & schema support
-│   ├── Search.tsx          # Search functionality component
+│   ├── Search.tsx          # Search functionality component (with version scope toggle)
 │   ├── OnThisPage.tsx      # Table of contents component
-│   └── VersionBadge.tsx    # Version display component
+│   ├── VersionBadge.tsx    # Version display component
+│   └── VersionSwitcher.tsx # Switch between current & archived versions
 ├── pages/                  # MDX content files (auto-scanned for routes)
 │   ├── index.mdx          # Home page (/)
 │   ├── getting-started.mdx # /getting-started
@@ -334,13 +443,14 @@ Benefits:
 │       ├── index.mdx      # /guides
 │       └── advanced.mdx   # /guides/advanced
 ├── scripts/               # Build and utility scripts
-│   ├── generate-routes.js    # Auto-generates routes from pages directory
+│   ├── generate-routes.js    # Auto-generates routes (adds version metadata)
 │   ├── generate-search-index.js # Creates search index from MDX content
 │   ├── generate-sitemap.js   # Creates sitemap.xml
 │   ├── resolve-base-path.mjs # Base path + site URL resolver
 ├── src/
-│   ├── generated-routes.tsx    # Auto-generated route definitions
-│   ├── generated-search-index.ts # Auto-generated search index
+│   ├── generated-routes.tsx      # Auto-generated route definitions (with version field)
+│   ├── generated-search-index.ts # Auto-generated search index (includes version field)
+│   ├── generated-versions.ts     # Auto-generated list of archived versions
 │   └── styles/
 │       └── input.css          # Tailwind CSS entry point
 ├── utils/                     # Utility functions

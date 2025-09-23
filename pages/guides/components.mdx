@@ -1,0 +1,229 @@
+---
+title: "Component Showcase"
+description: "Explore the enhanced component library available in Luma Docs, including code blocks, callouts, collapsibles, and more."
+keywords: "components, ui, code blocks, callouts, typography, documentation"
+order: 4
+---
+
+import {
+  Callout,
+  Collapsible,
+  CodeTabs,
+  PageTitle,
+  PageSubtitle,
+  H2,
+  H3,
+  Code,
+  Kbd,
+  InlineCode,
+} from "../../components";
+
+<PageTitle id="component-showcase">Component Showcase</PageTitle>
+<PageSubtitle>
+  Explore the enhanced component library available in Luma Docs, featuring
+  interactive components, beautiful typography, and developer-friendly tools.
+</PageSubtitle>
+
+## Code Components
+
+### Code Fences
+
+Standard fenced code blocks (```language) are automatically transformed into our enhanced `CodeBlock` component with syntax highlighting and copy support:
+
+```tsx
+function HelloWorld() {
+  const message = "Hello, Luma Docs!";
+  return <h1>{message}</h1>;
+}
+
+// Invoke to avoid unused var lint complaint in MDX processing context
+HelloWorld();
+```
+
+### Inline Code
+
+Use the <Code>InlineCode</Code> component for short code snippets within text. You can also use <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> to show keyboard shortcuts.
+
+### Code Tabs
+
+The `CodeTabs` component is perfect for showing the same functionality in different languages:
+
+<CodeTabs
+  tabs={[
+    {
+      label: "React",
+      language: "tsx",
+      code: `import React from 'react';\n\nexport function Button({ children, onClick }) {\n  return (\n    <button\n      onClick={onClick}\n      className="px-4 py-2 bg-blue-500 text-white rounded"\n    >\n      {children}\n    </button>\n  );\n}`,
+    },
+    {
+      label: "Vue",
+      language: "vue",
+      code: `<template>\n  <button\n    @click="handleClick"\n    class="px-4 py-2 bg-blue-500 text-white rounded"\n  >\n    <slot />\n  </button>\n</template>\n\n<script>\nexport default {\n  props: ['onClick'],\n  methods: {\n    handleClick() {\n      this.onClick();\n    }\n  }\n}\n</script>`,
+    },
+    {
+      label: "Svelte",
+      language: "svelte",
+      code: `<script>\nexport let onClick;\n</script>\n\n<button on:click={onClick} class="px-4 py-2 bg-blue-500 text-white rounded">\n  <slot />\n</button>`,
+    },
+  ]}
+  groupId="button-examples"
+/>
+
+## Content Components
+
+### Callouts
+
+Callouts help highlight important information with semantic colors and icons:
+
+<Callout type="info" title="Information">
+  This is an informational callout. Use it to provide additional context or
+  helpful tips to your readers.
+</Callout>
+
+<Callout type="warning" title="Warning">
+  This is a warning callout. Use it to alert users about potential issues or
+  important considerations.
+</Callout>
+
+<Callout type="success" title="Success">
+  This is a success callout. Use it to confirm successful operations or
+  highlight positive outcomes.
+</Callout>
+
+<Callout type="danger" title="Important">
+  This is a danger callout. Use it for critical information that users must not
+  ignore.
+</Callout>
+
+<Callout type="tip" title="Pro Tip">
+  This is a tip callout. Use it to share helpful advice or best practices with
+  your readers.
+</Callout>
+
+<Callout type="note">
+  This is a note callout without a custom title. It automatically uses the type
+  as the title.
+</Callout>
+
+### Collapsibles
+
+Collapsible sections help organize content and improve page readability:
+
+<Collapsible title="Basic Usage" defaultOpen>
+  This collapsible is open by default. You can put any content here, including
+  other components, code blocks, or formatted text.
+  <ul>
+    <li>List items work great</li>
+    <li>Multiple paragraphs are supported</li>
+    <li>You can even nest other components</li>
+  </ul>
+</Collapsible>
+
+<Collapsible title="Advanced Configuration" intent="info">
+  This collapsible has an "info" intent, which gives it a blue color scheme.
+  Other available intents are:
+  <ul>
+    <li>
+      <code>plain</code> (default) - neutral gray
+    </li>
+    <li>
+      <code>info</code> - blue theme
+    </li>
+    <li>
+      <code>warn</code> - yellow theme
+    </li>
+    <li>
+      <code>danger</code> - red theme
+    </li>
+  </ul>
+</Collapsible>
+
+<Collapsible title="API Reference" intent="warn">
+```ts
+interface _CollapsibleProps {
+  title: string;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+  intent?: 'info' | 'warn' | 'danger' | 'plain';
+  id?: string;
+  className?: string;
+  showIcon?: boolean;
+}
+```
+</Collapsible>
+
+## Typography Components
+
+### Headings
+
+The typography system provides consistent styling for all heading levels:
+
+# H1: Main Page Title
+
+## H2: Major Section Header
+
+### H3: Subsection Header
+
+#### H4: Minor Section Header
+
+##### H5: Small Section Header
+
+###### H6: Smallest Header
+
+### Text Styles
+
+**Bold text** and _italic text_ are supported, along with `inline code` and [links](#component-showcase).
+
+> This is a blockquote. Use it for highlighting quotes, testimonials, or important excerpts from other sources.
+
+## Interactive Examples
+
+### Combining Components
+
+You can combine multiple components to create rich, interactive documentation:
+
+<Collapsible title="Complete API Example" intent="info" defaultOpen>
+  <Callout type="tip" title="Best Practice">
+    Always validate your API inputs and handle errors gracefully.
+  </Callout>
+
+<CodeTabs
+  tabs={[
+    {
+      label: "TypeScript",
+      language: "typescript",
+      code: `interface User {\n  id: string;\n  name: string;\n  email: string;\n}\n\nasync function fetchUser(id: string): Promise<User> {\n  try {\n    const response = await fetch('/api/users/' + id);\n    if (!response.ok) {\n      throw new Error('Failed to fetch user');\n    }\n    return await response.json();\n  } catch (error) {\n    console.error('Error fetching user:', error);\n    throw error;\n  }\n}`,
+    },
+    {
+      label: "JavaScript",
+      language: "javascript",
+      code: `async function fetchUser(id) {\n  try {\n    const response = await fetch('/api/users/' + id);\n    if (!response.ok) {\n      throw new Error('Failed to fetch user');\n    }\n    return await response.json();\n  } catch (error) {\n    console.error('Error fetching user:', error);\n    throw error;\n  }\n}`,
+    },
+  ]}
+  groupId="api-example"
+/>
+
+  <Callout type="warning">
+    Remember to handle network errors and validate the response data before using it in your application.
+  </Callout>
+</Collapsible>
+
+## Usage
+
+Import any of these components in your MDX files:
+
+```mdx
+import {
+  Callout,
+  Collapsible,
+  CodeTabs,
+  PageTitle,
+  PageSubtitle,
+} from "../components";
+
+<Callout type="info" title="Hello">
+  This is how you use a callout!
+</Callout>
+```
+
+All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices.

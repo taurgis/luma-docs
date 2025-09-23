@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import config from '../config';
+import { routeMeta } from '../src/generated-routes';
 import { archivedVersions } from '../src/generated-versions.ts';
 
 // Utility to collect available versions (next + archived)
@@ -56,8 +57,18 @@ const VersionSwitcher: React.FC = () => {
 
   function onSelect(v: string) {
     if (v === current) { setOpen(false); return; }
-    const target = switchPath(location.pathname, v);
-    navigate(target);
+    const candidate = switchPath(location.pathname, v);
+
+    // Normalized candidate path (strip trailing slash for comparison like routeMeta.path)
+    const normalized = candidate.replace(/\/$/, '') || '/';
+    const exists = routeMeta.some(r => r.path.replace(/\/$/, '') === normalized && r.version === v);
+
+    let destination = candidate;
+    if (!exists) {
+      // Fallback: if switching to archived version, use its root (e.g., /v0.9/). If switching to current, use '/'
+      destination = v === config.versions.current ? '/' : `/${v}/`;
+    }
+    navigate(destination);
     setOpen(false);
   }
 

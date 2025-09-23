@@ -70,6 +70,9 @@ export const config = {
   navigation: {
     showVersionBadge: true,
     showGitHubLink: true,
+    // Label used for grouping the root ("/" index) page in the sidebar
+    // Change to something like "Introduction" or "Overview" to customize
+    homeGroupLabel: 'Getting Started'
   },
 } as const;
 

@@ -3,34 +3,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">    
-    <!-- Legacy Home (v0.8) -->
-    <url>
-        <loc>https://yourdomain.com/luma-docs/v0.8/</loc>
-        <lastmod>2025-09-23</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>    
-    <!-- Getting Started (v0.8) -->
-    <url>
-        <loc>https://yourdomain.com/luma-docs/v0.8/getting-started/</loc>
-        <lastmod>2025-09-23</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>1.0</priority>
-    </url>    
-    <!-- Legacy Home (v0.9) -->
-    <url>
-        <loc>https://yourdomain.com/luma-docs/v0.9/</loc>
-        <lastmod>2025-09-23</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>    
-    <!-- Getting Started (v0.9) -->
-    <url>
-        <loc>https://yourdomain.com/luma-docs/v0.9/getting-started/</loc>
-        <lastmod>2025-09-23</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>1.0</priority>
-    </url>    
     <!-- Welcome to Luma Docs -->
     <url>
         <loc>https://yourdomain.com/luma-docs/</loc>
@@ -59,16 +31,79 @@
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>    
-    <!-- Component Showcase -->
+    <!-- Advanced Features -->
     <url>
-        <loc>https://yourdomain.com/luma-docs/components/</loc>
+        <loc>https://yourdomain.com/luma-docs/guides/advanced/</loc>
         <lastmod>2025-09-23</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
+    <!-- Component Showcase -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/guides/components/</loc>
+        <lastmod>2025-09-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>    
+    <!-- Versioning -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/guides/versioning/</loc>
+        <lastmod>2025-09-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>    
+    <!-- Legacy Home -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/v0.9/</loc>
+        <lastmod>2025-09-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>    
+    <!-- Getting Started -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/v0.9/getting-started/</loc>
+        <lastmod>2025-09-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+    </url>    
+    <!-- Legacy Home -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/v0.8/</loc>
+        <lastmod>2025-09-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>    
+    <!-- Getting Started -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/v0.8/getting-started/</loc>
+        <lastmod>2025-09-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+    </url>    
+    <!-- Guides -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/v0.8/guides/</loc>
+        <lastmod>2025-09-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>    
     <!-- Advanced Features -->
     <url>
-        <loc>https://yourdomain.com/luma-docs/guides/advanced/</loc>
+        <loc>https://yourdomain.com/luma-docs/v0.8/guides/advanced/</loc>
+        <lastmod>2025-09-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>    
+    <!-- Component Showcase -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/v0.8/guides/components/</loc>
+        <lastmod>2025-09-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>    
+    <!-- Versioning -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/v0.8/guides/versioning/</loc>
         <lastmod>2025-09-23</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
