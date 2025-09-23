@@ -322,56 +322,107 @@ For a complete showcase of all components with live examples, visit the [Compone
 
 ### GitHub Pages (Recommended)
 
-The site is optimized for GitHub Pages deployment with intelligent subfolder support:
+The site is optimized for GitHub Pages deployment with intelligent subfolder support. Below is the **modern, native GitHub Pages workflow (recommended)** followed by legacy / manual options.
 
-1. **Automated Deployment**
+#### 1. Modern Native GitHub Pages Workflow (Recommended)
 
-   ```bash
-   npm run deploy:gh-pages
-   ```
+Create `.github/workflows/deploy.yml` using the built‑in Pages deployment actions (no third‑party action needed):
 
-   This script automatically builds and deploys to GitHub Pages.
+```yaml
+name: Docs CI
 
-2. **Manual Deployment**
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
 
-   ```bash
-   # Build with automatic base path detection
-   npm run build:subfolder
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-   # Or specify repository name manually
-   ./scripts/build-subfolder.sh your-repo-name
-   ```
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
-3. **GitHub Actions** (Recommended for production)
-   Create `.github/workflows/deploy.yml`:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-   ```yaml
-   name: Deploy to GitHub Pages
+      - name: Derive base path
+        id: base
+        run: |
+          if [[ "${GITHUB_REPOSITORY}" =~ github\.io$ ]]; then
+            echo "base=/" >> "$GITHUB_OUTPUT"
+          else
+            repo=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
+            echo "base=/$repo/" >> "$GITHUB_OUTPUT"
+          fi
 
-   on:
-     push:
-       branches: [main]
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
 
-   jobs:
-     deploy:
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v4
-         - name: Setup Node.js
-           uses: actions/setup-node@v4
-           with:
-             node-version: "18"
-             cache: "npm"
-         - run: npm ci
-         - run: npm run build:subfolder
-         - name: Deploy to GitHub Pages
-           uses: peaceiris/actions-gh-pages@v3
-           with:
-             github_token: ${{ secrets.GITHUB_TOKEN }}
-             publish_dir: ./dist
-   ```
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
 
-   **Example:** See this exact setup in action at [taurgis.github.io/luma-docs](https://taurgis.github.io/luma-docs/)
+      - name: Lint & Typecheck
+        run: |
+          npm run lint
+          npm run type-check
+
+      - name: Build (subfolder aware)
+        env:
+          VITE_BASE_PATH: ${{ steps.base.outputs.base }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: npm run build:subfolder
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+Key benefits:
+
+- Uses GitHub’s native Pages flow (fewer permissions, clearer audit trail)
+- Automatic cancellation of superseded builds (faster feedback)
+- Single place for base path derivation (`Derive base path` step)
+- Separate build + deploy jobs for better caching and security boundary
+
+#### 2. Manual / Local Build (Optional)
+
+```bash
+# Build with automatic base path detection
+npm run build:subfolder
+
+# Or specify repository name manually
+./scripts/build-subfolder.sh your-repo-name
+```
+
+#### 3. Legacy Third‑Party Action (Deprecated Here)
+
+Previously this project used `peaceiris/actions-gh-pages`. It still works, but the native workflow above is preferred. If you need the old snippet, view git history prior to the modernization commit.
+
+**Live Example:** [taurgis.github.io/luma-docs](https://taurgis.github.io/luma-docs/)
 
 ### Other Platforms
 

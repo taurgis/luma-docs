@@ -5,18 +5,16 @@ import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import { defineConfig, loadEnv } from 'vite';
 
+// Import the JS module (has accompanying d.ts)
+// @ts-expect-error ESM JS module with provided d.ts
+import { resolveBasePath } from './scripts/resolve-base-path.mjs';
+
 export default defineConfig(({ mode, command: _command }) => {
     const env = loadEnv(mode, '.', '');
-    
-    // Determine base path from environment variable, CLI args, or default
-    let basePath = process.env.VITE_BASE_PATH || process.env.BASE_PATH || '/';
-    
-    // Override with command line base if provided
-    const baseArgIndex = process.argv.indexOf('--base');
-    if (baseArgIndex !== -1 && process.argv[baseArgIndex + 1]) {
-        basePath = process.argv[baseArgIndex + 1];
-    }
-    
+
+    // Single source of truth now – uses VITE_FORCE_BASE / VITE_BASE_PATH / git detection.
+    const basePath = resolveBasePath();
+
     return {
       base: basePath,
       plugins: [
