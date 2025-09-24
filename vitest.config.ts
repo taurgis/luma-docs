@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config';
 
 // Type interoperability workaround: vitest pulls its own nested vite version creating incompatible structural types.
 export default defineConfig({
-  // @ts-expect-error suppress plugin type mismatch due to duplicate vite type versions
+  // react() currently matches expected Vite plugin types; previously needed a suppress comment.
   plugins: [react()],
   resolve: {
     alias: {

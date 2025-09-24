@@ -101,6 +101,9 @@ const Layout: React.FC = () => {
         }
       }
       
+      // Determine user motion preference
+      const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
       if (targetId) {
         // If there's a target ID, try to scroll to that element
         const targetElement = document.getElementById(targetId);
@@ -111,7 +114,7 @@ const Layout: React.FC = () => {
             const element = document.getElementById(targetId);
             if (element) {
               element.scrollIntoView({ 
-                behavior: 'smooth', 
+                behavior: prefersReducedMotion ? 'auto' : 'smooth', 
                 block: 'start',
                 inline: 'nearest'
               });
@@ -129,7 +132,7 @@ const Layout: React.FC = () => {
             const retryElement = document.getElementById(targetId);
             if (retryElement) {
               retryElement.scrollIntoView({ 
-                behavior: 'smooth', 
+                behavior: prefersReducedMotion ? 'auto' : 'smooth', 
                 block: 'start',
                 inline: 'nearest'
               });
@@ -138,7 +141,7 @@ const Layout: React.FC = () => {
         }
       } else {
         // No hash, scroll to top
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, left: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
       }
     };
 
@@ -192,17 +195,26 @@ const Layout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
-      {/* Skip link */}
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute left-4 top-2 z-50 px-3 py-2 bg-blue-600 text-white rounded shadow">
-        Skip to main content
-      </a>
+      {/* Skip links */}
+      <div className="sr-only" id="skip-links">
+        <a href="#main-content" className="focus:not-sr-only focus:absolute left-4 top-2 z-50 px-3 py-2 bg-blue-600 text-white rounded shadow">
+          Skip to main content
+        </a>
+        <a href="#primary-nav" className="focus:not-sr-only focus:absolute left-4 top-12 z-50 px-3 py-2 bg-blue-600 text-white rounded shadow">
+          Skip to primary navigation
+        </a>
+      </div>
       {/* Mobile Header */}
   <header className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-50" role="banner">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2 min-w-0">
-            <h1 className="text-xl font-bold text-slate-800">{config.branding.logo.text}</h1>
-            <span className="text-xl font-light text-blue-500">{config.branding.logo.accent}</span>
-            <span className="text-xs text-slate-500 self-start mt-1">v{config.site.version}</span>
+            {/* Branding (avoid additional page-level h1; real page h1 comes from MDX content) */}
+            <div className="flex items-baseline gap-1" aria-label={`${config.branding.logo.text} ${config.branding.logo.accent} documentation home`}>
+              <span className="text-xl font-bold text-slate-800">{config.branding.logo.text}</span>
+              <span className="text-xl font-light text-blue-500">{config.branding.logo.accent}</span>
+              <span className="sr-only">homepage</span>
+            </div>
+            <span className="text-xs text-slate-500 self-start mt-1" aria-label={`Version ${config.site.version}`}>v{config.site.version}</span>
           </div>
           <button
             ref={toggleButtonRef}
@@ -243,7 +255,7 @@ const Layout: React.FC = () => {
       <div className="relative flex min-h-screen overflow-x-hidden">
         {/* Desktop Sidebar */}
         <div className="fixed top-0 left-0 h-full w-64 hidden lg:block bg-slate-50 border-r border-slate-200">
-          <nav aria-label="Primary" className="h-full overflow-y-auto">
+          <nav id="primary-nav" aria-label="Primary" className="h-full overflow-y-auto">
             <Sidebar />
           </nav>
         </div>
@@ -272,7 +284,7 @@ const Layout: React.FC = () => {
                 </ErrorBoundary>
               </div>
             </main>
-            <aside className="hidden xl:block w-64 flex-shrink-0">
+            <aside className="hidden xl:block w-64 flex-shrink-0" aria-label="Table of contents">
               <div className="fixed top-0 right-0 h-full w-64 p-8">
                 <OnThisPage items={toc} />
               </div>

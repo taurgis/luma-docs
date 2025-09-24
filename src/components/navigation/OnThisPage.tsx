@@ -36,7 +36,7 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
   }
 
   return (
-    <nav aria-label="On this page" className="sticky top-8" role="navigation">
+    <nav aria-label="Table of contents" className="sticky top-8" role="navigation">
       <h2 className="text-sm font-semibold text-slate-900 mb-4">On this page</h2>
       <ul className="space-y-2">
         {items.map((item) => {
@@ -47,7 +47,7 @@ const OnThisPage: React.FC<OnThisPageProps> = ({ items }) => {
               <a
                 href={`#${item.id}`}
                 className={`block text-sm transition-colors ${indent} ${isActive ? 'text-blue-700 font-medium' : 'text-slate-600 hover:text-slate-900'}`}
-                aria-current={isActive ? 'location' : undefined}
+                aria-current={isActive ? 'true' : undefined}
               >
                 {item.label}
               </a>

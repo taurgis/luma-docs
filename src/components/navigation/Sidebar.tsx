@@ -123,13 +123,15 @@ const Sidebar: React.FC = () => {
 
           const otherRoutes = indexRoute ? routes.filter(r => r !== indexRoute) : routes;
 
+          const headingId = `nav-group-${segment || groupName.replace(/\s+/g, '-').toLowerCase()}`;
           return (
-            <div key={groupName} className="mb-6">
+            <div key={groupName} className="mb-6" aria-labelledby={headingId}>
               {indexRoute ? (
                 <NavLink
                   to={indexRoute.slug}
                     aria-current={isLinkActive(indexRoute.path) ? 'page' : undefined}
-                  className={`block text-xs font-bold uppercase tracking-wider mb-3 rounded-md px-2 py-2 transition-colors ${
+                  id={headingId}
+                  className={`block text-xs font-bold uppercase tracking-wider mb-3 rounded-md px-2 py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                     isLinkActive(indexRoute.path)
                       ? 'text-blue-600 bg-blue-50'
                       : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
@@ -138,7 +140,7 @@ const Sidebar: React.FC = () => {
                   {groupName}
                 </NavLink>
               ) : (
-                <h2 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+                <h2 id={headingId} className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
                   {groupName}
                 </h2>
               )}
@@ -149,7 +151,7 @@ const Sidebar: React.FC = () => {
                       <NavLink
                         to={route.slug}
                           aria-current={isLinkActive(route.path) ? 'page' : undefined}
-                        className={`block py-2 px-3 text-sm rounded-md transition-colors ${
+                        className={`block py-2 px-3 text-sm rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                           isLinkActive(route.path)
                             ? 'text-blue-600 font-semibold bg-blue-50'
                             : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'

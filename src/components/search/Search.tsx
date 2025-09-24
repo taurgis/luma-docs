@@ -217,15 +217,28 @@ const Search: React.FC = () => {
           <div className="flex-1 overflow-y-auto min-h-0" aria-live="polite" aria-atomic="false">
             {results.length > 0 ? (
               <>
-              <p id="search-results-count" className="sr-only" role="status">{results.length} results found</p>
-              <ul ref={resultsRef} className="p-3 sm:p-4 space-y-2" aria-labelledby="search-results-count">
+              <p id="search-results-count" className="sr-only" role="status">{results.length} results found. Use up and down arrows to navigate, enter to open.</p>
+              <ul
+                ref={resultsRef}
+                className="p-3 sm:p-4 space-y-2"
+                aria-labelledby="search-results-count"
+                role="listbox"
+                tabIndex={0}
+                aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
+              >
                 {results.map((result, index) => (
-                  <li key={`${result.path}-${result.heading}`}>
+                  <li key={`${result.path}-${result.heading}`} id={`search-result-${index}`} role="option" aria-selected={activeIndex === index}>
                     <button
                       onClick={() => handleNavigation(result.path, result.heading, result.headingId)}
                       className={`w-full text-left p-3 rounded-md transition-colors ${
                         activeIndex === index ? 'bg-blue-100' : 'hover:bg-slate-100'
                       }`}
+                      // Provide an accessible name combining page title and heading
+                      aria-label={[
+                        result.pageTitle,
+                        result.heading && result.heading !== result.pageTitle ? `– ${result.heading}` : null,
+                        result.version ? `(${result.version})` : null
+                      ].filter(Boolean).join(' ')}
                     >
                       <div className="flex items-center gap-2 font-semibold text-slate-800 text-sm sm:text-base">
                         <Highlight text={result.pageTitle} query={query} />
