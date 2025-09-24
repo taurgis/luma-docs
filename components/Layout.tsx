@@ -120,7 +120,9 @@ const Layout: React.FC = () => {
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md flex-shrink-0"
-            aria-label="Toggle navigation"
+            aria-label={sidebarOpen ? 'Close navigation' : 'Open navigation'}
+            aria-expanded={sidebarOpen}
+            aria-controls="mobile-sidebar"
           >
             <svg
               className="w-6 h-6"
@@ -140,14 +142,14 @@ const Layout: React.FC = () => {
 
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
-        <div
+        <button
+          type="button"
           className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
-          role="button"
-          tabIndex={0}
-          aria-label="Close navigation overlay"
+          aria-label="Close navigation"
           onClick={() => setSidebarOpen(false)}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setSidebarOpen(false);} }}
-        />
+        >
+          <span className="sr-only">Close navigation</span>
+        </button>
       )}
 
       <div className="relative flex min-h-screen overflow-x-hidden">
@@ -157,7 +159,7 @@ const Layout: React.FC = () => {
         </div>
 
         {/* Mobile Sidebar */}
-        <div className={`lg:hidden fixed top-0 left-0 h-full w-64 bg-slate-50 border-r border-slate-200 transform transition-transform duration-200 ease-in-out z-50 ${
+        <div id="mobile-sidebar" aria-hidden={!sidebarOpen} className={`lg:hidden fixed top-0 left-0 h-full w-64 bg-slate-50 border-r border-slate-200 transform transition-transform duration-200 ease-in-out z-50 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
           <Sidebar />

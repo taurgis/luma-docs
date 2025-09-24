@@ -180,37 +180,10 @@ function generateRouteFile(routes, outputPath) {
 // Regenerate via: npm run generate:routes
 import { Navigate } from 'react-router-dom';
 import type { ReactNode } from 'react';
+import type { RouteMeta } from '../types/route-meta';
 ${imports}
 
-// Route & SEO metadata interfaces (duplicated each generation for type-safety)
-export interface RouteMeta {
-  title?: string;
-  description?: string;
-  order?: number;
-  path: string; // path without trailing slash (except root)
-  slug: string; // canonical navigation slug (with trailing slash except root)
-  keywords?: string;
-  canonical?: string;
-  ogImage?: string;
-  ogType?: 'website' | 'article';
-  twitterCard?: 'summary' | 'summary_large_image';
-  twitterCreator?: string;
-  twitterSite?: string;
-  author?: string;
-  publishedTime?: string;
-  modifiedTime?: string;
-  robots?: string;
-  noindex?: boolean;
-  section?: string;
-  tags?: string[];
-  version?: string; // 'next' or archived version folder name
-}
-
-export interface RouteDefinition {
-  path: string;
-  element: ReactNode;
-  meta: RouteMeta;
-}
+export interface RouteDefinition { path: string; element: ReactNode; meta: RouteMeta; }
 
 export const routes: RouteDefinition[] = [
 ${routeObjects}${redirects ? `,\n${  redirects}` : ''}
@@ -222,6 +195,12 @@ ${routes.map(route => `  ${JSON.stringify(route.meta)}`).join(',\n')}
 `;
 
   fs.writeFileSync(outputPath, fileContent, 'utf-8');
+  // Also emit a lightweight meta-only module for tests (no MDX imports).
+  const metaOnlyPath = outputPath.replace(/\.tsx$/, '.meta.ts');
+  const metaModule = `// Auto-generated meta-only route data (no component imports)\n` +
+    `import type { RouteMeta } from '../types/route-meta';\n` +
+    `export const routeMeta: RouteMeta[] = ${JSON.stringify(routes.map(r => r.meta), null, 2)};\n`;
+  fs.writeFileSync(metaOnlyPath, metaModule, 'utf-8');
   console.log(`Generated routes file: ${outputPath}`);
 }
 

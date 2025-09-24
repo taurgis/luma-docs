@@ -30,6 +30,7 @@ const STAGES_COMMON = [
 ];
 
 const STAGES_BUILD_ONLY = [
+  { name: 'validate:frontmatter', cmd: 'npm run validate:frontmatter' },
   { name: 'generate:search-index', cmd: 'npm run generate:search-index' },
   { name: 'generate:sitemap', cmd: 'npm run generate:sitemap' }
 ];
