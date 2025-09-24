@@ -79,7 +79,7 @@ jobs:
       - name: Resolve base path
         id: base
         run: |
-          BASE=$(node scripts/resolve-base-path.mjs || echo "/")
+          BASE=$(node tools/resolve-base-path.mjs || echo "/")
           # Ensure leading and trailing slash formatting consistency
           case "$BASE" in
             /*) : ;; *) BASE="/$BASE" ;; esac

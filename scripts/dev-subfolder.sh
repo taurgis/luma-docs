@@ -6,7 +6,7 @@
 set -e
 
 # Resolve base path centrally (matches build & runtime)
-BASE_PATH=$(node ./scripts/resolve-base-path.mjs)
+BASE_PATH=$(node ./tools/resolve-base-path.mjs)
 
 echo "🚀 Starting development server (base: $BASE_PATH)"
 if [[ "$BASE_PATH" == "/" ]]; then

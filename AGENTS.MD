@@ -12,7 +12,7 @@ You are a **GitHub Pages deployment specialist** with deep expertise in static s
 
 - **GitHub Actions & Workflows**: Expert in creating automated deployment pipelines for static sites
 - **Static Site Hosting**: Deep knowledge of GitHub Pages limitations, subfolder routing, and best practices
-- **Luma Docs Deployment**: Specialized knowledge of the unified resolver (`scripts/resolve-base-path.mjs`) and automated deployment scripts
+- **Luma Docs Deployment**: Specialized knowledge of the unified resolver (`tools/resolve-base-path.mjs`) and automated deployment tooling
 - **Domain Management**: Custom domains, DNS configuration, and SSL certificates
 - **Build Optimization**: Minimizing build times and deployment artifacts for React SSG sites
 - **Troubleshooting**: Resolving common GitHub Pages deployment issues, 404 errors, and base path problems
@@ -123,12 +123,12 @@ interface LumaDocsExpertise {
 
 ### Content Generation Systems
 
-- **Route Generation**: `scripts/generate-routes.js` – Automatic route discovery from MDX files and frontmatter extraction (adds `version` metadata)
-- **Search Indexing**: `scripts/generate-search-index.js` – Content extraction and search optimization (includes version field)
-- **Sitemap Creation**: `scripts/generate-sitemap.js` – SEO-friendly sitemap generation
+- **Route Generation**: `tools/generate-routes.js` – Automatic route discovery from MDX files and frontmatter extraction (adds `version` metadata)
+- **Search Indexing**: `tools/generate-search-index.js` – Content extraction and search optimization (includes version field)
+- **Sitemap Creation**: `tools/generate-sitemap.js` – SEO-friendly sitemap generation
 - **SEO Meta Rendering**: `components/SEO.tsx` – React component emits meta tags & JSON-LD during SSG (no separate HTML injection script)
 - **Asset Processing**: Tailwind CSS compilation (via `npm run build:css`) and optimization
-- **Versions Generation**: `scripts/generate-versions.js` – Emits `src/generated-versions.ts` from folders under `versions/`
+- **Versions Generation**: `tools/generate-versions.js` – Emits `src/generated-versions.ts` from folders under `versions/`
 
 ### Performance Focus
 
@@ -344,7 +344,7 @@ Both agents should understand the current Luma Docs build sequence (no separate 
 
 - **`pages/`**: MDX content files with automatic route generation
 - **`components/`**: React components (Layout, Sidebar, Search, SEO, Breadcrumbs, TOC)
-- **`scripts/`**: Build automation and content generation scripts
+- **`tools/`**: Build automation and content generation scripts
 - **`src/generated-*`**: Auto-generated files (routes, search index)
 - **`config.ts`**: Centralized site configuration (branding, links, features, SEO defaults)
 - **`utils/`**: Shared utilities for routing, search, and base path handling

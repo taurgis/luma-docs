@@ -12,7 +12,7 @@
 set -e
 
 # Resolve base path centrally
-BASE_PATH=$(node ./scripts/resolve-base-path.mjs)
+BASE_PATH=$(node ./tools/resolve-base-path.mjs)
 
 # Derive repo/user for informational logging (best-effort, non-fatal)
 if [ "$GITHUB_REPOSITORY" ]; then

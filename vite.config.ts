@@ -7,7 +7,7 @@ import { defineConfig, loadEnv } from 'vite';
 
 // Import the JS module (has accompanying d.ts)
 // @ts-expect-error ESM JS module with provided d.ts
-import { resolveBasePath } from './scripts/resolve-base-path.mjs';
+import { resolveBasePath } from './tools/resolve-base-path.mjs';
 
 export default defineConfig(({ mode, command: _command }) => {
     const env = loadEnv(mode, '.', '');

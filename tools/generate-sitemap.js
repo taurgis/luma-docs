@@ -7,7 +7,7 @@
  * It dynamically reads routes from the generated routes file and supports
  * both root and subfolder deployments.
  *
- * Usage: node scripts/generate-sitemap.js
+ * Usage: node tools/generate-sitemap.js
  */
 
 import fs from 'fs';

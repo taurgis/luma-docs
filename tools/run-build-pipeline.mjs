@@ -2,8 +2,8 @@
 /**
  * Centralized build pipeline orchestrator.
  * Usage:
- *   node scripts/run-build-pipeline.mjs dev
- *   node scripts/run-build-pipeline.mjs build
+ *   node tools/run-build-pipeline.mjs dev
+ *   node tools/run-build-pipeline.mjs build
  *
  * Goals:
  *  - Single source of truth for ordered generation steps

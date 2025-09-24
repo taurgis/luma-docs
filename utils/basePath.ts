@@ -1,5 +1,5 @@
 // Unified base path helper – now relies solely on build-time resolution
-// via scripts/resolve-base-path.mjs wired into Vite config (VITE_BASE_PATH)
+// via tools/resolve-base-path.mjs wired into Vite config (VITE_BASE_PATH)
 
 function normalize(base: string | undefined): string {
   if (!base || base === '.' || base === './') { return '/'; }

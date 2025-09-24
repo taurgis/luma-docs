@@ -270,7 +270,7 @@ Environment-based alternatives (legacy scripts removed):
 
 ### Unified Base Path Handling
 
-Base path detection (root vs subfolder like `/luma-docs/`) is now centralized in `scripts/resolve-base-path.mjs` and consumed directly by `vite.config.ts`, build scripts, runtime helpers, and the sitemap generator.
+Base path detection (root vs subfolder like `/luma-docs/`) is now centralized in `tools/resolve-base-path.mjs` and consumed directly by `vite.config.ts`, build tooling, runtime helpers, and the sitemap generator.
 
 Resolution priority (first match wins):
 1. `VITE_FORCE_BASE` – explicit override (e.g. `/docs/` or `/preview/`)
@@ -442,11 +442,11 @@ If you only snapshot (no bump), you can update `config.ts` later when you begin 
 │   └── guides/            # Nested pages (/guides/*)
 │       ├── index.mdx      # /guides
 │       └── advanced.mdx   # /guides/advanced
-├── scripts/               # Build and utility scripts
-│   ├── generate-routes.js    # Auto-generates routes (adds version metadata)
-│   ├── generate-search-index.js # Creates search index from MDX content
-│   ├── generate-sitemap.js   # Creates sitemap.xml
-│   ├── resolve-base-path.mjs # Base path + site URL resolver
+├── tools/                 # Build and utility tooling (was scripts/)
+│   ├── generate-routes.js        # Auto-generates routes (adds version metadata)
+│   ├── generate-search-index.js  # Creates search index from MDX content
+│   ├── generate-sitemap.js       # Creates sitemap.xml
+│   ├── resolve-base-path.mjs     # Base path + site URL resolver
 ├── src/
 │   ├── generated-routes.tsx      # Auto-generated route definitions (with version field)
 │   ├── generated-search-index.ts # Auto-generated search index (includes version field)

@@ -153,9 +153,9 @@ export default tseslint.config(
     },
   },
 
-  // Configuration for script files
+  // Configuration for build/tooling files
   {
-    files: ['scripts/**/*.js'],
+    files: ['tools/**/*.js'],
     languageOptions: {
       globals: {
         ...globals.node,
