@@ -9,7 +9,7 @@ build/
 
 # Generated files
 src/generated-routes.tsx
-public/index.css
+src/public/index.css
 
 # Environment variables
 .env

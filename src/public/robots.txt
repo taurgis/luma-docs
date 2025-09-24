@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://yourdomain.com/luma-docs/sitemap.xml
+# (Will be regenerated during build with correct SITE_URL)
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
@@ -19,7 +19,3 @@ Allow: /
 
 User-agent: DuckDuckBot
 Allow: /
-
-# Block certain paths if needed
-# Disallow: /temp/
-# Disallow: /private/

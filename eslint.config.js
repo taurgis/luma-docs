@@ -198,7 +198,7 @@ export default tseslint.config(
       '.vite/**',
       'src/generated-*.ts',
       'src/generated-*.tsx',
-      'public/**',
+  'src/public/**',
       '*.min.js',
       'coverage/**',
       'README.md', // Regular markdown, not MDX

@@ -234,7 +234,8 @@ const sitemap = generateSitemap();
 const robots = generateRobotsTxt();
 
 // Write files
-const publicDir = path.join(__dirname, '..', '..', 'public');
+// Public assets directory (moved under src/public for co-location with sources)
+const publicDir = path.join(__dirname, '..', 'public');
 if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir, { recursive: true });
 }

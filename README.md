@@ -457,10 +457,10 @@ If you only snapshot (no bump), you can update `config.ts` later when you begin 
 │   └── styles/
 │       └── input.css           # Tailwind CSS entry point
 ├── config.ts                  # Site configuration file
-├── public/                   # Static assets
-│   ├── index.css            # Generated Tailwind CSS
-│   ├── sitemap.xml          # Generated sitemap
-│   └── robots.txt           # SEO robots file
+│   ├── public/                # Static assets (moved under src/)
+│   │   ├── index.css          # Generated Tailwind CSS
+│   │   ├── sitemap.xml        # Generated sitemap
+│   │   └── robots.txt         # SEO robots file
 └── dist/                    # Build output (generated)
 ```
 
