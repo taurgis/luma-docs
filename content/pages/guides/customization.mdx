@@ -1,0 +1,134 @@
+---
+title: "Customization Guide"
+description: "Learn how to customize branding, navigation, components, styling, and feature flags in Luma Docs."
+keywords: "customization, branding, config, tailwind, theming"
+ogType: article
+twitterCard: summary
+author: "Luma Docs Team"
+section: "Guides"
+tags: ["customization", "branding", "theming", "config"]
+order: 8
+---
+
+# Customization Guide
+
+Luma Docs centralizes configuration to keep forks maintainable and upgrades low-friction.
+
+## Configuration File
+
+All core site values live in `config.ts`:
+
+```ts
+export const config = {
+  site: { name: 'Luma Docs', title: 'Luma Docs', description: 'Modern docs platform' },
+  versions: { current: 'v1.0', enableSwitcher: true, strategy: 'folder', hidden: [], order: [] },
+  branding: { logo: { text: 'Luma', accent: 'Docs' } },
+  links: { github: 'https://github.com/taurgis/luma-docs' },
+  seo: { author: 'Your Name', keywords: ['documentation','react'] },
+  features: { search: true, breadcrumbs: true, structuredDataBreadcrumbs: true },
+  navigation: { showVersionBadge: true, showGitHubLink: true, homeGroupLabel: 'Getting Started' }
+} as const;
+```
+
+## What to Change First
+
+| Goal | Field |
+| ---- | ----- |
+| Rename site | `config.site.name` + `title` |
+| Update GitHub link | `config.links.github` |
+| Hide version badge | `config.navigation.showVersionBadge=false` |
+| Disable search temporarily | `config.features.search=false` |
+
+## Styling & Theme
+
+Tailwind + the Typography plugin provide sensible defaults. Extend in `tailwind.config.js`:
+
+```js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          DEFAULT: '#2563eb',
+          foreground: '#ffffff'
+        }
+      }
+    }
+  }
+}
+```
+
+Reference colors in components via class names (`bg-brand` etc.).
+
+## Component Aliases
+
+Imports use path aliases enforced by ESLint (e.g. `@/components`). If you add new component groups, export them through `src/components/index.ts` for clean MDX consumption.
+
+## Adding a New MDX Component
+
+1. Create component under `src/components/<category>/YourComponent.tsx`.
+2. Export from `src/components/index.ts`.
+3. Import in an `.mdx` file: `import { YourComponent } from "@/components"`.
+
+## Global Layout Adjustments
+
+Edit `src/app/layout/Layout.tsx` to adjust header, sidebar, or footer. Keep semantic landmarks (`<nav>`, `<main>`) for accessibility.
+
+## Version Switcher Behavior
+
+Hide specific historical versions without deleting them:
+
+```ts
+config.versions.hidden = ['v0.8'];
+```
+
+## Feature Flags
+
+Add a new flag:
+
+```ts
+// config.ts
+features: { ...config.features, darkMode: false }
+```
+
+Gate a component:
+
+```tsx
+{config.features.darkMode && <ThemeToggle />}
+```
+
+## SEO Defaults
+
+Update global fallbacks in `config.seo`. Page-level overrides come from frontmatter or inline `<SEO>` components.
+
+## Extending the Build
+
+Add a script:
+
+```json
+"scripts": {
+  "generate:algolia": "node src/tools/generate-algolia-index.mjs"
+}
+```
+
+Then chain it inside `run-build-pipeline.mjs` before SSG.
+
+## Accessibility Considerations
+
+- Preserve focus states when restyling buttons
+- Use semantic HTML in custom components
+- Provide `aria-label` for purely iconographic buttons
+
+## Pitfalls to Avoid
+
+| Anti-Pattern | Better Approach |
+| ------------ | --------------- |
+| Hardcoding base URLs | Use resolver + `basePath` util |
+| Deep relative imports (`../../..`) | Run alias codemod (`npm run codemod:aliases`) |
+| Mutating generated files | Edit source scripts instead |
+
+Customization should feel **incremental** — change branding, add a component, evolve layout — without forking away from upgrade path.
+
+import { NextLink } from "@/components";
+
+<NextLink href="/guides/deployment/" label="Deployment & Base Path" />

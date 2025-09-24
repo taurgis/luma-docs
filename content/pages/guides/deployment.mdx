@@ -1,0 +1,117 @@
+---
+title: "Deployment & Base Path"
+description: "Guide to deploying Luma Docs on GitHub Pages (user or project site), handling custom domains, and forcing base paths."
+keywords: "deployment, github pages, base path, subfolder, ci, actions"
+ogType: article
+twitterCard: summary_large_image
+author: "Luma Docs Team"
+section: "Guides"
+tags: ["deployment", "github", "base-path", "ci"]
+order: 9
+---
+
+# Deployment & Base Path
+
+Luma Docs is optimized for **GitHub Pages** and any static host. The key differentiator is an **intelligent base path resolver** that eliminates fragile manual tweaks.
+
+## Base Path Scenarios
+
+| Repository Type | URL Pattern | Base Path Result |
+| --------------- | ----------- | ---------------- |
+| User/Org Pages repo (`username/username.github.io`) | `https://username.github.io/` | `/` |
+| Project Pages repo (`username/repo`) | `https://username.github.io/repo/` | `/repo/` |
+| Custom Domain (CNAME) | `https://docs.example.com/` | `/` |
+| Forced Preview (`VITE_FORCE_BASE=/preview/`) | Any | `/preview/` |
+
+The resolver checks (in order):
+
+1. `VITE_FORCE_BASE`
+2. `SITE_URL` (exported by CI step if present)
+3. `GITHUB_REPOSITORY` (`owner/name`)
+4. Git remote origin URL (parses repo name)
+
+## Local Development in a Subfolder
+
+Simulate a project pages deployment locally:
+
+```bash
+VITE_FORCE_BASE=/my-repo/ npm run dev
+```
+
+Links, assets, and search still work transparently.
+
+## CI Workflow (Native Pages)
+
+The recommended workflow (excerpt):
+
+```yaml
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --prefer-offline --no-audit
+      - run: npm run build
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+  deploy:
+    needs: build
+    steps:
+      - uses: actions/deploy-pages@v4
+```
+
+No need to manually set a `homepage` field or hard-code paths.
+
+## Custom Domains
+
+1. Add a `CNAME` file at repo root with your domain.
+2. Configure DNS (CNAME record → `username.github.io`).
+3. GitHub Pages automatically provisions SSL.
+4. Resolver sees `CNAME` in CI step and keeps base path `/`.
+
+## Asset Integrity
+
+Because the base path is injected **before** Vite builds, all emitted asset URLs (CSS, JS, images) are correct for both root and subfolder hosting.
+
+## Troubleshooting
+
+| Issue | Cause | Fix |
+| ----- | ----- | --- |
+| 404 on refresh in subfolder | Missing trailing slash normalization in host config | Ensure GitHub Pages; other hosts may need `404.html` fallback |
+| Double slashes in URLs | Manual concatenation in custom component | Use `basePath` helper from `@/utils/basePath` |
+| Wrong base after fork | Fork remote not yet fetched | Run `git fetch --all` or set `VITE_FORCE_BASE` explicitly |
+
+## Forcing a Preview Environment
+
+Useful for staging docs at `https://username.github.io/repo-pr-123/`:
+
+```bash
+VITE_FORCE_BASE=/repo-pr-123/ npm run build
+```
+
+Upload `dist/` to that path on any static host (Cloudflare Pages, Netlify, S3) and everything functions identically.
+
+## Extending Deployment
+
+| Goal | Strategy |
+| ---- | -------- |
+| Add link checker | New CI step after build using `lychee` |
+| Add performance budget | Lighthouse CI in separate job (uses built `dist/`) |
+| Add broken anchor detection | Parse `generated-search-index` + HTML fragment IDs |
+
+The deployment story aims for **zero surprises** — one build command, any static host, correct paths.
+
+import { NextLink } from "@/components";
+
+<NextLink href="/guides/advanced/" label="Advanced Features" />

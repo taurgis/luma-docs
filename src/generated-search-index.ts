@@ -24,9 +24,9 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/",
     "pageTitle": "Welcome to Luma Docs",
-    "heading": "Features",
-    "headingId": "features",
-    "content": "Features MDX Support: Write content in MDX format with the full power of React components Automatic Routing: Pages are automatically added to routes based on file structure Fast Static Generation: Built with Vite React SSG for lightning-fast performance GitHub Pages Ready: Optimized for deployment o",
+    "heading": "Feature Highlights",
+    "headingId": "feature-highlights",
+    "content": "Feature Highlights Luma Docs is opinionated yet flexible. Below is a curated tour; each item links to a deeper showcase page so this site both documents and demonstrates the platform. | Category | Highlights | Deep Dive | | -------- | ---------- | --------- | import { BaseLink } from \"@/components\";",
     "description": "",
     "version": null
   },
@@ -62,7 +62,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Welcome to Luma Docs",
     "heading": "Next Steps",
     "headingId": "next-steps",
-    "content": "Next Steps Create or edit MDX pages under (Optional) Add an archived version under using Run and iterate with hot reload Deploy using the GitHub Pages workflow in the README Welcome to the future of documentation!",
+    "content": "Next Steps Explore the showcase guides above (start with <BaseLink to=\"/getting-started/\">Getting Started</BaseLink>). Open in your editor and create a new folder + . Run – the dev script regenerates routes & search automatically. Snapshot a release with (or your version label) when you cut a milest",
     "description": "",
     "version": null
   },
@@ -170,7 +170,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Guides",
     "heading": "Available Guides",
     "headingId": "available-guides",
-    "content": "Available Guides Advanced Features - Learn about advanced features and customization Deployment - Different deployment options and strategies Customization - How to customize the look and feel",
+    "content": "Available Guides The guides below form a progressive tour of the platform. Each page both explains and demonstrates a feature in the live site. Component Showcase – Rich MDX + React component examples Architecture & Build – Multi-stage pipeline internals Search Showcase – Local index, version scopin",
     "description": "",
     "version": null
   },
@@ -179,7 +179,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Guides",
     "heading": "What You'll Learn",
     "headingId": "what-youll-learn",
-    "content": "What You'll Learn In these guides, you'll discover: How to organize your content effectively Advanced MDX features and React component integration Customization options for styling and layout Best practices for documentation SEO optimization techniques",
+    "content": "What You'll Learn Across these guides, you'll discover: How to organize your content effectively -- Advanced MDX features and React component integration -- The deterministic build pipeline and why it’s structured that way -- Customization options for styling, layout, and feature flags -- Versioning",
     "description": "",
     "version": null
   },
@@ -260,7 +260,97 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Advanced Features",
     "heading": "SEO Optimization",
     "headingId": "seo-optimization",
-    "content": "SEO Optimization Automatic sitemap generation Meta tags from frontmatter Structured data markup Fast loading times These features combine to create a documentation platform that's both powerful for authors and fast for readers.",
+    "content": "SEO Optimization Automatic sitemap generation Meta tags from frontmatter Structured data markup Fast loading times These features combine to create a documentation platform that's both powerful for authors and fast for readers. import { NextLink } from \"@/components\"; <NextLink href=\"/guides/customi",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Architecture & Build Pipeline",
+    "headingId": "architecture-build-pipeline",
+    "content": "Architecture & Build Pipeline Luma Docs orchestrates a deterministic multi-step content pipeline. Each step produces an artifact that the next can consume — keeping builds reproducible and easy to debug.",
+    "description": "Deep dive into the Luma Docs build pipeline: versions, routes, CSS, search index, sitemap, and static generation.",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Pipeline Overview",
+    "headingId": "pipeline-overview",
+    "content": "Pipeline Overview | Step | Script | Output | Purpose | | ---- | ------ | ------ | ------- | | Versions | | | Enumerates archived version labels for UI + routing + search filtering | | Routes | | + | Discovers MDX pages, extracts frontmatter, attaches version + meta | | CSS | | | Tailwind + typograph",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Why Separate Steps?",
+    "headingId": "why-separate-steps",
+    "content": "Why Separate Steps? Isolation: Fail fast in the earliest script that breaks (e.g. malformed frontmatter). Cacheability: Intermediate artifacts let future tooling (analytics, lint, link checkers) run without parsing raw MDX again. Determinism: Each stage has a single responsibility, simplifying reaso",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Route Generation Details",
+    "headingId": "route-generation-details",
+    "content": "Route Generation Details The route generator: Scans for current docs. Scans for archived snapshots. Normalizes slugs ( ) and paths ( ). Emits React route components (lazy loaded) plus a separate lightweight metadata file. Attaches for downstream consumers (search, badges, switcher, SEO tweaks).",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Frontmatter Extraction",
+    "headingId": "frontmatter-extraction",
+    "content": "Frontmatter Extraction Frontmatter is parsed and validated (see ). Only whitelisted keys make it into meta. This keeps the runtime lean and prevents accidental leakage of experimental flags.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Search Index Structure",
+    "headingId": "search-index-structure",
+    "content": "Search Index Structure Each entry contains: No network calls, no 3rd-party service — pure static asset.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Version Awareness",
+    "headingId": "version-awareness",
+    "content": "Version Awareness Version scoping is structural, not dynamic rewriting. This means your old snapshots are immutable references of history — a huge win for reproducibility.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Extensibility Points",
+    "headingId": "extensibility-points",
+    "content": "Extensibility Points | Need | Hook | | ---- | ---- | | Add lint for broken internal links | New script after | | Exclude very old versions from search | Filter in | | Add RSS or Atom feed | After sitemap (shares route meta) | | Pre-compute Algolia index | Replace local search stage with remote push ",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Debugging Tips",
+    "headingId": "debugging-tips",
+    "content": "Debugging Tips Because artifacts are plain TS/JS files, you can open them directly to inspect structure.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/architecture/",
+    "pageTitle": "Architecture & Build Pipeline",
+    "heading": "Future Ideas",
+    "headingId": "future-ideas",
+    "content": "Future Ideas Parallelization (routes + css) where I/O bound Build manifest for plugin ecosystem Incremental sitemap updates The pipeline is intentionally minimal but explicit — easy to extend without becoming a black box. import { NextLink } from \"@/components\"; <NextLink href=\"/guides/versioning/\" ",
     "description": "",
     "version": null
   },
@@ -431,7 +521,295 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Component Showcase",
     "heading": "Usage",
     "headingId": "usage",
-    "content": "Usage Import any of these components in your MDX files: All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices.",
+    "content": "Usage Import any of these components in your MDX files: All components are fully typed with TypeScript and designed to work seamlessly together. They follow consistent design patterns and accessibility best practices. import { NextLink } from \"@/components\"; <NextLink href=\"/guides/architecture/\" la",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Customization Guide",
+    "headingId": "customization-guide",
+    "content": "Customization Guide Luma Docs centralizes configuration to keep forks maintainable and upgrades low-friction.",
+    "description": "Learn how to customize branding, navigation, components, styling, and feature flags in Luma Docs.",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Configuration File",
+    "headingId": "configuration-file",
+    "content": "Configuration File All core site values live in :",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "What to Change First",
+    "headingId": "what-to-change-first",
+    "content": "What to Change First | Goal | Field | | ---- | ----- | | Rename site | + | | Update GitHub link | | | Hide version badge | | | Disable search temporarily | |",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Styling & Theme",
+    "headingId": "styling-theme",
+    "content": "Styling & Theme Tailwind + the Typography plugin provide sensible defaults. Extend in : Reference colors in components via class names ( etc.).",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Component Aliases",
+    "headingId": "component-aliases",
+    "content": "Component Aliases Imports use path aliases enforced by ESLint (e.g. ). If you add new component groups, export them through for clean MDX consumption.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Adding a New MDX Component",
+    "headingId": "adding-a-new-mdx-component",
+    "content": "Adding a New MDX Component Create component under . Export from . Import in an file: .",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Global Layout Adjustments",
+    "headingId": "global-layout-adjustments",
+    "content": "Global Layout Adjustments Edit to adjust header, sidebar, or footer. Keep semantic landmarks ( , ) for accessibility.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Version Switcher Behavior",
+    "headingId": "version-switcher-behavior",
+    "content": "Version Switcher Behavior Hide specific historical versions without deleting them:",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Feature Flags",
+    "headingId": "feature-flags",
+    "content": "Feature Flags Add a new flag: Gate a component:",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "SEO Defaults",
+    "headingId": "seo-defaults",
+    "content": "SEO Defaults Update global fallbacks in . Page-level overrides come from frontmatter or inline components.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Extending the Build",
+    "headingId": "extending-the-build",
+    "content": "Extending the Build Add a script: Then chain it inside before SSG.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Accessibility Considerations",
+    "headingId": "accessibility-considerations",
+    "content": "Accessibility Considerations Preserve focus states when restyling buttons Use semantic HTML in custom components Provide for purely iconographic buttons",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/customization/",
+    "pageTitle": "Customization Guide",
+    "heading": "Pitfalls to Avoid",
+    "headingId": "pitfalls-to-avoid",
+    "content": "Pitfalls to Avoid | Anti-Pattern | Better Approach | | ------------ | --------------- | | Hardcoding base URLs | Use resolver + util | | Deep relative imports ( ) | Run alias codemod ( ) | | Mutating generated files | Edit source scripts instead | Customization should feel incremental — change brand",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/deployment/",
+    "pageTitle": "Deployment & Base Path",
+    "heading": "Deployment & Base Path",
+    "headingId": "deployment-base-path",
+    "content": "Deployment & Base Path Luma Docs is optimized for GitHub Pages and any static host. The key differentiator is an intelligent base path resolver that eliminates fragile manual tweaks.",
+    "description": "Guide to deploying Luma Docs on GitHub Pages (user or project site), handling custom domains, and forcing base paths.",
+    "version": null
+  },
+  {
+    "path": "/guides/deployment/",
+    "pageTitle": "Deployment & Base Path",
+    "heading": "Base Path Scenarios",
+    "headingId": "base-path-scenarios",
+    "content": "Base Path Scenarios | Repository Type | URL Pattern | Base Path Result | | --------------- | ----------- | ---------------- | | User/Org Pages repo ( ) | | | | Project Pages repo ( ) | | | | Custom Domain (CNAME) | | | | Forced Preview ( ) | Any | | The resolver checks (in order): (exported by CI st",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/deployment/",
+    "pageTitle": "Deployment & Base Path",
+    "heading": "Local Development in a Subfolder",
+    "headingId": "local-development-in-a-subfolder",
+    "content": "Local Development in a Subfolder Simulate a project pages deployment locally: Links, assets, and search still work transparently.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/deployment/",
+    "pageTitle": "Deployment & Base Path",
+    "heading": "CI Workflow (Native Pages)",
+    "headingId": "ci-workflow-native-pages",
+    "content": "CI Workflow (Native Pages) The recommended workflow (excerpt): No need to manually set a field or hard-code paths.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/deployment/",
+    "pageTitle": "Deployment & Base Path",
+    "heading": "Custom Domains",
+    "headingId": "custom-domains",
+    "content": "Custom Domains Add a file at repo root with your domain. Configure DNS (CNAME record → ). GitHub Pages automatically provisions SSL. Resolver sees in CI step and keeps base path .",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/deployment/",
+    "pageTitle": "Deployment & Base Path",
+    "heading": "Asset Integrity",
+    "headingId": "asset-integrity",
+    "content": "Asset Integrity Because the base path is injected before Vite builds, all emitted asset URLs (CSS, JS, images) are correct for both root and subfolder hosting.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/deployment/",
+    "pageTitle": "Deployment & Base Path",
+    "heading": "Troubleshooting",
+    "headingId": "troubleshooting",
+    "content": "Troubleshooting | Issue | Cause | Fix | | ----- | ----- | --- | | 404 on refresh in subfolder | Missing trailing slash normalization in host config | Ensure GitHub Pages; other hosts may need fallback | | Double slashes in URLs | Manual concatenation in custom component | Use helper from | | Wrong b",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/deployment/",
+    "pageTitle": "Deployment & Base Path",
+    "heading": "Forcing a Preview Environment",
+    "headingId": "forcing-a-preview-environment",
+    "content": "Forcing a Preview Environment Useful for staging docs at : Upload to that path on any static host (Cloudflare Pages, Netlify, S3) and everything functions identically.",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/deployment/",
+    "pageTitle": "Deployment & Base Path",
+    "heading": "Extending Deployment",
+    "headingId": "extending-deployment",
+    "content": "Extending Deployment | Goal | Strategy | | ---- | -------- | | Add link checker | New CI step after build using | | Add performance budget | Lighthouse CI in separate job (uses built ) | | Add broken anchor detection | Parse + HTML fragment IDs | The deployment story aims for zero surprises — one bu",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Search Showcase",
+    "headingId": "search-showcase",
+    "content": "Search Showcase The search experience in Luma Docs is local, instant, and version-aware.",
+    "description": "In-depth look at the built-in local search: indexing strategy, version scoping, keyboard UX, and extensibility.",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Key Features",
+    "headingId": "key-features",
+    "content": "Key Features ⌘K / Ctrl+K to open and close the modal Scope toggle: Current version vs All versions Real-time highlighting of matches in titles, headings, and snippets Automatic deep linking (navigates to the heading anchor when possible) Lightweight index — no external service, no API latency",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Opening the Modal",
+    "headingId": "opening-the-modal",
+    "content": "Opening the Modal Press <kbd>⌘</kbd> + <kbd>K</kbd> (Mac) or <kbd>Ctrl</kbd> + <kbd>K</kbd> (Windows/Linux) Or click the Search input in the header Press <kbd>Esc</kbd> to close",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Result Anatomy",
+    "headingId": "result-anatomy",
+    "content": "Result Anatomy Each result line includes: Page Title (with highlighted matches) Version Pill (only for archived results; current version pill is implicit) Heading (the exact section containing the match) Snippet (trimmed, with highlighted fragments)",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Index Generation",
+    "headingId": "index-generation",
+    "content": "Index Generation The index is generated at build time by : Walks all route components Extracts H2/H3 headings + surrounding paragraph text Normalizes whitespace and strips MDX/JSX artifacts Attaches version from route meta (fallback via URL prefix parsing)",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Performance Characteristics",
+    "headingId": "performance-characteristics",
+    "content": "Performance Characteristics | Aspect | Strategy | | ------ | -------- | | Size | Plain JSON-like module, tree-shakeable in theory via future chunking | | Load | Lazy: only imported when user opens modal (improve with prefetch) | | Query | Simple substring / regex split for now; upgrade path: token t",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Version Scoping",
+    "headingId": "version-scoping",
+    "content": "Version Scoping Current scope logic: Planned enhancements: Multi-select of specific versions Persistent scope preference (localStorage) Fuzzy ranking / scoring",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Extending Search",
+    "headingId": "extending-search",
+    "content": "Extending Search | Goal | Approach | | ---- | -------- | | Add weighting (title > heading > body) | Replace linear filter with scoring function | | Support fuzzy matching | Integrate small fuzzy lib (e.g. ) in | | Remote / server index | Swap generator with an uploader + runtime fetch | | Huge conte",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Accessibility Notes",
+    "headingId": "accessibility-notes",
+    "content": "Accessibility Notes Modal has proper and focus trapping (input auto-focus) Arrow key navigation with <kbd>↑</kbd>/<kbd>↓</kbd> Enter activates the highlighted result",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/guides/search/",
+    "pageTitle": "Search Showcase",
+    "heading": "Troubleshooting",
+    "headingId": "troubleshooting",
+    "content": "Troubleshooting | Symptom | Fix | | ------- | --- | | Missing page in results | Ensure it has at least one H2/H3 with content underneath | | Stale headings after rename | Stop dev server to clear module cache or rerun search generation script | | Version pill missing on archived page | Check for cor",
     "description": "",
     "version": null
   },

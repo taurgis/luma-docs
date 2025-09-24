@@ -15,14 +15,26 @@ order: 1
 
 Luma Docs is a modern, fast, and beautiful documentation platform built with React, MDX, and Vite. It provides a seamless experience for both content creators and readers.
 
-## Features
+## Feature Highlights
 
-- **MDX Support**: Write content in MDX format with the full power of React components
-- **Automatic Routing**: Pages are automatically added to routes based on file structure
-- **Fast Static Generation**: Built with Vite React SSG for lightning-fast performance
-- **GitHub Pages Ready**: Optimized for deployment on GitHub Pages
-- **Beautiful Design**: Clean, responsive design with excellent typography
-- **Search Functionality**: Built-in search to help users find content quickly
+Luma Docs is opinionated yet flexible. Below is a curated tour; each item links to a deeper showcase page so this site both **documents** and **demonstrates** the platform.
+
+| Category | Highlights | Deep Dive |
+| -------- | ---------- | --------- |
+import { BaseLink } from "@/components";
+
+| Category | Highlights | Deep Dive |
+| -------- | ---------- | --------- |
+| Authoring | MDX + React components, fenced code → syntax highlight, component imports via aliases | <BaseLink to="/guides/components/">Component Showcase</BaseLink> |
+| Content Pipeline | Deterministic multi-step build (versions → routes → css → search → sitemap → SSG) | <BaseLink to="/guides/architecture/">Architecture & Build</BaseLink> |
+| Navigation | Automatic route generation from folder structure, ordering via `order` frontmatter, smart sidebar flattening | <BaseLink to="/guides/advanced/">Advanced Features</BaseLink> |
+| Versioning | Folder-based snapshots, switcher, archived banners, search scoping & fallback routing | <BaseLink to="/guides/versioning/">Versioning Guide</BaseLink> |
+| Search | Zero-config local index, instant modal (⌘K), version scope toggle, heading deep-linking | <BaseLink to="/guides/search/">Search Showcase</BaseLink> |
+| SEO | Frontmatter + inline `<SEO />` overrides, JSON-LD, automatic tags, sitemap generation | <BaseLink to="/seo-examples/">SEO Examples</BaseLink> |
+| Deployment | Auto base-path detection, GitHub Pages native workflow, subfolder previews | <BaseLink to="/guides/deployment/">Deployment & Base Path</BaseLink> |
+| Customization | Central `config.ts`, Tailwind theme, branded components, feature flags | <BaseLink to="/guides/customization/">Customization Guide</BaseLink> |
+
+> This site is intentionally self‑descriptive: every feature you read about is exercised somewhere in the live content.
 
 ## Getting Started
 
@@ -61,9 +73,10 @@ order: 1
 
 ## Next Steps
 
-- Create or edit MDX pages under `content/pages/`
-- (Optional) Add an archived version under `content/versions/` using `npm run snapshot:version`
-- Run `npm run dev` and iterate with hot reload
-- Deploy using the GitHub Pages workflow in the README
+1. Explore the showcase guides above (start with <BaseLink to="/getting-started/">Getting Started</BaseLink>).
+2. Open `content/pages/` in your editor and create a new folder + `index.mdx`.
+3. Run `npm run dev` – the dev script regenerates routes & search automatically.
+4. Snapshot a release with `npm run snapshot:version -- v1.0` (or your version label) when you cut a milestone.
+5. Commit & push; the GitHub Pages workflow builds and deploys.
 
-Welcome to the future of documentation!
+Welcome to the future of documentation – where the docs are their own proof of capability.

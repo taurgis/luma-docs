@@ -1,0 +1,102 @@
+---
+title: "Search Showcase"
+description: "In-depth look at the built-in local search: indexing strategy, version scoping, keyboard UX, and extensibility."
+keywords: "search, indexing, version scope, keyboard shortcuts"
+ogType: article
+twitterCard: summary
+author: "Luma Docs Team"
+section: "Guides"
+tags: ["search", "index", "ux", "versioning"]
+order: 7
+---
+
+# Search Showcase
+
+The search experience in Luma Docs is **local, instant, and version-aware**.
+
+## Key Features
+
+- ⌘K / Ctrl+K to open and close the modal
+- Scope toggle: Current version vs All versions
+- Real-time highlighting of matches in titles, headings, and snippets
+- Automatic deep linking (navigates to the heading anchor when possible)
+- Lightweight index — no external service, no API latency
+
+## Opening the Modal
+
+- Press <kbd>⌘</kbd> + <kbd>K</kbd> (Mac) or <kbd>Ctrl</kbd> + <kbd>K</kbd> (Windows/Linux)
+- Or click the Search input in the header
+- Press <kbd>Esc</kbd> to close
+
+## Result Anatomy
+
+Each result line includes:
+
+1. **Page Title** (with highlighted matches)
+2. **Version Pill** (only for archived results; current version pill is implicit)
+3. **Heading** (the exact section containing the match)
+4. **Snippet** (trimmed, with highlighted fragments)
+
+## Index Generation
+
+The index is generated at build time by `generate-search-index.js`:
+
+- Walks all route components
+- Extracts H2/H3 headings + surrounding paragraph text
+- Normalizes whitespace and strips MDX/JSX artifacts
+- Attaches version from route meta (fallback via URL prefix parsing)
+
+## Performance Characteristics
+
+| Aspect | Strategy |
+| ------ | -------- |
+| Size | Plain JSON-like module, tree-shakeable in theory via future chunking |
+| Load | Lazy: only imported when user opens modal (improve with prefetch) |
+| Query | Simple substring / regex split for now; upgrade path: token trie or minisearch |
+| Highlight | Client-side segmentation per query term |
+
+## Version Scoping
+
+Current scope logic:
+
+```ts
+const raw = searchDocs(query);
+const filtered = scopeAllVersions
+  ? raw
+  : raw.filter(r => !r.version || r.version === config.versions.current);
+```
+
+Planned enhancements:
+
+- Multi-select of specific versions
+- Persistent scope preference (localStorage)
+- Fuzzy ranking / scoring
+
+## Extending Search
+
+| Goal | Approach |
+| ---- | -------- |
+| Add weighting (title > heading > body) | Replace linear filter with scoring function |
+| Support fuzzy matching | Integrate small fuzzy lib (e.g. `fuzzysort`) in `searchDocs` |
+| Remote / server index | Swap generator with an uploader + runtime fetch |
+| Huge content scaling | Shard index per top-level section and lazy load |
+
+## Accessibility Notes
+
+- Modal has proper `role="dialog"` and focus trapping (input auto-focus)
+- Arrow key navigation with <kbd>↑</kbd>/<kbd>↓</kbd>
+- Enter activates the highlighted result
+
+## Troubleshooting
+
+| Symptom | Fix |
+| ------- | --- |
+| Missing page in results | Ensure it has at least one H2/H3 with content underneath |
+| Stale headings after rename | Stop dev server to clear module cache or rerun search generation script |
+| Version pill missing on archived page | Check `routeMeta` for correct `version` field |
+
+The current implementation favors **clarity over premature optimization** — making it a solid foundation you can adapt as your documentation grows.
+
+import { NextLink } from "@/components";
+
+<NextLink href="/guides/customization/" label="Customization Guide" />

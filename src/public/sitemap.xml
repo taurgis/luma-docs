@@ -52,6 +52,34 @@
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
+    <!-- Architecture & Build -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/guides/architecture/</loc>
+        <lastmod>2025-09-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>    
+    <!-- Customization Guide -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/guides/customization/</loc>
+        <lastmod>2025-09-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>    
+    <!-- Deployment & Base Path -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/guides/deployment/</loc>
+        <lastmod>2025-09-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>    
+    <!-- Search Showcase -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/guides/search/</loc>
+        <lastmod>2025-09-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>    
     <!-- Legacy Home -->
     <url>
         <loc>https://yourdomain.com/luma-docs/v0.9/</loc>

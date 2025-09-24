@@ -1,0 +1,103 @@
+---
+title: "Architecture & Build Pipeline"
+description: "Deep dive into the Luma Docs build pipeline: versions, routes, CSS, search index, sitemap, and static generation."
+keywords: "architecture, build pipeline, vite, ssg, routes, search index"
+ogType: article
+twitterCard: summary_large_image
+author: "Luma Docs Team"
+section: "Guides"
+tags: ["architecture", "build", "pipeline", "vite", "ssg"]
+order: 5
+---
+
+# Architecture & Build Pipeline
+
+Luma Docs orchestrates a **deterministic multi-step content pipeline**. Each step produces an artifact that the next can consume — keeping builds reproducible and easy to debug.
+
+## Pipeline Overview
+
+```text
+versions → routes → css → search → sitemap → ssg
+```
+
+| Step | Script | Output | Purpose |
+| ---- | ------ | ------ | ------- |
+| Versions | `generate:versions` | `src/generated-versions.ts` | Enumerates archived version labels for UI + routing + search filtering |
+| Routes | `generate:routes` | `src/generated-routes.tsx` + `.meta.ts` | Discovers MDX pages, extracts frontmatter, attaches version + meta |
+| CSS | `build:css` | `src/components/public/index.css` | Tailwind + typography utilities compiled once |
+| Search | `generate:search-index` | `src/generated-search-index.ts` | Static JSON-like index of headings + snippets + version |
+| Sitemap | `generate:sitemap` | `dist/sitemap.xml` | SEO discovery + can be extended for priority/archived handling |
+| SSG | `vite-react-ssg build` | `dist/**/*.html` | Pre-rendered HTML + hydration entry points |
+
+All of this is wrapped by `npm run build` and by the `dev` script (which runs incremental rebuilds as needed).
+
+## Why Separate Steps?
+
+- **Isolation**: Fail fast in the earliest script that breaks (e.g. malformed frontmatter).
+- **Cacheability**: Intermediate artifacts let future tooling (analytics, lint, link checkers) run without parsing raw MDX again.
+- **Determinism**: Each stage has a single responsibility, simplifying reasoning about regressions.
+
+## Route Generation Details
+
+The route generator:
+
+1. Scans `content/pages/` for current docs.
+2. Scans `content/versions/<label>/` for archived snapshots.
+3. Normalizes slugs (`/foo/bar/`) and paths (`/foo/bar`).
+4. Emits React route components (lazy loaded) plus a separate lightweight metadata file.
+5. Attaches `version` for downstream consumers (search, badges, switcher, SEO tweaks).
+
+## Frontmatter Extraction
+
+Frontmatter is parsed and validated (see `validate:frontmatter`). Only whitelisted keys make it into meta. This keeps the **runtime lean** and prevents accidental leakage of experimental flags.
+
+## Search Index Structure
+
+Each entry contains:
+
+```ts
+interface SearchIndexEntry {
+  path: string;         // canonical page path (no trailing slash except root)
+  pageTitle: string;    // frontmatter or derived title
+  heading: string;      // section heading (H2/H3)
+  headingId?: string;   // explicit or generated anchor id
+  content: string;      // truncated, normalized snippet
+  version?: string;     // version label (inferred fallback via URL prefix)
+}
+```
+
+No network calls, no 3rd-party service — pure static asset.
+
+## Version Awareness
+
+Version scoping is **structural**, not dynamic rewriting. This means your old snapshots are immutable references of history — a huge win for reproducibility.
+
+## Extensibility Points
+
+| Need | Hook |
+| ---- | ---- |
+| Add lint for broken internal links | New script after `generate:routes` |
+| Exclude very old versions from search | Filter in `generate-search-index.js` |
+| Add RSS or Atom feed | After sitemap (shares route meta) |
+| Pre-compute Algolia index | Replace local search stage with remote push |
+
+## Debugging Tips
+
+```bash
+npm run generate:routes -- --debug  # (hypothetical future flag)
+node src/tools/generate-search-index.js > /tmp/index.json
+```
+
+Because artifacts are plain TS/JS files, you can open them directly to inspect structure.
+
+## Future Ideas
+
+- Parallelization (routes + css) where I/O bound
+- Build manifest for plugin ecosystem
+- Incremental sitemap updates
+
+The pipeline is intentionally **minimal but explicit** — easy to extend without becoming a black box.
+
+import { NextLink } from "@/components";
+
+<NextLink href="/guides/versioning/" label="Versioning" />

@@ -11,6 +11,17 @@ export const FrontmatterSchema = z.object({
   twitterCard: z.enum(['summary','summary_large_image']).optional(),
   publishedTime: z.string().optional(),
   modifiedTime: z.string().optional(),
+  // Additional optional SEO / metadata fields actually used in content
+  author: z.string().max(120).optional(),
+  canonical: z.string().max(260).optional(),
+  twitterCreator: z.string().max(60).optional(),
+  twitterSite: z.string().max(60).optional(),
+  robots: z.string().max(120).optional(),
+  section: z.string().max(80).optional(),
+  tags: z.union([
+    z.array(z.string().min(1).max(40)).max(25),
+    z.string().max(400) // allow comma separated list fallback
+  ]).optional(),
 }).strip();
 
 export type Frontmatter = z.infer<typeof FrontmatterSchema>;

@@ -82,27 +82,6 @@ export const routeMeta: RouteMeta[] = [
     "version": "v1.0"
   },
   {
-    "title": "Advanced Features",
-    "description": "Learn about advanced features and capabilities of Luma Docs including search, routing, and customization",
-    "order": 4,
-    "path": "/guides/advanced",
-    "slug": "/guides/advanced/",
-    "keywords": "advanced, features, search, routing, customization, configuration",
-    "ogType": "article",
-    "twitterCard": "summary",
-    "author": "Luma Docs Team",
-    "publishedTime": "2024-01-02T00:00:00Z",
-    "noindex": false,
-    "section": "Advanced Guides",
-    "tags": [
-      "advanced",
-      "features",
-      "search",
-      "routing"
-    ],
-    "version": "v1.0"
-  },
-  {
     "title": "Component Showcase",
     "description": "Explore the enhanced component library available in Luma Docs, including code blocks, callouts, collapsibles, and more.",
     "order": 4,
@@ -115,9 +94,30 @@ export const routeMeta: RouteMeta[] = [
     "version": "v1.0"
   },
   {
+    "title": "Architecture & Build Pipeline",
+    "description": "Deep dive into the Luma Docs build pipeline: versions, routes, CSS, search index, sitemap, and static generation.",
+    "order": 5,
+    "path": "/guides/architecture",
+    "slug": "/guides/architecture/",
+    "keywords": "architecture, build pipeline, vite, ssg, routes, search index",
+    "ogType": "article",
+    "twitterCard": "summary_large_image",
+    "author": "Luma Docs Team",
+    "noindex": false,
+    "section": "Guides",
+    "tags": [
+      "architecture",
+      "build",
+      "pipeline",
+      "vite",
+      "ssg"
+    ],
+    "version": "v1.0"
+  },
+  {
     "title": "Versioning",
     "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
-    "order": 4,
+    "order": 6,
     "path": "/guides/versioning",
     "slug": "/guides/versioning/",
     "keywords": "documentation versioning, multi-version docs, snapshot, archive, seo, search",
@@ -132,6 +132,87 @@ export const routeMeta: RouteMeta[] = [
       "release",
       "archive",
       "search"
+    ],
+    "version": "v1.0"
+  },
+  {
+    "title": "Search Showcase",
+    "description": "In-depth look at the built-in local search: indexing strategy, version scoping, keyboard UX, and extensibility.",
+    "order": 7,
+    "path": "/guides/search",
+    "slug": "/guides/search/",
+    "keywords": "search, indexing, version scope, keyboard shortcuts",
+    "ogType": "article",
+    "twitterCard": "summary",
+    "author": "Luma Docs Team",
+    "noindex": false,
+    "section": "Guides",
+    "tags": [
+      "search",
+      "index",
+      "ux",
+      "versioning"
+    ],
+    "version": "v1.0"
+  },
+  {
+    "title": "Customization Guide",
+    "description": "Learn how to customize branding, navigation, components, styling, and feature flags in Luma Docs.",
+    "order": 8,
+    "path": "/guides/customization",
+    "slug": "/guides/customization/",
+    "keywords": "customization, branding, config, tailwind, theming",
+    "ogType": "article",
+    "twitterCard": "summary",
+    "author": "Luma Docs Team",
+    "noindex": false,
+    "section": "Guides",
+    "tags": [
+      "customization",
+      "branding",
+      "theming",
+      "config"
+    ],
+    "version": "v1.0"
+  },
+  {
+    "title": "Deployment & Base Path",
+    "description": "Guide to deploying Luma Docs on GitHub Pages (user or project site), handling custom domains, and forcing base paths.",
+    "order": 9,
+    "path": "/guides/deployment",
+    "slug": "/guides/deployment/",
+    "keywords": "deployment, github pages, base path, subfolder, ci, actions",
+    "ogType": "article",
+    "twitterCard": "summary_large_image",
+    "author": "Luma Docs Team",
+    "noindex": false,
+    "section": "Guides",
+    "tags": [
+      "deployment",
+      "github",
+      "base-path",
+      "ci"
+    ],
+    "version": "v1.0"
+  },
+  {
+    "title": "Advanced Features",
+    "description": "Learn about advanced features and capabilities of Luma Docs including search, routing, and customization",
+    "order": 10,
+    "path": "/guides/advanced",
+    "slug": "/guides/advanced/",
+    "keywords": "advanced, features, search, routing, customization, configuration",
+    "ogType": "article",
+    "twitterCard": "summary",
+    "author": "Luma Docs Team",
+    "publishedTime": "2024-01-02T00:00:00Z",
+    "noindex": false,
+    "section": "Advanced Guides",
+    "tags": [
+      "advanced",
+      "features",
+      "search",
+      "routing"
     ],
     "version": "v1.0"
   },

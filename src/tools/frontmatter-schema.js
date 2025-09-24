@@ -12,6 +12,16 @@ export const FrontmatterSchema = z.object({
   twitterCard: z.enum(['summary','summary_large_image']).optional(),
   publishedTime: z.string().optional(),
   modifiedTime: z.string().optional(),
+  author: z.string().max(120).optional(),
+  canonical: z.string().max(260).optional(),
+  twitterCreator: z.string().max(60).optional(),
+  twitterSite: z.string().max(60).optional(),
+  robots: z.string().max(120).optional(),
+  section: z.string().max(80).optional(),
+  tags: z.union([
+    z.array(z.string().min(1).max(40)).max(25),
+    z.string().max(400)
+  ]).optional(),
 }).strip();
 
 export function parseAndValidateFrontmatter(mdxSource) {
