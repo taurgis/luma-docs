@@ -2,9 +2,9 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 import config from '../../config';
-import type { RouteMeta } from '../../types/route-meta';
 import { routeMeta } from '../generated-routes';
 import { archivedVersions } from '../generated-versions';
+import type { RouteMeta } from '../types/route-meta';
 
 import Search from './Search';
 import VersionBadge from './VersionBadge';

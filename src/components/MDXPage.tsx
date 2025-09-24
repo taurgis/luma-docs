@@ -3,7 +3,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import config from '../../config';
 import { routeMeta } from '../generated-routes';
-import type { RouteMeta } from '../../types/route-meta';
+import type { RouteMeta } from '../types/route-meta';
 import { archivedVersions } from '../generated-versions';
 // utils folder relocated under src/utils – use path alias for stability
 import { getBasePath, createPath } from '@/utils/basePath';

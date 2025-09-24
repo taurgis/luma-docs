@@ -1,5 +1,5 @@
 // Auto-generated meta-only route data (no component imports)
-import type { RouteMeta } from '../types/route-meta';
+import type { RouteMeta } from './types/route-meta';
 export const routeMeta: RouteMeta[] = [
   {
     "title": "Welcome to Luma Docs",

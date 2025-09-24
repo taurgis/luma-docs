@@ -176,29 +176,32 @@ function generateRouteFile(routes, outputPath) {
     meta: { path: '${route.path}', slug: '${route.slug}', title: ${JSON.stringify(route.meta.title || route.slug)}, ogType: 'website' }
   }`).join(',\n');
 
-  const fileContent = `// This file is auto-generated. Do not edit manually.
-// Regenerate via: npm run generate:routes
-import { Navigate } from 'react-router-dom';
-import type { ReactNode } from 'react';
-import type { RouteMeta } from '../types/route-meta';
-${imports}
-
-export interface RouteDefinition { path: string; element: ReactNode; meta: RouteMeta; }
-
-export const routes: RouteDefinition[] = [
-${routeObjects}${redirects ? `,\n${  redirects}` : ''}
-];
-
-export const routeMeta: RouteMeta[] = [
-${routes.map(route => `  ${JSON.stringify(route.meta)}`).join(',\n')}
-];
-`;
+  const fileContent = [
+    '// This file is auto-generated. Do not edit manually.',
+    '// Regenerate via: npm run generate:routes',
+    '// NOTE: types directory lives at src/types relative to this generated file (src/).',
+    "import { Navigate } from 'react-router-dom';",
+    "import type { ReactNode } from 'react';",
+    "import type { RouteMeta } from './types/route-meta';",
+    imports,
+    '',
+    'export interface RouteDefinition { path: string; element: ReactNode; meta: RouteMeta; }',
+    '',
+    'export const routes: RouteDefinition[] = [',
+  `${routeObjects}${redirects ? `,\n${redirects}` : ''}`,
+    '];',
+    '',
+    'export const routeMeta: RouteMeta[] = [',
+  routes.map(route => `  ${JSON.stringify(route.meta)}`).join(',\n'),
+    '];',
+    ''
+  ].join('\n');
 
   fs.writeFileSync(outputPath, fileContent, 'utf-8');
   // Also emit a lightweight meta-only module for tests (no MDX imports).
   const metaOnlyPath = outputPath.replace(/\.tsx$/, '.meta.ts');
   const metaModule = `// Auto-generated meta-only route data (no component imports)\n` +
-    `import type { RouteMeta } from '../types/route-meta';\n` +
+    `import type { RouteMeta } from './types/route-meta';\n` +
     `export const routeMeta: RouteMeta[] = ${JSON.stringify(routes.map(r => r.meta), null, 2)};\n`;
   fs.writeFileSync(metaOnlyPath, metaModule, 'utf-8');
   console.log(`Generated routes file: ${outputPath}`);
