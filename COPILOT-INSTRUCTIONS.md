@@ -39,9 +39,9 @@ Ordered steps:
 
 - `content/pages/` – current docs (label = `config.versions.current`)
 - `content/versions/<label>/` – archived snapshots
-- `src/components/` – UI + MDX components (`SEO.tsx`, `Sidebar.tsx`, etc.)
+- `src/components/` – UI + MDX components (exported via barrel; prefer alias imports)
 - `src/utils/` – runtime utilities (base path helpers, search helpers)
-- `src/tools/` – build/generation scripts (all npm scripts reference this path)
+- `src/tools/` – build/generation scripts (also exposed via an alias for internal referencing)
 
 ### Base Path Resolution
 
@@ -56,6 +56,24 @@ Resolution priority:
    All normalized to leading `/` and trailing `/` unless root.
 
 Runtime helper: `src/utils/basePath.ts` exports `getBasePath()` and `createPath()` which rely on the injected build constant.
+
+### Path Aliases
+
+Configured in `tsconfig.json` & `vite.config.ts`:
+
+```
+@ -> src/
+@/components/* -> src/components/*
+@/utils/*       -> src/utils/*
+@/tools/*       -> src/tools/*
+```
+
+Enforcement:
+
+- ESLint forbids deep relative imports into these directories.
+- MDX files cannot use relative imports (`./`, `../`) – they must use the aliases for stability across refactors.
+
+Codemod: `npm run codemod:aliases` rewrites existing deep relative imports to aliases.
 
 ### Version Switching Behavior
 
@@ -90,6 +108,7 @@ See `package.json` for the authoritative list. Key ones:
 - `pipeline:dev`, `pipeline:build` – internal orchestration
 - `generate:*` – individual generation steps
 - `snapshot:version` – archive current docs into `content/versions/<label>/`
+- `codemod:aliases` – rewrite deep relative imports to alias paths
 - `validate:frontmatter` – schema validation
 
 ### Testing

@@ -45,6 +45,7 @@ build_optimization:
   - Multi-step build process: routes → CSS → search → sitemap → SSG
   - Asset optimization and code splitting
   - Performance monitoring for documentation sites
+  - Path alias integrity (@, @/components, @/utils, @/tools) & lint enforcement
 ```
 
 ### Specialized Knowledge
@@ -129,6 +130,7 @@ interface LumaDocsExpertise {
 - **SEO Meta Rendering**: `components/SEO.tsx` – React component emits meta tags & JSON-LD during SSG (no separate HTML injection script)
 - **Asset Processing**: Tailwind CSS compilation (via `npm run build:css`) and optimization
 - **Versions Generation**: `src/tools/generate-versions.js` – Emits `src/generated-versions.ts` from folders under `content/versions/`
+- **Alias Codemod**: `scripts/codemod-alias-imports.mjs` – rewrites deep relative imports to enforced aliases
 
 ### Performance Focus
 
@@ -138,6 +140,7 @@ interface LumaDocsExpertise {
 - Critical CSS extraction for documentation themes
 - Service worker implementation for offline documentation access
 - Progressive enhancement patterns for documentation features
+- Minimizing path resolution overhead with stable alias imports
 
 ---
 
@@ -153,6 +156,8 @@ When both personas collaborate, they create a comprehensive deployment strategy 
    - Optimized production builds with automatic content generation
    - Advanced TypeScript configuration for React 19
    - Performance monitoring integration for documentation sites
+
+- Enforced path alias strategy & automated codemod maintenance
 
 2. **Deployment Automation** (GitHub Pages Expert)
    - Automated build and deployment pipelines using Luma Docs scripts
@@ -339,6 +344,7 @@ Both agents should understand the current Luma Docs build sequence (no separate 
 4. `generate:search-index` – Extract content + versioned routes and build search index (with `version` field)
 5. `generate:sitemap` – Create SEO-friendly `sitemap.xml` (can be extended to handle archived exclusion)
 6. `vite-react-ssg build` – Generate static HTML with React hydration & SEO meta tags injected via `components/SEO.tsx`
+7. (Support) Alias codemod available (`npm run codemod:aliases`) – not part of default pipeline but used to keep imports clean
 
 ### Directory Structure Expertise
 
@@ -347,12 +353,14 @@ Both agents should understand the current Luma Docs build sequence (no separate 
 - **`src/components/`**: React components (Layout, Sidebar, Search, SEO, Breadcrumbs, TOC, VersionSwitcher, etc.)
 - **`src/tools/`**: Build automation and content generation scripts (route, search index, sitemap, versions, base path resolver, validation)
 - **`src/generated-*`**: Auto-generated artifacts (routes, search index, versions list, route meta)
+- **Path Aliases**: `@` → `src/`, plus sub-aliases for components, utils, tools (ESLint-enforced)
 - **`config.ts`**: Centralized site configuration (branding, links, features, SEO defaults, version labels)
 - **`src/utils/`**: Shared utilities for routing, search, and base path handling
 
 ### Environment Configuration
 
 - **Base Path Handling**: Dynamic detection from git remotes or environment variables (`VITE_FORCE_BASE`, `GITHUB_REPOSITORY`) using a resolver consumed by Vite build + scripts
+- **Import Hygiene**: Codified via ESLint `no-restricted-imports`; MDX must use aliases (no relative paths)
 - **Versioning**: Root `content/pages/` are current (`config.versions.current`); archived versions live under `content/versions/<label>/` and auto-generate a version list + route metadata
 - **Version Switcher**: Hidden automatically when no archived versions; provides seamless navigation between current and archived docs
 - **Version Switch Fallback**: If the requested page path does not exist in the target version (after a restructure or rename) the system gracefully redirects to that version's root to avoid 404 dead ends

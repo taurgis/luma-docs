@@ -256,6 +256,7 @@ For a complete showcase of all components with live examples, visit the [Compone
 - `npm run clean` - Remove build/cache artifacts
 - `npm run lint` / `npm run lint:fix` - ESLint checks and autofix
 - `npm run type-check` - TypeScript type checking (ensures generated artifacts in place)
+- `npm run codemod:aliases` - Rewrite deep relative imports to `@/components`, `@/utils`, `@/tools` aliases
 - `npm run snapshot:version` - Snapshot current root docs into an archived version (see versioning section)
 - `npm run validate:frontmatter` - Validate MDX frontmatter against schema
 - `npm run search-dev` - Interactive search dev utility (generate/validate via arguments)
@@ -309,6 +310,47 @@ Benefits:
 - Single source of truth (no drift between scripts)
 - Easy future migration (e.g. to Cloudflare Pages or Netlify)
 - Deterministic behavior across dev, build, preview, and sitemap generation
+- Works seamlessly with path aliases (`@`, `@/components`, `@/utils`, `@/tools`) for clean imports
+
+### Path Aliases & Import Hygiene
+
+Configured in `tsconfig.json` and `vite.config.ts`:
+
+| Alias | Resolves To |
+|-------|-------------|
+| `@` | `src/` |
+| `@/components/*` | `src/components/*` |
+| `@/utils/*` | `src/utils/*` |
+| `@/tools/*` | `src/tools/*` |
+
+Enforced by ESLint:
+
+- Deep relative traversals into these folders (e.g. `../../components/...`) are disallowed.
+- MDX files are restricted from using relative imports (`./` or `../`) and must use aliases (ensures examples are copy‑paste stable after refactors).
+
+Refactor assistance:
+
+```bash
+npm run codemod:aliases
+```
+
+The codemod scans `src/` and rewrites eligible deep relative imports to alias forms. It intentionally skips generated files and `node_modules`.
+
+### Linting Strategy
+
+Key enforced rules:
+
+- `import/order` with grouping & alphabetization
+- Alias preference: custom `no-restricted-imports` patterns
+- MDX-specific relaxed rules (allow implicit component usage, disable unused var noise) + alias enforcement
+- Accessibility (`jsx-a11y/*`) tuned for docs context
+
+If you add a new top-level directory under `src/` that should have an alias, update:
+
+1. `tsconfig.json` -> `compilerOptions.paths`
+2. `vite.config.ts` -> `resolve.alias`
+3. ESLint restrictions (if you want to forbid deep relative access)
+4. This README + `COPILOT-INSTRUCTIONS.md` + `AGENTS.MD`
 
 ### Multi-Version Documentation
 
