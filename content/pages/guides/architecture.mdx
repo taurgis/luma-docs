@@ -20,14 +20,14 @@ Luma Docs orchestrates a **deterministic multi-step content pipeline**. Each ste
 versions → routes → css → search → sitemap → ssg
 ```
 
-| Step | Script | Output | Purpose |
-| ---- | ------ | ------ | ------- |
-| Versions | `generate:versions` | `src/generated-versions.ts` | Enumerates archived version labels for UI + routing + search filtering |
-| Routes | `generate:routes` | `src/generated-routes.tsx` + `.meta.ts` | Discovers MDX pages, extracts frontmatter, attaches version + meta |
-| CSS | `build:css` | `src/components/public/index.css` | Tailwind + typography utilities compiled once |
-| Search | `generate:search-index` | `src/generated-search-index.ts` | Static JSON-like index of headings + snippets + version |
-| Sitemap | `generate:sitemap` | `dist/sitemap.xml` | SEO discovery + can be extended for priority/archived handling |
-| SSG | `vite-react-ssg build` | `dist/**/*.html` | Pre-rendered HTML + hydration entry points |
+| Step     | Script                  | Output                                  | Purpose                                                                |
+| -------- | ----------------------- | --------------------------------------- | ---------------------------------------------------------------------- |
+| Versions | `generate:versions`     | `src/generated-versions.ts`             | Enumerates archived version labels for UI + routing + search filtering |
+| Routes   | `generate:routes`       | `src/generated-routes.tsx` + `.meta.ts` | Discovers MDX pages, extracts frontmatter, attaches version + meta     |
+| CSS      | `build:css`             | `src/components/public/index.css`       | Tailwind + typography utilities compiled once                          |
+| Search   | `generate:search-index` | `src/generated-search-index.ts`         | Static JSON-like index of headings + snippets + version                |
+| Sitemap  | `generate:sitemap`      | `dist/sitemap.xml`                      | SEO discovery + can be extended for priority/archived handling         |
+| SSG      | `vite-react-ssg build`  | `dist/**/*.html`                        | Pre-rendered HTML + hydration entry points                             |
 
 All of this is wrapped by `npm run build` and by the `dev` script (which runs incremental rebuilds as needed).
 
@@ -57,12 +57,12 @@ Each entry contains:
 
 ```ts
 interface SearchIndexEntry {
-  path: string;         // canonical page path (no trailing slash except root)
-  pageTitle: string;    // frontmatter or derived title
-  heading: string;      // section heading (H2/H3)
-  headingId?: string;   // explicit or generated anchor id
-  content: string;      // truncated, normalized snippet
-  version?: string;     // version label (inferred fallback via URL prefix)
+  path: string; // canonical page path (no trailing slash except root)
+  pageTitle: string; // frontmatter or derived title
+  heading: string; // section heading (H2/H3)
+  headingId?: string; // explicit or generated anchor id
+  content: string; // truncated, normalized snippet
+  version?: string; // version label (inferred fallback via URL prefix)
 }
 ```
 
@@ -74,12 +74,12 @@ Version scoping is **structural**, not dynamic rewriting. This means your old sn
 
 ## Extensibility Points
 
-| Need | Hook |
-| ---- | ---- |
-| Add lint for broken internal links | New script after `generate:routes` |
-| Exclude very old versions from search | Filter in `generate-search-index.js` |
-| Add RSS or Atom feed | After sitemap (shares route meta) |
-| Pre-compute Algolia index | Replace local search stage with remote push |
+| Need                                  | Hook                                        |
+| ------------------------------------- | ------------------------------------------- |
+| Add lint for broken internal links    | New script after `generate:routes`          |
+| Exclude very old versions from search | Filter in `generate-search-index.js`        |
+| Add RSS or Atom feed                  | After sitemap (shares route meta)           |
+| Pre-compute Algolia index             | Replace local search stage with remote push |
 
 ## Debugging Tips
 

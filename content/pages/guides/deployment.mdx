@@ -16,12 +16,12 @@ Luma Docs is optimized for **GitHub Pages** and any static host. The key differe
 
 ## Base Path Scenarios
 
-| Repository Type | URL Pattern | Base Path Result |
-| --------------- | ----------- | ---------------- |
-| User/Org Pages repo (`username/username.github.io`) | `https://username.github.io/` | `/` |
-| Project Pages repo (`username/repo`) | `https://username.github.io/repo/` | `/repo/` |
-| Custom Domain (CNAME) | `https://docs.example.com/` | `/` |
-| Forced Preview (`VITE_FORCE_BASE=/preview/`) | Any | `/preview/` |
+| Repository Type                                     | URL Pattern                        | Base Path Result |
+| --------------------------------------------------- | ---------------------------------- | ---------------- |
+| User/Org Pages repo (`username/username.github.io`) | `https://username.github.io/`      | `/`              |
+| Project Pages repo (`username/repo`)                | `https://username.github.io/repo/` | `/repo/`         |
+| Custom Domain (CNAME)                               | `https://docs.example.com/`        | `/`              |
+| Forced Preview (`VITE_FORCE_BASE=/preview/`)        | Any                                | `/preview/`      |
 
 The resolver checks (in order):
 
@@ -86,11 +86,11 @@ Because the base path is injected **before** Vite builds, all emitted asset URLs
 
 ## Troubleshooting
 
-| Issue | Cause | Fix |
-| ----- | ----- | --- |
+| Issue                       | Cause                                               | Fix                                                           |
+| --------------------------- | --------------------------------------------------- | ------------------------------------------------------------- |
 | 404 on refresh in subfolder | Missing trailing slash normalization in host config | Ensure GitHub Pages; other hosts may need `404.html` fallback |
-| Double slashes in URLs | Manual concatenation in custom component | Use `basePath` helper from `@/utils/basePath` |
-| Wrong base after fork | Fork remote not yet fetched | Run `git fetch --all` or set `VITE_FORCE_BASE` explicitly |
+| Double slashes in URLs      | Manual concatenation in custom component            | Use `basePath` helper from `@/utils/basePath`                 |
+| Wrong base after fork       | Fork remote not yet fetched                         | Run `git fetch --all` or set `VITE_FORCE_BASE` explicitly     |
 
 ## Forcing a Preview Environment
 
@@ -104,10 +104,10 @@ Upload `dist/` to that path on any static host (Cloudflare Pages, Netlify, S3) a
 
 ## Extending Deployment
 
-| Goal | Strategy |
-| ---- | -------- |
-| Add link checker | New CI step after build using `lychee` |
-| Add performance budget | Lighthouse CI in separate job (uses built `dist/`) |
+| Goal                        | Strategy                                           |
+| --------------------------- | -------------------------------------------------- |
+| Add link checker            | New CI step after build using `lychee`             |
+| Add performance budget      | Lighthouse CI in separate job (uses built `dist/`) |
 | Add broken anchor detection | Parse `generated-search-index` + HTML fragment IDs |
 
 The deployment story aims for **zero surprises** — one build command, any static host, correct paths.

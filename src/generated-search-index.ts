@@ -26,7 +26,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Welcome to Luma Docs",
     "heading": "Feature Highlights",
     "headingId": "feature-highlights",
-    "content": "Feature Highlights Luma Docs is opinionated yet flexible. Below is a curated tour; each item links to a deeper showcase page so this site both documents and demonstrates the platform. | Category | Highlights | Deep Dive | | -------- | ---------- | --------- | import { BaseLink } from \"@/components\";",
+    "content": "Feature Highlights Luma Docs is opinionated yet flexible. Below is a curated tour; each item links to a deeper showcase page so this site both documents and demonstrates the platform. | Category | Highlights | Deep Dive | | ---------------- | ---------------------------------------------------------",
     "description": "",
     "version": null
   },
@@ -62,7 +62,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Welcome to Luma Docs",
     "heading": "Next Steps",
     "headingId": "next-steps",
-    "content": "Next Steps Explore the showcase guides above (start with <BaseLink to=\"/getting-started/\">Getting Started</BaseLink>). Open in your editor and create a new folder + . Run – the dev script regenerates routes & search automatically. Snapshot a release with (or your version label) when you cut a milest",
+    "content": "Next Steps Explore the showcase guides above (start with Getting Started). Open in your editor and create a new folder + . Run – the dev script regenerates routes & search automatically. Snapshot a release with (or your version label) when you cut a milestone. Commit & push; the GitHub Pages workflo",
     "description": "",
     "version": null
   },
@@ -278,7 +278,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Architecture & Build Pipeline",
     "heading": "Pipeline Overview",
     "headingId": "pipeline-overview",
-    "content": "Pipeline Overview | Step | Script | Output | Purpose | | ---- | ------ | ------ | ------- | | Versions | | | Enumerates archived version labels for UI + routing + search filtering | | Routes | | + | Discovers MDX pages, extracts frontmatter, attaches version + meta | | CSS | | | Tailwind + typograph",
+    "content": "Pipeline Overview | Step | Script | Output | Purpose | | -------- | ----------------------- | --------------------------------------- | ---------------------------------------------------------------------- | | Versions | | | Enumerates archived version labels for UI + routing + search filtering | |",
     "description": "",
     "version": null
   },
@@ -332,7 +332,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Architecture & Build Pipeline",
     "heading": "Extensibility Points",
     "headingId": "extensibility-points",
-    "content": "Extensibility Points | Need | Hook | | ---- | ---- | | Add lint for broken internal links | New script after | | Exclude very old versions from search | Filter in | | Add RSS or Atom feed | After sitemap (shares route meta) | | Pre-compute Algolia index | Replace local search stage with remote push ",
+    "content": "Extensibility Points | Need | Hook | | ------------------------------------- | ------------------------------------------- | | Add lint for broken internal links | New script after | | Exclude very old versions from search | Filter in | | Add RSS or Atom feed | After sitemap (shares route meta) | | ",
     "description": "",
     "version": null
   },
@@ -548,7 +548,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Customization Guide",
     "heading": "What to Change First",
     "headingId": "what-to-change-first",
-    "content": "What to Change First | Goal | Field | | ---- | ----- | | Rename site | + | | Update GitHub link | | | Hide version badge | | | Disable search temporarily | |",
+    "content": "What to Change First | Goal | Field | | -------------------------- | ------------------------------------------ | | Rename site | + | | Update GitHub link | | | Hide version badge | | | Disable search temporarily | |",
     "description": "",
     "version": null
   },
@@ -638,7 +638,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Customization Guide",
     "heading": "Pitfalls to Avoid",
     "headingId": "pitfalls-to-avoid",
-    "content": "Pitfalls to Avoid | Anti-Pattern | Better Approach | | ------------ | --------------- | | Hardcoding base URLs | Use resolver + util | | Deep relative imports ( ) | Run alias codemod ( ) | | Mutating generated files | Edit source scripts instead | Customization should feel incremental — change brand",
+    "content": "Pitfalls to Avoid | Anti-Pattern | Better Approach | | ---------------------------------- | --------------------------------------------- | | Hardcoding base URLs | Use resolver + util | | Deep relative imports ( ) | Run alias codemod ( ) | | Mutating generated files | Edit source scripts instead | ",
     "description": "",
     "version": null
   },
@@ -656,7 +656,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Deployment & Base Path",
     "heading": "Base Path Scenarios",
     "headingId": "base-path-scenarios",
-    "content": "Base Path Scenarios | Repository Type | URL Pattern | Base Path Result | | --------------- | ----------- | ---------------- | | User/Org Pages repo ( ) | | | | Project Pages repo ( ) | | | | Custom Domain (CNAME) | | | | Forced Preview ( ) | Any | | The resolver checks (in order): (exported by CI st",
+    "content": "Base Path Scenarios | Repository Type | URL Pattern | Base Path Result | | --------------------------------------------------- | ---------------------------------- | ---------------- | | User/Org Pages repo ( ) | | | | Project Pages repo ( ) | | | | Custom Domain (CNAME) | | | | Forced Preview ( ) |",
     "description": "",
     "version": null
   },
@@ -701,7 +701,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Deployment & Base Path",
     "heading": "Troubleshooting",
     "headingId": "troubleshooting",
-    "content": "Troubleshooting | Issue | Cause | Fix | | ----- | ----- | --- | | 404 on refresh in subfolder | Missing trailing slash normalization in host config | Ensure GitHub Pages; other hosts may need fallback | | Double slashes in URLs | Manual concatenation in custom component | Use helper from | | Wrong b",
+    "content": "Troubleshooting | Issue | Cause | Fix | | --------------------------- | --------------------------------------------------- | ------------------------------------------------------------- | | 404 on refresh in subfolder | Missing trailing slash normalization in host config | Ensure GitHub Pages; oth",
     "description": "",
     "version": null
   },
@@ -719,7 +719,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Deployment & Base Path",
     "heading": "Extending Deployment",
     "headingId": "extending-deployment",
-    "content": "Extending Deployment | Goal | Strategy | | ---- | -------- | | Add link checker | New CI step after build using | | Add performance budget | Lighthouse CI in separate job (uses built ) | | Add broken anchor detection | Parse + HTML fragment IDs | The deployment story aims for zero surprises — one bu",
+    "content": "Extending Deployment | Goal | Strategy | | --------------------------- | -------------------------------------------------- | | Add link checker | New CI step after build using | | Add performance budget | Lighthouse CI in separate job (uses built ) | | Add broken anchor detection | Parse + HTML fra",
     "description": "",
     "version": null
   },
@@ -773,7 +773,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Search Showcase",
     "heading": "Performance Characteristics",
     "headingId": "performance-characteristics",
-    "content": "Performance Characteristics | Aspect | Strategy | | ------ | -------- | | Size | Plain JSON-like module, tree-shakeable in theory via future chunking | | Load | Lazy: only imported when user opens modal (improve with prefetch) | | Query | Simple substring / regex split for now; upgrade path: token t",
+    "content": "Performance Characteristics | Aspect | Strategy | | --------- | ------------------------------------------------------------------------------ | | Size | Plain JSON-like module, tree-shakeable in theory via future chunking | | Load | Lazy: only imported when user opens modal (improve with prefetch) ",
     "description": "",
     "version": null
   },
@@ -791,7 +791,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Search Showcase",
     "heading": "Extending Search",
     "headingId": "extending-search",
-    "content": "Extending Search | Goal | Approach | | ---- | -------- | | Add weighting (title > heading > body) | Replace linear filter with scoring function | | Support fuzzy matching | Integrate small fuzzy lib (e.g. ) in | | Remote / server index | Swap generator with an uploader + runtime fetch | | Huge conte",
+    "content": "Extending Search | Goal | Approach | | -------------------------------------- | ------------------------------------------------------------ | | Add weighting (title > heading > body) | Replace linear filter with scoring function | | Support fuzzy matching | Integrate small fuzzy lib (e.g. ) in | | ",
     "description": "",
     "version": null
   },
@@ -809,7 +809,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Search Showcase",
     "heading": "Troubleshooting",
     "headingId": "troubleshooting",
-    "content": "Troubleshooting | Symptom | Fix | | ------- | --- | | Missing page in results | Ensure it has at least one H2/H3 with content underneath | | Stale headings after rename | Stop dev server to clear module cache or rerun search generation script | | Version pill missing on archived page | Check for cor",
+    "content": "Troubleshooting | Symptom | Fix | | ------------------------------------- | ----------------------------------------------------------------------- | | Missing page in results | Ensure it has at least one H2/H3 with content underneath | | Stale headings after rename | Stop dev server to clear module",
     "description": "",
     "version": null
   },

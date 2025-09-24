@@ -31,13 +31,6 @@
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>    
-    <!-- Advanced Features -->
-    <url>
-        <loc>https://yourdomain.com/luma-docs/guides/advanced/</loc>
-        <lastmod>2025-09-24</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>    
     <!-- Component Showcase -->
     <url>
         <loc>https://yourdomain.com/luma-docs/guides/components/</loc>
@@ -45,40 +38,47 @@
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>    
-    <!-- Versioning -->
-    <url>
-        <loc>https://yourdomain.com/luma-docs/guides/versioning/</loc>
-        <lastmod>2025-09-24</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>    
-    <!-- Architecture & Build -->
+    <!-- Architecture & Build Pipeline -->
     <url>
         <loc>https://yourdomain.com/luma-docs/guides/architecture/</loc>
         <lastmod>2025-09-24</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>    
-    <!-- Customization Guide -->
+    <!-- Versioning -->
     <url>
-        <loc>https://yourdomain.com/luma-docs/guides/customization/</loc>
+        <loc>https://yourdomain.com/luma-docs/guides/versioning/</loc>
         <lastmod>2025-09-24</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
-    </url>    
-    <!-- Deployment & Base Path -->
-    <url>
-        <loc>https://yourdomain.com/luma-docs/guides/deployment/</loc>
-        <lastmod>2025-09-24</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
+        <priority>0.5</priority>
     </url>    
     <!-- Search Showcase -->
     <url>
         <loc>https://yourdomain.com/luma-docs/guides/search/</loc>
         <lastmod>2025-09-24</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
+        <priority>0.5</priority>
+    </url>    
+    <!-- Customization Guide -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/guides/customization/</loc>
+        <lastmod>2025-09-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>    
+    <!-- Deployment & Base Path -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/guides/deployment/</loc>
+        <lastmod>2025-09-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>    
+    <!-- Advanced Features -->
+    <url>
+        <loc>https://yourdomain.com/luma-docs/guides/advanced/</loc>
+        <lastmod>2025-09-24</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
     </url>    
     <!-- Legacy Home -->
     <url>

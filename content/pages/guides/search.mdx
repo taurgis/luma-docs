@@ -48,12 +48,12 @@ The index is generated at build time by `generate-search-index.js`:
 
 ## Performance Characteristics
 
-| Aspect | Strategy |
-| ------ | -------- |
-| Size | Plain JSON-like module, tree-shakeable in theory via future chunking |
-| Load | Lazy: only imported when user opens modal (improve with prefetch) |
-| Query | Simple substring / regex split for now; upgrade path: token trie or minisearch |
-| Highlight | Client-side segmentation per query term |
+| Aspect    | Strategy                                                                       |
+| --------- | ------------------------------------------------------------------------------ |
+| Size      | Plain JSON-like module, tree-shakeable in theory via future chunking           |
+| Load      | Lazy: only imported when user opens modal (improve with prefetch)              |
+| Query     | Simple substring / regex split for now; upgrade path: token trie or minisearch |
+| Highlight | Client-side segmentation per query term                                        |
 
 ## Version Scoping
 
@@ -63,7 +63,7 @@ Current scope logic:
 const raw = searchDocs(query);
 const filtered = scopeAllVersions
   ? raw
-  : raw.filter(r => !r.version || r.version === config.versions.current);
+  : raw.filter((r) => !r.version || r.version === config.versions.current);
 ```
 
 Planned enhancements:
@@ -74,12 +74,12 @@ Planned enhancements:
 
 ## Extending Search
 
-| Goal | Approach |
-| ---- | -------- |
-| Add weighting (title > heading > body) | Replace linear filter with scoring function |
-| Support fuzzy matching | Integrate small fuzzy lib (e.g. `fuzzysort`) in `searchDocs` |
-| Remote / server index | Swap generator with an uploader + runtime fetch |
-| Huge content scaling | Shard index per top-level section and lazy load |
+| Goal                                   | Approach                                                     |
+| -------------------------------------- | ------------------------------------------------------------ |
+| Add weighting (title > heading > body) | Replace linear filter with scoring function                  |
+| Support fuzzy matching                 | Integrate small fuzzy lib (e.g. `fuzzysort`) in `searchDocs` |
+| Remote / server index                  | Swap generator with an uploader + runtime fetch              |
+| Huge content scaling                   | Shard index per top-level section and lazy load              |
 
 ## Accessibility Notes
 
@@ -89,11 +89,11 @@ Planned enhancements:
 
 ## Troubleshooting
 
-| Symptom | Fix |
-| ------- | --- |
-| Missing page in results | Ensure it has at least one H2/H3 with content underneath |
-| Stale headings after rename | Stop dev server to clear module cache or rerun search generation script |
-| Version pill missing on archived page | Check `routeMeta` for correct `version` field |
+| Symptom                               | Fix                                                                     |
+| ------------------------------------- | ----------------------------------------------------------------------- |
+| Missing page in results               | Ensure it has at least one H2/H3 with content underneath                |
+| Stale headings after rename           | Stop dev server to clear module cache or rerun search generation script |
+| Version pill missing on archived page | Check `routeMeta` for correct `version` field                           |
 
 The current implementation favors **clarity over premature optimization** — making it a solid foundation you can adapt as your documentation grows.
 

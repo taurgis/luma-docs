@@ -32,4 +32,3 @@ export { default as VersionBadge } from './layout/VersionBadge';
 export { default as Breadcrumbs } from './seo/Breadcrumbs';
 export { default as ErrorBoundary } from '../app/layout/ErrorBoundary';
 export { default as NextLink } from './navigation/NextLink';
-export { default as BaseLink } from './navigation/BaseLink';
