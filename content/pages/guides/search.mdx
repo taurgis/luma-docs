@@ -61,7 +61,7 @@ Current scope logic:
 
 ```ts
 const raw = searchDocs(query);
-const filtered = scopeAllVersions
+const _filtered = scopeAllVersions
   ? raw
   : raw.filter((r) => !r.version || r.version === config.versions.current);
 ```

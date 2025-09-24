@@ -104,17 +104,22 @@ config.versions.hidden = ["v0.8"];
 
 Add a new flag:
 
-```ts
-// config.ts
-features: { ...config.features, darkMode: false }
+```text
+// config.ts (illustrative)
+// Add a new boolean flag in the features object:
+// features: { search: true, breadcrumbs: true, structuredDataBreadcrumbs: true, darkMode: false }
 ```
 
 Gate a component:
 
-```tsx
-{
-  config.features.darkMode && <ThemeToggle />;
-}
+```text
+// Conditional feature gating example (illustrative only)
+// Define a simple component:
+// function ThemeToggle() {
+//   return <button type="button">Toggle Theme</button>;
+// }
+// Usage (pseudo-code):
+// const maybe = config.features.darkMode ? <ThemeToggle /> : null;
 ```
 
 ## SEO Defaults

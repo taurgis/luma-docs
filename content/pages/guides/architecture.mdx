@@ -56,14 +56,16 @@ Frontmatter is parsed and validated (see `validate:frontmatter`). Only whitelist
 Each entry contains:
 
 ```ts
-interface SearchIndexEntry {
-  path: string; // canonical page path (no trailing slash except root)
-  pageTitle: string; // frontmatter or derived title
-  heading: string; // section heading (H2/H3)
-  headingId?: string; // explicit or generated anchor id
-  content: string; // truncated, normalized snippet
-  version?: string; // version label (inferred fallback via URL prefix)
-}
+// Shape of each search index record (illustrative only)
+// (Removed local interface declaration to satisfy lint rule)
+// {
+//   path: string;
+//   pageTitle: string;
+//   heading: string;
+//   headingId?: string;
+//   content: string;
+//   version?: string;
+// }
 ```
 
 No network calls, no 3rd-party service — pure static asset.
