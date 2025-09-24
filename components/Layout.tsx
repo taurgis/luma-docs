@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 
 import config from '../config';
@@ -15,7 +15,51 @@ import Sidebar from './Sidebar';
 const Layout: React.FC = () => {
   const [toc, setToc] = useState<TocItem[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
+  const mobileSidebarRef = useRef<HTMLDivElement | null>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
   const location = useLocation();
+
+  const closeSidebar = useCallback((opts?: { restoreFocus?: boolean }) => {
+    setSidebarOpen(false);
+    if (opts?.restoreFocus !== false && toggleButtonRef.current) {
+      toggleButtonRef.current.focus();
+    }
+  }, []);
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!sidebarOpen) { return; }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeSidebar();
+      return;
+    }
+    if (e.key === 'Tab') {
+      // Focus trap inside mobile sidebar
+      const container = mobileSidebarRef.current;
+  if (!container) { return; }
+      const focusable = Array.from(
+        container.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter(el => !el.hasAttribute('disabled') && !el.getAttribute('aria-hidden'));
+      // If none focusable, keep focus on container
+      if (focusable.length === 0) {
+        container.focus();
+        e.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }, [sidebarOpen, closeSidebar]);
 
   // Close sidebar on route change (mobile)
   useEffect(() => {
@@ -107,8 +151,36 @@ const Layout: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, [location.pathname]);
 
+  // Manage focus when sidebar opens
+  useEffect(() => {
+    if (sidebarOpen) {
+      // store last focused element
+      lastFocusedRef.current = document.activeElement as HTMLElement | null;
+      // Attempt to focus first focusable inside sidebar
+      const container = mobileSidebarRef.current;
+      if (container) {
+        // Make sure container is programmatically focusable
+        if (!container.hasAttribute('tabindex')) {
+          container.setAttribute('tabindex', '-1');
+        }
+        const focusable = container.querySelector<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        );
+        (focusable || container).focus();
+      }
+      document.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [sidebarOpen, handleKeyDown]);
+
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
+      {/* Skip link */}
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute left-4 top-2 z-50 px-3 py-2 bg-blue-600 text-white rounded shadow">
+        Skip to main content
+      </a>
       {/* Mobile Header */}
       <header className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="flex items-center justify-between px-4 py-3">
@@ -118,6 +190,7 @@ const Layout: React.FC = () => {
             <span className="text-xs text-slate-500 self-start mt-1">v{config.site.version}</span>
           </div>
           <button
+            ref={toggleButtonRef}
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md flex-shrink-0"
             aria-label={sidebarOpen ? 'Close navigation' : 'Open navigation'}
@@ -146,7 +219,7 @@ const Layout: React.FC = () => {
           type="button"
           className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
           aria-label="Close navigation"
-          onClick={() => setSidebarOpen(false)}
+          onClick={() => closeSidebar()}
         >
           <span className="sr-only">Close navigation</span>
         </button>
@@ -155,14 +228,18 @@ const Layout: React.FC = () => {
       <div className="relative flex min-h-screen overflow-x-hidden">
         {/* Desktop Sidebar */}
         <div className="fixed top-0 left-0 h-full w-64 hidden lg:block bg-slate-50 border-r border-slate-200">
-          <Sidebar />
+          <nav aria-label="Primary" className="h-full overflow-y-auto">
+            <Sidebar />
+          </nav>
         </div>
 
         {/* Mobile Sidebar */}
-        <div id="mobile-sidebar" aria-hidden={!sidebarOpen} className={`lg:hidden fixed top-0 left-0 h-full w-64 bg-slate-50 border-r border-slate-200 transform transition-transform duration-200 ease-in-out z-50 ${
+        <div id="mobile-sidebar" ref={mobileSidebarRef} aria-hidden={!sidebarOpen} className={`lg:hidden fixed top-0 left-0 h-full w-64 bg-slate-50 border-r border-slate-200 transform transition-transform duration-200 ease-in-out z-50 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}>
-          <Sidebar />
+        }`}>          
+          <nav aria-label="Primary" className="h-full overflow-y-auto">
+            <Sidebar />
+          </nav>
         </div>
 
         <div className="lg:pl-64 flex-1 min-w-0 max-w-full">
@@ -170,7 +247,11 @@ const Layout: React.FC = () => {
             {/* Added base mobile padding (p-4) so content isn't flush on very small screens */}
             <main id="main-content" className="flex-1 max-w-4xl mx-auto p-4 sm:p-4 lg:p-12 min-w-0 overflow-hidden">
               <div className="prose prose-slate max-w-none min-w-0 break-words">
-                {config.features.breadcrumbs && <Breadcrumbs />}
+                {config.features.breadcrumbs && (
+                  <nav aria-label="Breadcrumbs">
+                    <Breadcrumbs />
+                  </nav>
+                )}
                 <ErrorBoundary>
                   <MDXPage>
                     <MDXWrapper>
@@ -182,7 +263,9 @@ const Layout: React.FC = () => {
             </main>
             <aside className="hidden xl:block w-64 flex-shrink-0">
               <div className="fixed top-0 right-0 h-full w-64 p-8">
-                <OnThisPage items={toc} />
+                <div aria-label="On this page" role="navigation">
+                  <OnThisPage items={toc} />
+                </div>
               </div>
             </aside>
           </div>

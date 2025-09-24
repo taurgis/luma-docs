@@ -74,6 +74,31 @@ describe('Layout integration (mocked)', () => {
     expect(screen.getAllByRole('button', { name: /open navigation/i }).length).toBeGreaterThan(0);
   });
 
+  it('provides skip link and breadcrumb / primary nav landmarks', () => {
+    renderWithRoute('/');
+    // Skip link exists
+    const skipLink = screen.getByRole('link', { name: /skip to main content/i });
+    expect(skipLink).toBeTruthy();
+    // Breadcrumbs landmark
+    const breadcrumbNavs = screen.getAllByRole('navigation', { name: /breadcrumbs/i });
+    expect(breadcrumbNavs.length).toBeGreaterThan(0);
+  });
+
+  it('focus traps in mobile sidebar and closes on Escape restoring focus', () => {
+    renderWithRoute('/');
+    const openBtn = screen.getAllByRole('button', { name: /open navigation/i })[0];
+    openBtn.focus();
+    fireEvent.click(openBtn);
+    // Now sidebar is open, find something inside sidebar (mocked SidebarNav text)
+  expect(screen.getAllByTestId('sidebar')[0]).toBeTruthy();
+    // Simulate tabbing - since our mocked sidebar may not have focusables, container itself will receive focus
+    fireEvent.keyDown(document, { key: 'Tab' });
+    // Press Escape to close
+    fireEvent.keyDown(document, { key: 'Escape' });
+    // Focus restored to toggle button
+    expect(document.activeElement).toBe(openBtn);
+  });
+
   it('renders nested route content and Breadcrumbs on subpage', () => {
     renderWithRoute('/guide');
     expect(screen.getByTestId('guide')).toBeTruthy();

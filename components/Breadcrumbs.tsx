@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import config from '../config';
-import { routeMeta, type RouteMeta } from '../src/generated-routes';
+import { routeMeta } from '../src/generated-routes';
+import type { RouteMeta } from '../types/route-meta';
 
 interface Crumb {
   name: string;
@@ -24,7 +25,7 @@ function buildBreadcrumbs(pathname: string): Crumb[] {
   crumbs.push({ name: config.site.name, path: '/' });
   const segments = clean.split('/').filter(Boolean); // remove empty
   const cumulative: string[] = [];
-  segments.forEach((seg) => {
+  segments.forEach((seg: string) => {
     cumulative.push(seg);
     const partial = `/${cumulative.join('/')}`;
   const route = routeMeta.find((r: RouteMeta) => normalize(r.path) === normalize(partial));
