@@ -40,7 +40,7 @@ const Breadcrumbs: React.FC = () => {
   if (!crumbs.length) {return null;}
 
   return (
-    <nav aria-label="Breadcrumb" className="mb-6 text-sm text-slate-600">
+    <nav aria-label="Breadcrumbs" className="mb-6 text-sm text-slate-600">
       <ol className="flex flex-wrap items-center gap-1">
         {crumbs.map((c, i) => {
           const isLast = i === crumbs.length - 1;

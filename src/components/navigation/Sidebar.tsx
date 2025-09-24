@@ -103,7 +103,7 @@ const Sidebar: React.FC = () => {
   <Search />
   <VersionSwitcher />
 
-      <nav className="flex-1 overflow-y-auto mt-4 sm:mt-6">
+  <nav className="flex-1 overflow-y-auto mt-4 sm:mt-6" aria-label="Primary documentation navigation">
         {Object.entries(groupedRoutes).map(([groupName, routes]) => {
           const segment = groupSegments[groupName];
           // Compute expected index path (with version prefix if archived)
@@ -128,6 +128,7 @@ const Sidebar: React.FC = () => {
               {indexRoute ? (
                 <NavLink
                   to={indexRoute.slug}
+                    aria-current={isLinkActive(indexRoute.path) ? 'page' : undefined}
                   className={`block text-xs font-bold uppercase tracking-wider mb-3 rounded-md px-2 py-2 transition-colors ${
                     isLinkActive(indexRoute.path)
                       ? 'text-blue-600 bg-blue-50'
@@ -147,6 +148,7 @@ const Sidebar: React.FC = () => {
                     <li key={route.path}>
                       <NavLink
                         to={route.slug}
+                          aria-current={isLinkActive(route.path) ? 'page' : undefined}
                         className={`block py-2 px-3 text-sm rounded-md transition-colors ${
                           isLinkActive(route.path)
                             ? 'text-blue-600 font-semibold bg-blue-50'

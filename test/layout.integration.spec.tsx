@@ -30,7 +30,7 @@ vi.mock('../src/components/content/MDXPage', () => ({ default: ({ children }: { 
 vi.mock('../src/components/content/MDXWrapper', () => ({ default: ({ children }: { children?: React.ReactNode }) => <div data-testid="mdx-wrapper">{children}</div> }));
 vi.mock('../src/components/navigation/OnThisPage', () => ({ default: () => <aside data-testid="on-this-page" /> }));
 vi.mock('../src/components/navigation/Sidebar', () => ({ default: () => <div data-testid="sidebar">SidebarNav</div> }));
-vi.mock('../src/components/seo/Breadcrumbs', () => ({ default: () => <nav data-testid="breadcrumbs">Breadcrumbs</nav> }));
+vi.mock('../src/components/seo/Breadcrumbs', () => ({ default: () => <nav aria-label="Breadcrumbs" data-testid="breadcrumbs">Breadcrumbs</nav> }));
 vi.mock('../src/components/seo/SEO', () => ({ default: () => <></> }));
 
 // ErrorBoundary passthrough

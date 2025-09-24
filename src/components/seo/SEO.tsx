@@ -3,6 +3,7 @@ import { Head } from 'vite-react-ssg';
 
 import { config } from '@/config';
 import type { SEOProps } from '@/types/seo';
+import { sanitizeHeadText } from '@/utils/sanitize';
 
 const SEO: React.FC<SEOProps> = ({
   title,
@@ -25,8 +26,9 @@ const SEO: React.FC<SEOProps> = ({
   breadcrumbs
 }) => {
   // Build full title with site name
-  const fullTitle = title 
-    ? `${title} | ${config.site.name}`
+  const sanitizedTitle = sanitizeHeadText(title) || undefined;
+  const fullTitle = sanitizedTitle
+    ? `${sanitizedTitle} | ${config.site.name}`
     : `${config.site.title}`;
 
   // Determine canonical URL (normalize to avoid double slashes)
@@ -51,10 +53,10 @@ const SEO: React.FC<SEOProps> = ({
 
   // Build structured keywords
   const allKeywords = [
-    keywords,
-    tags?.join(', '),
-    section,
-    config.seo.keywords.join(', ')
+    sanitizeHeadText(keywords),
+    sanitizeHeadText(tags?.join(', ')),
+    sanitizeHeadText(section),
+    sanitizeHeadText(config.seo.keywords.join(', '))
   ].filter(Boolean).join(', ');
 
   return (
@@ -62,24 +64,25 @@ const SEO: React.FC<SEOProps> = ({
       {/* Primary Meta Tags */}
       <title>{fullTitle}</title>
       <meta name="title" content={fullTitle} />
-      <meta name="description" content={description} />
+  <meta name="description" content={sanitizeHeadText(description) || config.site.description} />
       {allKeywords && <meta name="keywords" content={allKeywords} />}
       {fullCanonical && <link rel="canonical" href={fullCanonical} />}
       
       {/* SEO Meta Tags */}
       <meta name="robots" content={robotsContent} />
-      {author && <meta name="author" content={author} />}
+  {author && <meta name="author" content={sanitizeHeadText(author)} />}
       {publishedTime && <meta name="article:published_time" content={publishedTime} />}
       {modifiedTime && <meta name="article:modified_time" content={modifiedTime} />}
-      {section && <meta name="article:section" content={section} />}
-      {tags?.map(tag => (
-        <meta key={`tag-${tag}`} name="article:tag" content={tag} />
-      ))}
+  {section && <meta name="article:section" content={sanitizeHeadText(section)} />}
+      {tags?.map(tag => {
+        const safeTag = sanitizeHeadText(tag, 60);
+        return safeTag ? <meta key={`tag-${safeTag}`} name="article:tag" content={safeTag} /> : null;
+      })}
 
       {/* Open Graph Meta Tags */}
       <meta property="og:type" content={ogType} />
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+  <meta property="og:description" content={sanitizeHeadText(description) || config.site.description} />
       <meta property="og:site_name" content={config.site.name} />
       {fullCanonical && <meta property="og:url" content={fullCanonical} />}
       {ogImage && (
@@ -95,7 +98,7 @@ const SEO: React.FC<SEOProps> = ({
       {/* Twitter Meta Tags */}
       <meta name="twitter:card" content={twitterCard} />
       <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+  <meta name="twitter:description" content={sanitizeHeadText(description) || config.site.description} />
       {ogImage && <meta name="twitter:image" content={ogImage} />}
       {ogImage && <meta name="twitter:image:alt" content={title || config.site.title} />}
       {twitterCreator && <meta name="twitter:creator" content={twitterCreator} />}

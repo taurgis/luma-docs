@@ -268,6 +268,7 @@ const Search: React.FC = () => {
           type="button"
           onClick={openSearch}
           className="w-full bg-slate-100 border border-slate-200 rounded-lg py-2 pl-9 pr-12 sm:pr-3 text-sm text-left text-slate-500 hover:border-slate-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+          aria-label="Open search (⌘K)"
         >
           Search...
         </button>

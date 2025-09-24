@@ -64,8 +64,21 @@ const Layout: React.FC = () => {
   }, [sidebarOpen, closeSidebar]);
 
   // Close sidebar on route change (mobile)
+  // Close mobile sidebar and move focus to main content on route change
   useEffect(() => {
     setSidebarOpen(false);
+    // After paint, shift focus to main content for screen reader & keyboard continuity
+    const t = setTimeout(() => {
+      const main = document.getElementById('main-content');
+      if (main) {
+        // Make programmatically focusable if not naturally
+        if (!main.hasAttribute('tabindex')) {
+          main.setAttribute('tabindex', '-1');
+        }
+        (main as HTMLElement).focus();
+      }
+    }, 0);
+    return () => clearTimeout(t);
   }, [location.pathname]);
 
   // Scroll restoration - scroll to top on route change or to specific element if hash is present
@@ -249,11 +262,7 @@ const Layout: React.FC = () => {
             {/* Added base mobile padding (p-4) so content isn't flush on very small screens */}
             <main id="main-content" className="flex-1 max-w-4xl mx-auto p-4 sm:p-4 lg:p-12 min-w-0 overflow-hidden">
               <div className="prose prose-slate max-w-none min-w-0 break-words">
-                {config.features.breadcrumbs && (
-                  <nav aria-label="Breadcrumbs">
-                    <Breadcrumbs />
-                  </nav>
-                )}
+                {config.features.breadcrumbs && <Breadcrumbs />}
                 <ErrorBoundary>
                   <MDXPage>
                     <MDXWrapper>
