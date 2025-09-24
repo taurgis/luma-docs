@@ -103,7 +103,7 @@ function processDir(contentDir, versionPrefix = '', versionLabel, importRoot) {
 
 function extractCurrentVersionLabel(baseDir) {
   try {
-    const source = fs.readFileSync(path.join(baseDir, '../config.ts'), 'utf8');
+    const source = fs.readFileSync(path.join(baseDir, '../../config.ts'), 'utf8');
     const match = source.match(/versions\s*:\s*{[\s\S]*?current:\s*"([^"]+)"/);
     return match ? match[1] : 'next';
   } catch {
@@ -112,8 +112,8 @@ function extractCurrentVersionLabel(baseDir) {
 }
 
 function generateRoutes(baseDir) {
-  const currentDir = path.join(baseDir, '../pages');
-  const versionsDir = path.join(baseDir, '../versions');
+  const currentDir = path.join(baseDir, '../../pages');
+  const versionsDir = path.join(baseDir, '../../versions');
   const allRoutes = [];
   const currentVersionLabel = extractCurrentVersionLabel(baseDir);
 
@@ -205,7 +205,8 @@ ${routes.map(route => `  ${JSON.stringify(route.meta)}`).join(',\n')}
 }
 
 const baseDir = __dirname; 
-const outputPath = path.join(__dirname, '../src/generated-routes.tsx');
+// tools relocated under src/tools so generated artifacts reside one directory up
+const outputPath = path.join(__dirname, '../generated-routes.tsx');
 
 try {
   const routes = generateRoutes(baseDir);

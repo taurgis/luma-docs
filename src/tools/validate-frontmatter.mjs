@@ -40,8 +40,8 @@ function walk(dir) {
   }
 }
 
-walk(path.join(__dirname, '..', 'pages'));
-walk(path.join(__dirname, '..', 'versions'));
+walk(path.join(__dirname, '../../', 'pages'));
+walk(path.join(__dirname, '../../', 'versions'));
 
 if (hasError) {
   globalThis.console.error('\nFrontmatter validation failed.');

@@ -6,9 +6,6 @@ afterEach(() => {
 	cleanup();
 });
 
-// jsdom doesn't implement scrollTo; stub to silence not implemented warnings.
+// jsdom provides a scrollTo that throws "Not implemented"; always stub to silence warnings.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-if (!(window as any).scrollTo) {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	(window as any).scrollTo = vi.fn();
-}
+(window as any).scrollTo = vi.fn();

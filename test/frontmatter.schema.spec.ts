@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { parseAndValidateFrontmatter } from '../tools/frontmatter-schema';
+import { parseAndValidateFrontmatter } from '../src/tools/frontmatter-schema';
 
 const validMDX = `---\ntitle: Good Page\ndescription: A valid description meeting length reqs\norder: 2\nnoindex: false\nogType: website\ntwitterCard: summary_large_image\n---\n\n# Heading\nContent here.`;
 

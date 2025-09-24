@@ -7,8 +7,8 @@
  * bumping the `config.versions.current` label to a new value.
  *
  * Usage:
- *   node tools/snapshot-version.js v1.0
- *   node tools/snapshot-version.js v1.0 --bump v1.1
+ *   node src/tools/snapshot-version.js v1.0
+ *   node src/tools/snapshot-version.js v1.0 --bump v1.1
  *
  * Via npm script (after adding to package.json):
  *   npm run snapshot:version -- v1.0
@@ -28,7 +28,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const rootDir = path.join(__dirname, '..');
+const rootDir = path.join(__dirname, '..', '..');
 
 function log(msg) { console.log(`[snapshot-version] ${msg}`); }
 function error(msg) { console.error(`\n❌ ${msg}`); }
@@ -37,7 +37,7 @@ function exitFail(msg, code = 1) { error(msg); process.exit(code); }
 function parseArgs() {
   const args = process.argv.slice(2);
   if (args.length === 0 || args[0].startsWith('-')) {
-  exitFail('Missing version label. Usage: node tools/snapshot-version.js v1.0 [--bump v1.1]');
+  exitFail('Missing version label. Usage: node src/tools/snapshot-version.js v1.0 [--bump v1.1]');
   }
   const target = args[0];
   let bump;

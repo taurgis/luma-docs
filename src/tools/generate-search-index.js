@@ -18,9 +18,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
-const PAGES_DIR = path.join(__dirname, '../pages');
-const VERSIONS_DIR = path.join(__dirname, '../versions');
-const OUTPUT_FILE = path.join(__dirname, '../src/generated-search-index.ts');
+// Adjusted for location inside src/tools
+const PAGES_DIR = path.join(__dirname, '../../pages');
+const VERSIONS_DIR = path.join(__dirname, '../../versions');
+const OUTPUT_FILE = path.join(__dirname, '../generated-search-index.ts');
 
 /**
  * Convert file path to URL path relative to a given content root directory.

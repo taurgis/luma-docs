@@ -7,7 +7,7 @@
  * It dynamically reads routes from the generated routes file and supports
  * both root and subfolder deployments.
  *
- * Usage: node tools/generate-sitemap.js
+ * Usage: node src/tools/generate-sitemap.js
  */
 
 import fs from 'fs';
@@ -90,7 +90,7 @@ function buildFullUrl(baseUrl, basePath, routePath) {
  */
 function loadRoutes() {
   try {
-    const routesPath = path.join(__dirname, '..', 'src', 'generated-routes.tsx');
+  const routesPath = path.join(__dirname, '..', 'generated-routes.tsx'); // generated file lives in src/
     const routesContent = fs.readFileSync(routesPath, 'utf8');
     
   // Extract routeMeta array using regex (allow optional type annotation e.g. ': RouteMeta[]')
@@ -234,7 +234,7 @@ const sitemap = generateSitemap();
 const robots = generateRobotsTxt();
 
 // Write files
-const publicDir = path.join(__dirname, '..', 'public');
+const publicDir = path.join(__dirname, '..', '..', 'public');
 if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir, { recursive: true });
 }
