@@ -135,18 +135,19 @@ jobs:
         run: |
           echo "Dist size (summary):"; du -sh dist || true
           echo "Largest JS assets:"; find dist -name '*.js' -type f -print0 | xargs -0 du -h 2>/dev/null | sort -h | tail -n 15 || true
-          SEARCH_FILE=$(find dist -type f -name 'generated-search-index*' | head -n1 || true)
-          if [ -n "$SEARCH_FILE" ]; then
-            SIZE=$( (stat -c%s "$SEARCH_FILE" 2>/dev/null || stat -f%z "$SEARCH_FILE") )
-            echo "Search index file: $SEARCH_FILE ($SIZE bytes)"
-            # Soft threshold warning
+          # Search index is a source-level generated module (src/generated-search-index.ts), not emitted as standalone dist asset.
+          SEARCH_SRC="src/generated-search-index.ts"
+          if [ -f "$SEARCH_SRC" ]; then
+            SIZE=$( (stat -c%s "$SEARCH_SRC" 2>/dev/null || stat -f%z "$SEARCH_SRC") )
+            echo "Search index source: $SEARCH_SRC ($SIZE bytes)"
+            if [ "$SIZE" -lt 500 ]; then
+              echo "::warning::Search index unexpectedly small (<500 bytes)"; fi
             if [ "$SIZE" -gt 1200000 ]; then
               echo "::warning::Search index > 1.2MB; consider pruning or splitting"; fi
-            # Hard fail threshold (defensive upper bound)
             if [ "$SIZE" -gt 2500000 ]; then
               echo "::error::Search index exceeds 2.5MB hard cap"; exit 1; fi
           else
-            echo "::warning::No generated search index asset found"
+            echo "::error::Search index source module missing at $SEARCH_SRC"; exit 1
           fi
 
       - name: Upload build artifact (for PR review)
