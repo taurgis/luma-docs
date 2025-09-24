@@ -5,7 +5,8 @@ import config from '../../config';
 import { routeMeta } from '../generated-routes';
 import type { RouteMeta } from '../../types/route-meta';
 import { archivedVersions } from '../generated-versions';
-import { getBasePath, createPath } from '../../utils/basePath';
+// utils folder relocated under src/utils – use path alias for stability
+import { getBasePath, createPath } from '@/utils/basePath';
 import SEO from './SEO';
 // Narrowed SEO meta shape
 interface RouteMetaForSEO {

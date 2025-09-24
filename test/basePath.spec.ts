@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
-import { getBasePath } from '../utils/basePath';
+// utils moved to src/utils – use alias path
+import { getBasePath } from '@/utils/basePath';
 
 describe('basePath normalization', () => {
   it('returns / when unset', () => {

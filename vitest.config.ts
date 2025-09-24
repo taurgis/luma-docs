@@ -1,3 +1,5 @@
+import path from 'path';
+
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
@@ -5,6 +7,11 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   // @ts-expect-error suppress plugin type mismatch due to duplicate vite type versions
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    }
+  },
   test: {
     environment: 'jsdom',
     setupFiles: ['./test/setup.ts'],

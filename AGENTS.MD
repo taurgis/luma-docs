@@ -347,7 +347,7 @@ Both agents should understand the current Luma Docs build sequence (no separate 
 - **`tools/`**: Build automation and content generation scripts
 - **`src/generated-*`**: Auto-generated files (routes, search index)
 - **`config.ts`**: Centralized site configuration (branding, links, features, SEO defaults)
-- **`utils/`**: Shared utilities for routing, search, and base path handling
+- **`src/utils/`**: Shared utilities for routing, search, and base path handling (folder relocated under `src/`)
 
 ### Environment Configuration
 

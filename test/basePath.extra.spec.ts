@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
-import { createPath } from '../utils/basePath';
+// utils moved to src/utils – use alias path
+import { createPath } from '@/utils/basePath';
 
 // NOTE: We assume getBasePath() returns '/' in test environment unless modified.
 

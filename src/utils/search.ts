@@ -1,4 +1,4 @@
-import { GENERATED_SEARCH_INDEX, SearchableItem as BaseSearchableItem } from '../src/generated-search-index';
+import { GENERATED_SEARCH_INDEX, SearchableItem as BaseSearchableItem } from '@/generated-search-index';
 
 interface SearchableItem extends BaseSearchableItem {
   version?: string | null;

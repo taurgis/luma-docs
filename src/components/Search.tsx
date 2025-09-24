@@ -3,7 +3,9 @@ import { createPortal } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import config from '../../config';
-import { searchDocs, SearchResult } from '../../utils/search';
+
+// utils relocated under src/utils – switch to alias
+import { searchDocs, SearchResult } from '@/utils/search';
 
 const Highlight: React.FC<{ text: string; query: string }> = ({ text, query }) => {
   if (!query) {return <>{text}</>;}

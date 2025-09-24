@@ -281,7 +281,7 @@ Resolution priority (first match wins):
 
 All returned values are normalized to begin with `/` and (if not root) end with `/`.
 
-Runtime: `getBasePath()` (in `utils/basePath.ts`) simply returns the build-time value; `createPath()` prefixes internal links safely.
+Runtime: `getBasePath()` (in `src/utils/basePath.ts`) simply returns the build-time value; `createPath()` prefixes internal links safely.
 
 Sitemap: `generate-sitemap.js` uses the same resolver and expects `SITE_URL` to be the domain only (without the subfolder). If you mistakenly include the subfolder, it will de‑duplicate.
 
@@ -448,14 +448,14 @@ If you only snapshot (no bump), you can update `config.ts` later when you begin 
 │   ├── generate-sitemap.js       # Creates sitemap.xml
 │   ├── resolve-base-path.mjs     # Base path + site URL resolver
 ├── src/
-│   ├── generated-routes.tsx      # Auto-generated route definitions (with version field)
+│   ├── utils/                  # Utility functions (moved from project root)
+│   │   ├── basePath.ts         # Base path utilities for deployment
+│   │   └── search.ts           # Search functionality
+│   ├── generated-routes.tsx    # Auto-generated route definitions (with version field)
 │   ├── generated-search-index.ts # Auto-generated search index (includes version field)
-│   ├── generated-versions.ts     # Auto-generated list of archived versions
+│   ├── generated-versions.ts   # Auto-generated list of archived versions
 │   └── styles/
-│       └── input.css          # Tailwind CSS entry point
-├── utils/                     # Utility functions
-│   ├── search.ts             # Search functionality
-│   └── basePath.ts           # Base path utilities for deployment
+│       └── input.css           # Tailwind CSS entry point
 ├── config.ts                  # Site configuration file
 ├── public/                   # Static assets
 │   ├── index.css            # Generated Tailwind CSS
