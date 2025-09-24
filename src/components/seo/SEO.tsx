@@ -40,20 +40,12 @@ const SEO: React.FC<SEOProps> = ({
     : `${config.site.title}`;
 
   // Determine canonical URL (normalize to avoid double slashes)
-  const joinUrl = (base: string, path: string) => {
-    if (!base) {
-      return path || '';
-    }
-    // If path already absolute URL, return it normalized
-    if (/^https?:\/\//i.test(path)) {
-      return path.replace(/([^:])\/+/g, '$1/');
-    }
-    const cleanBase = base.replace(/\/+$/, '');
-    if (!path || path === '/') {
-      return `${cleanBase}/`;
-    }
-    const cleanPath = path.replace(/^\/+/, '');
-    return `${cleanBase}/${cleanPath}`;
+  const joinUrl = (base: string, p: string) => {
+    if (!p) { return base; }
+    if (/^https?:\/\//i.test(p)) { return p.replace(/([^:])\/+ /g, '$1/'); }
+    const cleanBase = base.replace(/\/+$|$/, '/');
+    const combined = `${cleanBase}${p.startsWith('/') ? p.substring(1) : p}`;
+    return combined.replace(/([^:])\/+ /g, '$1/');
   };
 
   let fullCanonical = baseUrl ? baseUrl.replace(/\/+$/, '/') : '';

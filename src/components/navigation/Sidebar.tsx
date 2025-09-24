@@ -1,11 +1,11 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import config from '../../../config';
 
 import VersionBadge from '@/components/layout/VersionBadge';
 import VersionSwitcher from '@/components/layout/VersionSwitcher';
 import Search from '@/components/search/Search';
+import { config } from '@/config';
 import { routeMeta } from '@/generated-routes';
 import { archivedVersions } from '@/generated-versions';
 import type { RouteMeta } from '@/types/route-meta';

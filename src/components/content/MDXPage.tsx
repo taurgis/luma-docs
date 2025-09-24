@@ -1,7 +1,7 @@
 /* eslint-disable import/order */
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import config from '../../../config';
+import { config } from '@/config';
 import { routeMeta } from '../../generated-routes';
 import type { RouteMeta } from '../../types/route-meta';
 import { archivedVersions } from '../../generated-versions';
@@ -94,9 +94,11 @@ const MDXPage: React.FC<MDXPageProps> = ({ children, meta: explicitMeta }) => {
 
   // Build base URL for canonical URLs
   const basePath = getBasePath();
-  const baseUrl = typeof window !== 'undefined' 
-    ? `${window.location.protocol}//${window.location.host}${basePath}`
-    : basePath;
+  const baseOrigin = typeof window !== 'undefined'
+    ? `${window.location.protocol}//${window.location.host}`
+    : '';
+  const normalizedBasePath = basePath.endsWith('/') ? basePath : `${basePath}/`;
+  const baseUrl = `${baseOrigin}${normalizedBasePath}`.replace(/\/+/g, '/');
 
   // Build breadcrumbs (omit if feature disabled)
   let breadcrumbs: { name: string; path: string }[] | undefined;

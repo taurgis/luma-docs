@@ -1,9 +1,10 @@
 import path from 'path';
 
 import mdx from '@mdx-js/rollup';
+import react from '@vitejs/plugin-react';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
-import { defineConfig, loadEnv, type UserConfig } from 'vite';
+import { defineConfig, type UserConfig } from 'vite';
 
 // Import the JS module (has accompanying d.ts)
 // @ts-expect-error ESM JS module with provided d.ts
@@ -17,11 +18,15 @@ export default defineConfig(({ mode, command: _command }) => {
     if (process.env.VITEST) {
       const minimal: UserConfig = {
         plugins: [react()],
+        resolve: {
+          alias: {
+            '@/config': path.resolve(__dirname, 'config.ts'),
+            '@': path.resolve(__dirname, 'src')
+          }
+        }
       };
       return minimal;
     }
-
-    const env = loadEnv(mode, '.', '');
 
     // Single source of truth now – uses VITE_FORCE_BASE / VITE_BASE_PATH / git detection.
     const basePath = resolveBasePath();
@@ -31,6 +36,7 @@ export default defineConfig(({ mode, command: _command }) => {
       // Use moved static assets directory (previously project-root /public)
       publicDir: 'src/public',
       plugins: [
+        react(),
         mdx({
           remarkPlugins: [remarkGfm, remarkFrontmatter],
           providerImportSource: '@mdx-js/react'
@@ -72,12 +78,10 @@ export default defineConfig(({ mode, command: _command }) => {
         postcss: './postcss.config.js',
         devSourcemap: false
       },
-      define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
-      },
+      define: {},
       resolve: {
         alias: {
+          '@/config': path.resolve(__dirname, 'config.ts'),
           // Constrain @ alias to application source (avoid accidentally importing build scripts)
           '@': path.resolve(__dirname, 'src'),
           '@tools': path.resolve(__dirname, 'src/tools'),

@@ -143,6 +143,10 @@ export default tseslint.config(
             {
               group: ['../../utils/*', '../../../utils/*', '../..*/utils/*'],
               message: 'Use @/utils/... alias instead of deep relative path.'
+            },
+            {
+              group: ['../../config', '../../../config', '../..*/config'],
+              message: 'Use @/config alias instead of deep relative path.'
             }
           ]
         }

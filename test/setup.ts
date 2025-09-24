@@ -9,3 +9,5 @@ afterEach(() => {
 // jsdom provides a scrollTo that throws "Not implemented"; always stub to silence warnings.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).scrollTo = vi.fn();
+// Provide manual alias mock for '@/config' to support minimal Vitest Vite config that omits custom resolve aliases.
+// Alias handled via vite config test branch now; no runtime mock needed.
