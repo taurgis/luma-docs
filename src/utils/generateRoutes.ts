@@ -1,21 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 
+// External deps
 import matter from 'gray-matter';
 
-export interface PageMeta {
-  title?: string;
-  description?: string;
-  order?: number;
-  path: string;
-  slug: string;
-}
+// Internal types
+import type { RouteMeta } from '@/types';
 
 export interface RouteInfo {
   path: string;
   slug: string;
   component: string;
-  meta: PageMeta;
+  meta: RouteMeta;
 }
 
 function getMdxFiles(dir: string, baseDir: string = ''): string[] {
@@ -79,12 +75,14 @@ export function generateRoutes(pagesDir: string): RouteInfo[] {
     // Convert file path to component import path
     const componentPath = file.replace(/\.mdx$/, '.mdx').replace(/\\/g, '/');
     
-    const meta: PageMeta = {
+    const meta: RouteMeta = {
       title: frontmatter.title || path.basename(file, '.mdx'),
       description: frontmatter.description,
       order: frontmatter.order || 0,
       path: routePath,
-      slug
+      slug,
+      ogType: frontmatter.ogType || 'website',
+      twitterCard: frontmatter.twitterCard || 'summary_large_image'
     };
 
     routes.push({

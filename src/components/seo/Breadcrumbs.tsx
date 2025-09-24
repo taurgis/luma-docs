@@ -1,19 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { routeMeta } from '../../generated-routes';
-import type { RouteMeta } from '../../types/route-meta';
-
 import { config } from '@/config';
+import { routeMeta } from '@/generated-routes';
+import type { RouteMeta, BreadcrumbItem } from '@/types';
 
-interface Crumb {
-  name: string;
-  path: string; // slug with trailing slash where applicable
-}
+type Crumb = BreadcrumbItem;
 
 // Utility to normalize a path (remove trailing slash except root)
 function normalize(p: string): string {
-  if (p === '/') {return '/';}
+  if (p === '/') { return '/'; }
   return p.replace(/\/$/, '');
 }
 

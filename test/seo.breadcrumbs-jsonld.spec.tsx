@@ -17,7 +17,7 @@ vi.mock('../src/generated-versions', () => ({ archivedVersions: [] }));
 const scripts: string[] = [];
 vi.mock('../src/components/seo/SEO', () => ({
   default: (props: unknown) => {
-    const p = props as { breadcrumbs?: { name: string; path: string }[] };
+  const p = props as { breadcrumbs?: import('../src/types').BreadcrumbItem[] };
     // Simulate what SEO would render (we only care breadcrumb script presence)
     if (p.breadcrumbs && p.breadcrumbs.length > 1) {
       scripts.push(JSON.stringify({ breadcrumbs: p.breadcrumbs }));

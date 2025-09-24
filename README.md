@@ -494,7 +494,7 @@ src/
   utils/
     basePath.ts              # Base path helpers (consumes generated constant)
     search.ts                # Client search helpers
-    generateRoutes.ts        # Runtime helpers used by tooling
+  (removed generateRoutes.ts) # Route generation handled by build script only
   styles/
     input.css                # Tailwind input
   public/                    # Static assets copied to dist

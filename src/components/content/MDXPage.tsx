@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { config } from '@/config';
 import { routeMeta } from '@/generated-routes';
 import { archivedVersions } from '@/generated-versions';
-import type { SEOBase } from '@/types/seo';
+import type { SEOBase, BreadcrumbItem } from '@/types/seo';
 import { validateSEOBase } from '@/types/seo';
 import type { RouteMeta } from '@/types/route-meta';
 // utils folder relocated under src/utils – use path alias for stability
@@ -55,7 +55,7 @@ const MDXPage: React.FC<MDXPageProps> = ({ children, meta: explicitMeta }) => {
   const baseUrl = `${baseOrigin}${normalizedBasePath}`.replace(/\/+/g, '/');
 
   // Build breadcrumbs (omit if feature disabled)
-  let breadcrumbs: { name: string; path: string }[] | undefined;
+  let breadcrumbs: BreadcrumbItem[] | undefined;
   if (config.features.breadcrumbs && location.pathname !== '/') {
     const path = location.pathname.replace(/\/?$/, '/');
     const segments = path.split('/').filter(Boolean);

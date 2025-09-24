@@ -89,6 +89,7 @@ export default tseslint.config(
       
       // JSX A11y rules
       ...jsxA11y.configs.recommended.rules,
+      
 
       // TypeScript specific rules
       '@typescript-eslint/no-unused-vars': [
@@ -147,6 +148,10 @@ export default tseslint.config(
             {
               group: ['../../config', '../../../config', '../..*/config'],
               message: 'Use @/config alias instead of deep relative path.'
+            },
+            {
+              group: ['../types', '../../types', '../../../types'],
+              message: 'Do not create or import root-level type files; consolidate under src/types and use @/types.'
             }
           ]
         }
