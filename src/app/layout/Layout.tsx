@@ -20,6 +20,8 @@ const Layout: React.FC = () => {
   const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
   const mobileSidebarRef = useRef<HTMLDivElement | null>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
+  // Track initial render so we can skip auto-focusing main on first paint (option 2)
+  const firstRenderRef = useRef(true);
   const location = useLocation();
 
   const closeSidebar = useCallback((opts?: { restoreFocus?: boolean }) => {
@@ -75,7 +77,13 @@ const Layout: React.FC = () => {
         if (!main.hasAttribute('tabindex')) {
           main.setAttribute('tabindex', '-1');
         }
-        (main as HTMLElement).focus();
+        if (firstRenderRef.current) {
+          // Skip focusing on very first load to avoid visible outline flash;
+          // still mark that we've passed initial render so subsequent route changes restore focus.
+          firstRenderRef.current = false;
+        } else {
+          (main as HTMLElement).focus();
+        }
       }
     }, 0);
     return () => clearTimeout(t);
