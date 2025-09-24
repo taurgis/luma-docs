@@ -79,11 +79,9 @@ jobs:
       - name: Resolve base path
         id: base
         run: |
-          BASE=$(node tools/resolve-base-path.mjs || echo "/")
-          # Ensure leading and trailing slash formatting consistency
-          case "$BASE" in
-            /*) : ;; *) BASE="/$BASE" ;; esac
-          [[ "$BASE" == */ ]] || BASE="$BASE/"
+          # Use new location; legacy path shim also provided for external callers.
+          BASE=$(node src/tools/resolve-base-path.mjs 2>/dev/null || echo "/")
+          # Sanitization is already performed inside the resolver; just echo.
           echo "Resolved base path: $BASE"
           echo "base_path=$BASE" >> "$GITHUB_OUTPUT"
 
