@@ -21,7 +21,7 @@ export {
 } from './icons';
 
 // Existing component exports
-export { default as Layout } from './Layout';
+export { default as Layout } from '../app/layout/Layout';
 export { default as MDXPage } from './MDXPage';
 export { default as MDXWrapper } from './MDXWrapper';
 export { default as OnThisPage } from './OnThisPage';
@@ -30,4 +30,4 @@ export { default as SEO } from './SEO';
 export { default as Sidebar } from './Sidebar';
 export { default as VersionBadge } from './VersionBadge';
 export { default as Breadcrumbs } from './Breadcrumbs';
-export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as ErrorBoundary } from '../app/layout/ErrorBoundary';

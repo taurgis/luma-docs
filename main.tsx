@@ -1,6 +1,6 @@
 import { ViteReactSSG } from 'vite-react-ssg';
 
-import { routes } from './App';
+import { routes } from './src/app/App';
 import './src/styles/input.css';
 
 export const createRoot = ViteReactSSG({

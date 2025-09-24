@@ -1,7 +1,8 @@
 import type { RouteRecord } from 'vite-react-ssg';
 
-import Layout from './components/Layout';
-import { routes as pageRoutes } from './src/generated-routes';
+import { routes as pageRoutes } from '../generated-routes';
+
+import Layout from './layout/Layout';
 
 export const routes: RouteRecord[] = [
   {

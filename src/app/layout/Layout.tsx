@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 
-import config from '../config';
-import { TocItem } from '../types';
+import config from '../../../config';
+import { TocItem } from '../../../types';
+import MDXWrapper from '../../components//MDXWrapper';
+import OnThisPage from '../../components//OnThisPage';
+import Sidebar from '../../components//Sidebar';
+import Breadcrumbs from '../../components/Breadcrumbs';
+import MDXPage from '../../components/MDXPage';
 
-import Breadcrumbs from './Breadcrumbs';
 import ErrorBoundary from './ErrorBoundary';
-import MDXPage from './MDXPage';
-import MDXWrapper from './MDXWrapper';
-import OnThisPage from './OnThisPage';
-import Sidebar from './Sidebar';
 
 
 const Layout: React.FC = () => {

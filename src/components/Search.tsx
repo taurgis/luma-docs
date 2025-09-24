@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import config from '../config';
-import { searchDocs, SearchResult } from '../utils/search';
+import config from '../../config';
+import { searchDocs, SearchResult } from '../../utils/search';
 
 const Highlight: React.FC<{ text: string; query: string }> = ({ text, query }) => {
   if (!query) {return <>{text}</>;}

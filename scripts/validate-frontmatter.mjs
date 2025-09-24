@@ -8,7 +8,8 @@ import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
-import { FrontmatterSchema } from './frontmatter-schema.ts';
+// Import JS runtime version of the schema (Node cannot execute .ts without a loader)
+import { FrontmatterSchema } from './frontmatter-schema.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

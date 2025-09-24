@@ -17,21 +17,21 @@ vi.mock('../src/generated-routes', () => {
 vi.mock('../src/generated-versions', () => ({ archivedVersions: ['v0.9', 'v0.8'] }));
 
 // Mock MDXPage to avoid its internal logic (it re-reads routeMeta etc.)
-vi.mock('../components/MDXPage', () => ({ default: ({ children }: { children: React.ReactNode }) => <>{children}</> }));
+vi.mock('../src/components/MDXPage', () => ({ default: ({ children }: { children: React.ReactNode }) => <>{children}</> }));
 // Mock Breadcrumbs to a lightweight marker (we verify it appears)
-vi.mock('../components/Breadcrumbs', () => ({ default: () => <nav data-testid="breadcrumbs">Breadcrumbs</nav> }));
+vi.mock('../src/components/Breadcrumbs', () => ({ default: () => <nav data-testid="breadcrumbs">Breadcrumbs</nav> }));
 // Mock OnThisPage to avoid timing/DOM scanning logic
-vi.mock('../components/OnThisPage', () => ({ default: () => <aside data-testid="on-this-page" /> }));
+vi.mock('../src/components/OnThisPage', () => ({ default: () => <aside data-testid="on-this-page" /> }));
 // Mock Sidebar to a simple element exposing a toggle marker
-vi.mock('../components/Sidebar', () => ({ default: () => <div data-testid="sidebar">SidebarNav</div> }));
+vi.mock('../src/components/Sidebar', () => ({ default: () => <div data-testid="sidebar">SidebarNav</div> }));
 // Mock ErrorBoundary to pass-through
-vi.mock('../components/ErrorBoundary', () => ({ default: ({ children }: { children?: React.ReactNode }) => <>{children}</> }));
+vi.mock('../src/app/layout/ErrorBoundary', () => ({ default: ({ children }: { children?: React.ReactNode }) => <>{children}</> }));
 // Mock MDXWrapper trivial
-vi.mock('../components/MDXWrapper', () => ({ default: ({ children }: { children?: React.ReactNode }) => <div data-testid="mdx-wrapper">{children}</div> }));
+vi.mock('../src/components/MDXWrapper', () => ({ default: ({ children }: { children?: React.ReactNode }) => <div data-testid="mdx-wrapper">{children}</div> }));
 // Mock SEO to a lightweight component (no capture needed for now)
-vi.mock('../components/SEO', () => ({ default: () => <></> }));
+vi.mock('../src/components/SEO', () => ({ default: () => <></> }));
 
-import Layout from '../components/Layout';
+import Layout from '../src/app/layout/Layout';
 
 const renderWithRoute = (initialPath: string, outletContent?: React.ReactNode) => {
   return render(

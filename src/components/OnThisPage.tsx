@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TocItem } from '../types';
+import { TocItem } from '../../types';
 
 interface OnThisPageProps {
   items: TocItem[];

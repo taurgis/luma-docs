@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import config from '../config';
-import { routeMeta } from '../src/generated-routes';
-import { archivedVersions } from '../src/generated-versions.ts';
+import config from '../../config';
+import { routeMeta } from '../generated-routes';
+import { archivedVersions } from '../generated-versions.ts';
 
 // Utility to collect available versions (next + archived)
 // Utility to collect available versions: current (root) + archived

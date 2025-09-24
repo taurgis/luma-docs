@@ -1,11 +1,11 @@
 /* eslint-disable import/order */
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import config from '../config';
-import { routeMeta } from '../src/generated-routes';
-import type { RouteMeta } from '../types/route-meta';
-import { archivedVersions } from '../src/generated-versions';
-import { getBasePath, createPath } from '../utils/basePath';
+import config from '../../config';
+import { routeMeta } from '../generated-routes';
+import type { RouteMeta } from '../../types/route-meta';
+import { archivedVersions } from '../generated-versions';
+import { getBasePath, createPath } from '../../utils/basePath';
 import SEO from './SEO';
 // Narrowed SEO meta shape
 interface RouteMetaForSEO {
