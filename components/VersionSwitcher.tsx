@@ -104,9 +104,6 @@ const VersionSwitcher: React.FC = () => {
           )}
         </ul>
       )}
-      {current !== configuredCurrent && (
-        <p className="mt-2 text-[11px] leading-snug text-amber-700 bg-amber-50 border border-amber-200 rounded p-2">You are viewing archived documentation. Some content may be outdated.</p>
-      )}
     </div>
   );
 };
