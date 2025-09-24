@@ -148,7 +148,7 @@ import {
   CodeTabs,
   PageTitle,
   PageSubtitle,
-} from "../components";
+} from "@/components"; // Uses the @ -> src alias
 ```
 
 ### Code Components
@@ -250,27 +250,29 @@ For a complete showcase of all components with live examples, visit the [Compone
 
 ### Available Scripts
 
-- `npm run dev` - Start development server with hot reload (includes route generation and CSS build)
-- `npm run build` - Build for production (includes route generation, CSS build, search index, and sitemap)
-- `npm run preview` - Preview production build locally
-  
-Environment-based alternatives (legacy scripts removed):
+- `npm run dev` - Start development server (runs multi-step pipeline then launches SSG dev)
+- `npm run build` - Full production build (multi-step pipeline + static generation)
+- `npm run test` - Run Vitest test suite
+- `npm run clean` - Remove build/cache artifacts
+- `npm run lint` / `npm run lint:fix` - ESLint checks and autofix
+- `npm run type-check` - TypeScript type checking (ensures generated artifacts in place)
+- `npm run snapshot:version` - Snapshot current root docs into an archived version (see versioning section)
+- `npm run validate:frontmatter` - Validate MDX frontmatter against schema
+- `npm run search-dev` - Interactive search dev utility (generate/validate via arguments)
+- `npm run generate:versions` - Regenerate `src/generated-versions.ts` (normally auto via pipeline)
+- `npm run generate:routes` - Regenerate `src/generated-routes.tsx` + meta (auto in pipeline)
+- `npm run generate:search-index` - Rebuild local search index (auto in pipeline)
+- `npm run generate:sitemap` - Regenerate sitemap (auto in pipeline)
+- `npm run build:css` / `npm run build:css:watch` - Tailwind CSS one-off or watch build
+- `npm run pipeline:dev` / `npm run pipeline:build` - Run the internal build pipeline without starting dev server / SSG (usually not needed directly)
+
+Environment-based overrides:
 - Subfolder dev: `VITE_FORCE_BASE=/your-repo/ npm run dev`
 - Subfolder build: `VITE_FORCE_BASE=/your-repo/ npm run build`
-- `npm run preview:resolved` - Preview using dynamically resolved base path (preferred)
-- `npm run generate:routes` - Generate routes from MDX files in pages directory
-- `npm run build:css` - Build Tailwind CSS from source
-- `npm run build:css:watch` - Watch mode for CSS development
-- `npm run generate:search-index` - Generate search index from MDX content
-- `npm run generate:sitemap` - Generate sitemap.xml for SEO
-- `npm run clean` - Clean build artifacts and cache
-- `npm run lint` - Run ESLint code quality checks
-- `npm run lint:fix` - Run ESLint with automatic fixing
-- `npm run type-check` - Run TypeScript type checking
 
 ### Unified Base Path Handling
 
-Base path detection (root vs subfolder like `/luma-docs/`) is now centralized in `tools/resolve-base-path.mjs` and consumed directly by `vite.config.ts`, build tooling, runtime helpers, and the sitemap generator.
+Base path detection (root vs subfolder like `/luma-docs/`) is centralized in `src/tools/resolve-base-path.mjs` and consumed directly by `vite.config.ts`, build tooling, runtime helpers, and the sitemap generator.
 
 Resolution priority (first match wins):
 1. `VITE_FORCE_BASE` – explicit override (e.g. `/docs/` or `/preview/`)
@@ -313,16 +315,17 @@ Benefits:
 Luma Docs supports a folder‑based versioning strategy:
 
 ```
-pages/                # Current (stable) documentation
-versions/
-  v0.9/               # Archived version folder (example)
-  v0.8/
+content/
+  pages/              # Current (stable) documentation (label = config.versions.current)
+  versions/
+    v0.9/             # Archived version folder (example)
+    v0.8/
 ```
 
 Key behaviors:
 
-- Root `pages/` content is labeled as the current stable version (`config.versions.current`).
-- Archived versions live under `versions/<label>/` and are auto-detected.
+- Root `content/pages/` content is labeled as the current stable version (`config.versions.current`).
+- Archived versions live under `content/versions/<label>/` and are auto-detected.
 - Sidebar shows only pages for the active version (no cross-version noise) and achieves **navigation parity** for archived versions (the `/vX.Y/` prefix is stripped so historical docs don’t sit inside an extra version bucket).
 - Group headings link to their index page when an `index.mdx` exists; single‑page groups are flattened for cleaner UI.
 - Version switcher hides automatically when there are no archived versions.
@@ -360,11 +363,11 @@ Manual workflow (if you need custom filtering):
 ```bash
 # 1. Decide new version label (e.g. v1.0 -> archive, start v1.1 in root)
 NEW_VER=v1.0
-mkdir -p versions/$NEW_VER
-rsync -a --exclude 'versions' --exclude 'dist' --exclude 'node_modules' pages/ versions/$NEW_VER/
+mkdir -p content/versions/$NEW_VER
+rsync -a content/pages/ content/versions/$NEW_VER/
 
 # 2. (Optional) Prepend titles to make context explicit in archived MDX
-sed -i '' '1s/^/---\ntitle: "Legacy Home ('"$NEW_VER"')"\n---\n/' versions/$NEW_VER/index.mdx
+sed -i '' '1s/^/---\ntitle: "Legacy Home ('"$NEW_VER"')"\n---\n/' content/versions/$NEW_VER/index.mdx
 
 # 3. Update config.ts current label if bumping current
 vim config.ts
@@ -378,7 +381,7 @@ Search Behavior:
 - All Versions: shows every match (archived results display gray pills/pills with version label).
 
 Restructuring & Resilience:
-- Archived snapshots preserve their original folder layout; later restructures in `pages/` will not break archived imports.
+- Archived snapshots preserve their original folder layout; later restructures in `content/pages/` will not break archived imports.
 - Version switching performs a path existence check and falls back to the version root when needed.
 
 SEO Considerations:
@@ -406,62 +409,75 @@ npm run snapshot:version -- v1.0 --bump v1.1
 
 What it does:
 1. Validates the target label (must match vMAJOR[.MINOR[.PATCH]])
-2. Copies all content from `pages/` into `versions/<label>/`
+2. Copies all content from `content/pages/` into `content/versions/<label>/`
 3. Regenerates `src/generated-versions.ts`
 4. If `--bump <nextLabel>` provided: updates `config.ts` `versions.current` and regenerates routes
 
 Typical release flow:
 ```bash
-# Finish work for v1.0 in pages/
+# Finish work for v1.0 in content/pages/
 npm run snapshot:version -- v1.0 --bump v1.1
 
-# Now pages/ represents v1.1 (current) — edit content freely
+# Now content/pages/ represents v1.1 (current) — edit content freely
 git add .
 git commit -m "chore: snapshot v1.0 and bump current to v1.1"
 ```
 
 If you only snapshot (no bump), you can update `config.ts` later when you begin the next version.
 
-### Project Structure (Simplified)
+### Project Structure (Simplified / Current)
 
 ```
-├── components/              # React components
-│   ├── Layout.tsx          # Main layout component with navigation
-│   ├── Sidebar.tsx         # Navigation sidebar with auto-generated menu
-│   ├── MDXWrapper.tsx      # MDX provider wrapper with custom components
-│   ├── MDXPage.tsx         # Page wrapper component for SEO integration
-│   ├── SEO.tsx             # Dynamic SEO meta tags & JSON-LD component
-│   ├── Breadcrumbs.tsx     # Breadcrumb navigation & schema support
-│   ├── Search.tsx          # Search functionality component (with version scope toggle)
-│   ├── OnThisPage.tsx      # Table of contents component
-│   ├── VersionBadge.tsx    # Version display component
-│   └── VersionSwitcher.tsx # Switch between current & archived versions
-├── pages/                  # MDX content files (auto-scanned for routes)
-│   ├── index.mdx          # Home page (/)
-│   ├── getting-started.mdx # /getting-started
-│   └── guides/            # Nested pages (/guides/*)
-│       ├── index.mdx      # /guides
-│       └── advanced.mdx   # /guides/advanced
-├── tools/                 # Build and utility tooling (was scripts/)
-│   ├── generate-routes.js        # Auto-generates routes (adds version metadata)
-│   ├── generate-search-index.js  # Creates search index from MDX content
-│   ├── generate-sitemap.js       # Creates sitemap.xml
-│   ├── resolve-base-path.mjs     # Base path + site URL resolver
-├── src/
-│   ├── utils/                  # Utility functions (moved from project root)
-│   │   ├── basePath.ts         # Base path utilities for deployment
-│   │   └── search.ts           # Search functionality
-│   ├── generated-routes.tsx    # Auto-generated route definitions (with version field)
-│   ├── generated-search-index.ts # Auto-generated search index (includes version field)
-│   ├── generated-versions.ts   # Auto-generated list of archived versions
-│   └── styles/
-│       └── input.css           # Tailwind CSS entry point
-├── config.ts                  # Site configuration file
-│   ├── public/                # Static assets (moved under src/)
-│   │   ├── index.css          # Generated Tailwind CSS
-│   │   ├── sitemap.xml        # Generated sitemap
-│   │   └── robots.txt         # SEO robots file
-└── dist/                    # Build output (generated)
+content/
+  pages/                     # Current docs (scanned for routes; labeled as current version)
+  versions/                  # Archived snapshots (auto-detected)
+    v0.9/
+    v0.8/
+src/
+  app/                       # App shell & layout glue
+    layout/
+      Layout.tsx
+      ErrorBoundary.tsx
+  components/                # Reusable React + MDX components
+    SEO.tsx
+    MDXWrapper.tsx
+    Search.tsx
+    Sidebar.tsx
+    VersionSwitcher.tsx
+    VersionBadge.tsx
+    Breadcrumbs.tsx
+    OnThisPage.tsx
+    CodeBlock.tsx
+    Callout.tsx
+  utils/
+    basePath.ts              # Base path helpers (consumes generated constant)
+    search.ts                # Client search helpers
+    generateRoutes.ts        # Runtime helpers used by tooling
+  styles/
+    input.css                # Tailwind input
+  public/                    # Static assets copied to dist
+    favicon.svg
+    robots.txt
+  generated-routes.tsx       # AUTO-GENERATED: routes w/ version metadata
+  generated-routes.meta.ts   # AUTO-GENERATED: route meta export (frontmatter)
+  generated-search-index.ts  # AUTO-GENERATED: search index data
+  generated-versions.ts      # AUTO-GENERATED: list of archived versions
+src/tools/                   # Build & generation scripts (invoked via npm scripts)
+  generate-routes.js
+  generate-search-index.js
+  generate-sitemap.js
+  generate-versions.js
+  snapshot-version.js
+  resolve-base-path.mjs
+  validate-frontmatter.mjs
+  run-build-pipeline.mjs
+  search-dev.js
+config.ts                    # Central site configuration
+tailwind.config.js
+vite.config.ts
+index.html                   # Vite entry HTML
+package.json
+dist/                        # Build output (ignored in VCS)
 ```
 
 ## Deployment
@@ -593,22 +609,26 @@ The build process supports several environment variables:
 
 ### Automatic Route Generation
 
-The platform automatically scans the `pages` directory and generates routes:
+The platform automatically scans `content/pages/` (current version) and `content/versions/<label>/` (archived) and generates static React Router routes:
 
-1. **File Structure Mapping**: Each `.mdx` file becomes a route
+1. **File Structure Mapping**: Each `.mdx` file becomes a route (with clean slug normalization)
 2. **Nested Routing**: Folder structure creates nested routes
-3. **Index Files**: `index.mdx` files map to the parent directory route
-4. **Dynamic Import**: Routes are dynamically imported for optimal performance
+3. **Index Files**: `index.mdx` collapse to their parent path (e.g. `guides/index.mdx` -> `/guides/`)
+4. **Dynamic Import**: MDX files are code-split and lazily imported for performance
+5. **Version Metadata**: Each generated route gets a `version` field (current or archived label)
 
 ### Build Process
 
-The build system follows this sequence (as executed by `npm run build`):
+The multi-step pipeline (implemented in `src/tools/run-build-pipeline.mjs`) orchestrates all generation steps before Vite SSG runs. Sequence (`npm run build`):
 
-1. **Route Generation** (`generate:routes`) – Scans `pages/` and creates `src/generated-routes.tsx` (frontmatter + SEO metadata extracted)
-2. **CSS Build** (`build:css`) – Compiles Tailwind CSS from `src/styles/input.css`
-3. **Search Index** (`generate:search-index`) – Extracts content and creates the search index
-4. **Sitemap Generation** (`generate:sitemap`) – Creates SEO-friendly `sitemap.xml`
-5. **Vite SSG Build** – Generates static HTML with React hydration & embedded meta tags via the `SEO` component
+1. **Versions Generation** (`generate:versions`) – Detect archived folders and emit `src/generated-versions.ts`
+2. **Route Generation** (`generate:routes`) – Scan current + archived MDX and emit `src/generated-routes.tsx` & meta (extract frontmatter + SEO)
+3. **CSS Build** (`build:css`) – Compile Tailwind from `src/styles/input.css` into `src/public/index.css`
+4. **Search Index** (`generate:search-index`) – Build version-aware search index (`src/generated-search-index.ts`)
+5. **Sitemap Generation** (`generate:sitemap`) – Produce `src/public/sitemap.xml` (base path aware)
+6. **Static Site Generation** (Vite React SSG) – Emit pre-rendered HTML with meta tags via `components/SEO.tsx`
+
+Dev mode (`npm run dev`) runs the pipeline once, then launches the SSG dev server; individual scripts can be re-run ad hoc if you change raw MDX or config without restarting.
 
 ### SEO Integration
 
@@ -792,7 +812,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 If you have questions or need help:
 
-- Check the documentation in the `pages/` directory
+- Check the documentation in the `content/pages/` directory
 - Open an issue on GitHub
 - Contribute improvements back to the project
 

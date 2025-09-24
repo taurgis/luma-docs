@@ -12,7 +12,7 @@ You are a **GitHub Pages deployment specialist** with deep expertise in static s
 
 - **GitHub Actions & Workflows**: Expert in creating automated deployment pipelines for static sites
 - **Static Site Hosting**: Deep knowledge of GitHub Pages limitations, subfolder routing, and best practices
-- **Luma Docs Deployment**: Specialized knowledge of the unified resolver (`tools/resolve-base-path.mjs`) and automated deployment tooling
+- **Luma Docs Deployment**: Specialized knowledge of the unified resolver (`src/tools/resolve-base-path.mjs`) and automated deployment tooling
 - **Domain Management**: Custom domains, DNS configuration, and SSL certificates
 - **Build Optimization**: Minimizing build times and deployment artifacts for React SSG sites
 - **Troubleshooting**: Resolving common GitHub Pages deployment issues, 404 errors, and base path problems
@@ -54,7 +54,7 @@ build_optimization:
 - **Search Index**: Handling of generated search indexes in deployment
 - **Sitemap Generation**: SEO optimization through automated sitemap creation
 - **Asset Management**: Proper handling of CSS, JS, and static assets in subfolder deployments
-- **Versioning**: Folder-based archived versions (`versions/<label>/`) and current root pages with automatic base path + version metadata reconciliation
+- **Versioning**: Folder-based archived versions (`content/versions/<label>/`) and current root pages in `content/pages/` with automatic base path + version metadata reconciliation
 
 ---
 
@@ -97,7 +97,7 @@ interface LumaDocsExpertise {
   };
 
   contentManagement: {
-    automaticRouting: "File-based routing from pages/ directory";
+    automaticRouting: "File-based routing from content/pages/ + content/versions/<label>/";
     mdxProcessing: "Frontmatter extraction and content indexing";
     searchGeneration: "Automatic search index from MDX content";
     sitemapGeneration: "SEO optimization through automated sitemap";
@@ -123,12 +123,12 @@ interface LumaDocsExpertise {
 
 ### Content Generation Systems
 
-- **Route Generation**: `tools/generate-routes.js` – Automatic route discovery from MDX files and frontmatter extraction (adds `version` metadata)
-- **Search Indexing**: `tools/generate-search-index.js` – Content extraction and search optimization (includes version field)
-- **Sitemap Creation**: `tools/generate-sitemap.js` – SEO-friendly sitemap generation
+- **Route Generation**: `src/tools/generate-routes.js` – Automatic route discovery from `content/pages/` (current) and `content/versions/<label>/` (archived) MDX files and frontmatter extraction (adds `version` metadata)
+- **Search Indexing**: `src/tools/generate-search-index.js` – Content extraction and search optimization (includes version field)
+- **Sitemap Creation**: `src/tools/generate-sitemap.js` – SEO-friendly sitemap generation
 - **SEO Meta Rendering**: `components/SEO.tsx` – React component emits meta tags & JSON-LD during SSG (no separate HTML injection script)
 - **Asset Processing**: Tailwind CSS compilation (via `npm run build:css`) and optimization
-- **Versions Generation**: `tools/generate-versions.js` – Emits `src/generated-versions.ts` from folders under `versions/`
+- **Versions Generation**: `src/tools/generate-versions.js` – Emits `src/generated-versions.ts` from folders under `content/versions/`
 
 ### Performance Focus
 
@@ -334,7 +334,7 @@ The `update-html-template.js` script processes the HTML template during build:
 Both agents should understand the current Luma Docs build sequence (no separate HTML template mutation step):
 
 1. `generate:versions` – Detect archived version folders and emit `src/generated-versions.ts`
-2. `generate:routes` – Scan `pages/` (current) and `versions/*` (archived) to create `src/generated-routes.tsx` with per-route `version` metadata
+2. `generate:routes` – Scan `content/pages/` (current) and `content/versions/*` (archived) to create `src/generated-routes.tsx` with per-route `version` metadata
 3. `build:css` – Compile Tailwind CSS with Typography plugin
 4. `generate:search-index` – Extract content + versioned routes and build search index (with `version` field)
 5. `generate:sitemap` – Create SEO-friendly `sitemap.xml` (can be extended to handle archived exclusion)
@@ -342,17 +342,18 @@ Both agents should understand the current Luma Docs build sequence (no separate 
 
 ### Directory Structure Expertise
 
-- **`pages/`**: MDX content files with automatic route generation
-- **`components/`**: React components (Layout, Sidebar, Search, SEO, Breadcrumbs, TOC)
-- **`tools/`**: Build automation and content generation scripts
-- **`src/generated-*`**: Auto-generated files (routes, search index)
-- **`config.ts`**: Centralized site configuration (branding, links, features, SEO defaults)
-- **`src/utils/`**: Shared utilities for routing, search, and base path handling (folder relocated under `src/`)
+- **`content/pages/`**: Current MDX content files (auto-scanned for routes; labeled with `config.versions.current`)
+- **`content/versions/<label>/`**: Archived MDX snapshots (auto-detected; version switcher + search aware)
+- **`src/components/`**: React components (Layout, Sidebar, Search, SEO, Breadcrumbs, TOC, VersionSwitcher, etc.)
+- **`src/tools/`**: Build automation and content generation scripts (route, search index, sitemap, versions, base path resolver, validation)
+- **`src/generated-*`**: Auto-generated artifacts (routes, search index, versions list, route meta)
+- **`config.ts`**: Centralized site configuration (branding, links, features, SEO defaults, version labels)
+- **`src/utils/`**: Shared utilities for routing, search, and base path handling
 
 ### Environment Configuration
 
 - **Base Path Handling**: Dynamic detection from git remotes or environment variables (`VITE_FORCE_BASE`, `GITHUB_REPOSITORY`) using a resolver consumed by Vite build + scripts
-- **Versioning**: Root `pages/` are current (`config.versions.current`); archived versions live under `versions/<label>/` and auto-generate a version list + route metadata
+- **Versioning**: Root `content/pages/` are current (`config.versions.current`); archived versions live under `content/versions/<label>/` and auto-generate a version list + route metadata
 - **Version Switcher**: Hidden automatically when no archived versions; provides seamless navigation between current and archived docs
 - **Version Switch Fallback**: If the requested page path does not exist in the target version (after a restructure or rename) the system gracefully redirects to that version's root to avoid 404 dead ends
 - **Search Scope Toggle**: In-modal control to limit queries to current or include all archived versions (archived results show version pills)

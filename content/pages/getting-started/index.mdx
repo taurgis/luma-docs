@@ -52,7 +52,7 @@ You can also override SEO settings directly in your MDX content using the `<SEO>
 npm install
 ```
 
-3. Start the development server:
+3. Run the build pipeline + dev server (handled automatically by the `dev` script):
 
 ```bash
 npm run dev
@@ -96,14 +96,33 @@ Navigation is automatically generated based on your file structure and frontmatt
 
 ## Deployment
 
-To deploy to GitHub Pages:
+### GitHub Pages (Native Workflow)
 
-1. Build the site:
+The project is optimized for GitHub Pages with automatic base path detection. In CI you typically just run `npm run build` inside a workflow like the one documented in the repository README (`Docs CI`).
+
+Local manual build:
 
 ```bash
 npm run build
 ```
 
-2. Deploy the `dist` folder to your GitHub Pages branch
+If you need to force a subfolder (preview / fork testing):
 
-The site is configured to work with GitHub Pages subfolder deployments (e.g., `username.github.io/repository-name`).
+```bash
+VITE_FORCE_BASE=/your-fork/ npm run dev   # Dev with forced base
+VITE_FORCE_BASE=/your-fork/ npm run build # Production build with forced base
+```
+
+Output goes to `dist/` which you can deploy to any static host. For GitHub Pages you normally rely on the workflow to publish the artifact.
+
+### Multi-Step Build Pipeline (Reference)
+
+`npm run build` internally runs a pipeline that:
+1. Generates versions list
+2. Generates routes + meta (extracts frontmatter / SEO)
+3. Builds Tailwind CSS
+4. Generates search index
+5. Generates sitemap
+6. Runs Vite React SSG to emit static HTML
+
+You rarely need to run the individual `generate:*` scripts manually— they are exposed mainly for troubleshooting.

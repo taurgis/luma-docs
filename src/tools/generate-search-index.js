@@ -18,9 +18,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
-// Adjusted for location inside src/tools
-const PAGES_DIR = path.join(__dirname, '../../pages');
-const VERSIONS_DIR = path.join(__dirname, '../../versions');
+// Adjusted for new content/ root (content/pages & content/versions)
+const PAGES_DIR = path.join(__dirname, '../../content/pages');
+const VERSIONS_DIR = path.join(__dirname, '../../content/versions');
 const OUTPUT_FILE = path.join(__dirname, '../generated-search-index.ts');
 
 /**

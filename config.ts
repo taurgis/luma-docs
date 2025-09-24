@@ -15,7 +15,7 @@ export const config = {
   },
   // Versioning (multi-version documentation support)
   versions: {
-    // The label of the version currently represented by root-level `pages/` content
+  // The label of the version currently represented by root-level `content/pages/` content
     current: "v1.0", // label for root-level content (current stable)
     // If true, expose a version switcher UI component
     enableSwitcher: true,

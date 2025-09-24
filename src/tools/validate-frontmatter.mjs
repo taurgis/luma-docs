@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validates MDX frontmatter across pages/ and versions/ folders.
+ * Validates MDX frontmatter across content/pages/ and content/versions/ folders.
  * Exits non-zero on first validation failure (aggregating is possible but slower).
  */
 import fs from 'node:fs';
@@ -40,8 +40,8 @@ function walk(dir) {
   }
 }
 
-walk(path.join(__dirname, '../../', 'pages'));
-walk(path.join(__dirname, '../../', 'versions'));
+walk(path.join(__dirname, '../../', 'content', 'pages'));
+walk(path.join(__dirname, '../../', 'content', 'versions'));
 
 if (hasError) {
   globalThis.console.error('\nFrontmatter validation failed.');

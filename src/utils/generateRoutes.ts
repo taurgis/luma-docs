@@ -112,7 +112,7 @@ export function generateRoutes(pagesDir: string): RouteInfo[] {
 
 export function generateRouteFile(routes: RouteInfo[], outputPath: string): void {
   const imports = routes.map((route, index) => 
-    `import Page${index} from '../pages/${route.component}';`
+    `import Page${index} from '../content/pages/${route.component}';`
   ).join('\n');
 
   const routeObjects = routes.map((route, index) => {

@@ -3,13 +3,24 @@ import path from 'path';
 import mdx from '@mdx-js/rollup';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, type UserConfig } from 'vite';
 
 // Import the JS module (has accompanying d.ts)
 // @ts-expect-error ESM JS module with provided d.ts
 import { resolveBasePath } from './src/tools/resolve-base-path.mjs';
 
 export default defineConfig(({ mode, command: _command }) => {
+    // During Vitest runs we dramatically simplify the config to avoid
+    // invoking git/base path resolution & heavy SSG plugin semantics that
+    // are unnecessary for unit tests (and recently caused a startup crash
+    // after content/ path migration).
+    if (process.env.VITEST) {
+      const minimal: UserConfig = {
+        plugins: [react()],
+      };
+      return minimal;
+    }
+
     const env = loadEnv(mode, '.', '');
 
     // Single source of truth now – uses VITE_FORCE_BASE / VITE_BASE_PATH / git detection.

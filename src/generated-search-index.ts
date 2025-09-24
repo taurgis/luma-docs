@@ -62,7 +62,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Welcome to Luma Docs",
     "heading": "Next Steps",
     "headingId": "next-steps",
-    "content": "Next Steps Create your first MDX page Customize the navigation structure Deploy to GitHub Pages Welcome to the future of documentation!",
+    "content": "Next Steps Create or edit MDX pages under (Optional) Add an archived version under using Run and iterate with hot reload Deploy using the GitHub Pages workflow in the README Welcome to the future of documentation!",
     "description": "",
     "version": null
   },
@@ -89,7 +89,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Getting Started",
     "heading": "Installation",
     "headingId": "installation",
-    "content": "Installation Clone or download the Luma Docs template Install dependencies: Start the development server:",
+    "content": "Installation Clone or download the Luma Docs template Install dependencies: Run the build pipeline + dev server (handled automatically by the script):",
     "description": "",
     "version": null
   },
@@ -141,9 +141,18 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/getting-started/",
     "pageTitle": "Getting Started",
-    "heading": "Deployment",
-    "headingId": "deployment",
-    "content": "Deployment To deploy to GitHub Pages: Build the site: Deploy the folder to your GitHub Pages branch The site is configured to work with GitHub Pages subfolder deployments (e.g., ).",
+    "heading": "GitHub Pages (Native Workflow)",
+    "headingId": "github-pages-native-workflow",
+    "content": "GitHub Pages (Native Workflow) The project is optimized for GitHub Pages with automatic base path detection. In CI you typically just run inside a workflow like the one documented in the repository README ( ). Local manual build: If you need to force a subfolder (preview / fork testing): Output goes",
+    "description": "",
+    "version": null
+  },
+  {
+    "path": "/getting-started/",
+    "pageTitle": "Getting Started",
+    "heading": "Multi-Step Build Pipeline (Reference)",
+    "headingId": "multi-step-build-pipeline-reference",
+    "content": "Multi-Step Build Pipeline (Reference) internally runs a pipeline that: Generates versions list Generates routes + meta (extracts frontmatter / SEO) Builds Tailwind CSS Generates search index Generates sitemap Runs Vite React SSG to emit static HTML You rarely need to run the individual scripts manua",
     "description": "",
     "version": null
   },
@@ -483,18 +492,18 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/guides/versioning/",
     "pageTitle": "Versioning",
-    "heading": "Snapshot current root content into versions/v1.0",
-    "headingId": "snapshot-current-root-content-into-versionsv10",
-    "content": "Snapshot current root content into versions/v1.0 npm run snapshot:version -- v1.0",
+    "heading": "Snapshot current root content into content/versions/v1.0",
+    "headingId": "snapshot-current-root-content-into-contentversionsv10",
+    "content": "Snapshot current root content into content/versions/v1.0 npm run snapshot:version -- v1.0",
     "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
     "version": null
   },
   {
     "path": "/guides/versioning/",
     "pageTitle": "Versioning",
-    "heading": "Snapshot and bump current label to v1.1 (so pages/ becomes v1.1)",
-    "headingId": "snapshot-and-bump-current-label-to-v11-so-pages-becomes-v11",
-    "content": "Snapshot and bump current label to v1.1 (so pages/ becomes v1.1) npm run snapshot:version -- v1.0 --bump v1.1 `` vMAJOR[.MINOR[.PATCH]] pages/ versions/<label>/ src/generated-versions.ts --bump <next> config.ts` + regenerates routes",
+    "heading": "Snapshot and bump current label to v1.1 (so content/pages/ becomes v1.1)",
+    "headingId": "snapshot-and-bump-current-label-to-v11-so-contentpages-becomes-v11",
+    "content": "Snapshot and bump current label to v1.1 (so content/pages/ becomes v1.1) npm run snapshot:version -- v1.0 --bump v1.1 `` vMAJOR[.MINOR[.PATCH]] content/pages/ content/versions/<label>/ src/generated-versions.ts --bump <next> config.ts` + regenerates routes",
     "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
     "version": null
   },
@@ -503,7 +512,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Versioning",
     "heading": "Manual Workflow (Alternative)",
     "headingId": "manual-workflow-alternative",
-    "content": "Manual Workflow (Alternative) ```bash NEWVER=v1.0 mkdir -p versions/$NEWVER rsync -a pages/ versions/$NEW_VER/",
+    "content": "Manual Workflow (Alternative) ```bash NEWVER=v1.0 mkdir -p versions/$NEWVER rsync -a content/pages/ content/versions/$NEW_VER/",
     "description": "",
     "version": null
   },
@@ -573,9 +582,9 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/guides/versioning/",
     "pageTitle": "Versioning",
-    "heading": "Finish development of v1.0 in pages/",
-    "headingId": "finish-development-of-v10-in-pages",
-    "content": "Finish development of v1.0 in pages/",
+    "heading": "Finish development of v1.0 in content/pages/",
+    "headingId": "finish-development-of-v10-in-contentpages",
+    "content": "Finish development of v1.0 in content/pages/",
     "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
     "version": null
   },
@@ -600,9 +609,9 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/guides/versioning/",
     "pageTitle": "Versioning",
-    "heading": "Continue editing pages/ (now labeled v1.1 automatically)",
-    "headingId": "continue-editing-pages-now-labeled-v11-automatically",
-    "content": "Continue editing pages/ (now labeled v1.1 automatically) ```",
+    "heading": "Continue editing content/pages/ (now labeled v1.1 automatically)",
+    "headingId": "continue-editing-contentpages-now-labeled-v11-automatically",
+    "content": "Continue editing content/pages/ (now labeled v1.1 automatically) ```",
     "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
     "version": null
   },
@@ -719,7 +728,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "SEO Examples",
     "heading": "How It Works",
     "headingId": "how-it-works",
-    "content": "How It Works Route Generation: The script extracts SEO metadata from frontmatter SEO Component: The component renders all meta tags using 's Static Generation: During SSG build, all meta tags are included in the static HTML Dynamic Override: Inline components can override frontmatter values",
+    "content": "How It Works Route Generation: The script extracts SEO metadata from frontmatter (executed as part of the build pipeline) SEO Component: The component renders all meta tags using 's Static Generation: During SSG build, all meta tags are included in the static HTML Dynamic Override: Inline components",
     "description": "",
     "version": null
   },
@@ -791,7 +800,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Legacy Home",
     "heading": "Luma Docs v0.8",
     "headingId": "luma-docs-v08",
-    "content": "Luma Docs v0.8 Early pre-1.0 version of the docs platform.",
+    "content": "Luma Docs v0.8 > Archived snapshot. Missing later features (multi-step pipeline, version switcher UI, enhanced search index, unified base path resolver). Early pre-1.0 version of the docs platform.",
     "description": "Snapshot of the documentation home for version 0.8",
     "version": "v0.8"
   },
@@ -807,9 +816,9 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/v0.8/",
     "pageTitle": "Legacy Home",
-    "heading": "Upgrading",
-    "headingId": "upgrading",
-    "content": "Upgrading Move to v0.9 or 1.0+ to get improved build scripts and search.",
+    "heading": "Upgrading (Historical Note)",
+    "headingId": "upgrading-historical-note",
+    "content": "Upgrading (Historical Note) Move to v0.9 or (preferably) 1.0+ to get improved build scripts, base path resolver, version switcher, and search enhancements.",
     "description": "",
     "version": "v0.8"
   },
@@ -818,7 +827,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Getting Started",
     "heading": "Getting Started (v0.8)",
     "headingId": "getting-started-v08",
-    "content": "Getting Started (v0.8) Feature set was still evolving; expect configuration differences versus later versions.",
+    "content": "Getting Started (v0.8) > Archived version. Commands reflect early setup; later versions run an automated pipeline (versions, routes, CSS, search, sitemap) behind / . Feature set was still evolving; expect configuration differences versus later versions.",
     "description": "Setup guide for v0.8",
     "version": "v0.8"
   },
@@ -1158,18 +1167,18 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/v0.8/guides/versioning/",
     "pageTitle": "Versioning",
-    "heading": "Snapshot current root content into versions/v1.0",
-    "headingId": "snapshot-current-root-content-into-versionsv10",
-    "content": "Snapshot current root content into versions/v1.0 npm run snapshot:version -- v1.0",
+    "heading": "Snapshot current root content into content/versions/v1.0",
+    "headingId": "snapshot-current-root-content-into-contentversionsv10",
+    "content": "Snapshot current root content into content/versions/v1.0 npm run snapshot:version -- v1.0",
     "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
     "version": "v0.8"
   },
   {
     "path": "/v0.8/guides/versioning/",
     "pageTitle": "Versioning",
-    "heading": "Snapshot and bump current label to v1.1 (so pages/ becomes v1.1)",
-    "headingId": "snapshot-and-bump-current-label-to-v11-so-pages-becomes-v11",
-    "content": "Snapshot and bump current label to v1.1 (so pages/ becomes v1.1) npm run snapshot:version -- v1.0 --bump v1.1 `` vMAJOR[.MINOR[.PATCH]] pages/ versions/<label>/ src/generated-versions.ts --bump <next> config.ts` + regenerates routes",
+    "heading": "Snapshot and bump current label to v1.1 (so content/pages/ becomes v1.1)",
+    "headingId": "snapshot-and-bump-current-label-to-v11-so-contentpages-becomes-v11",
+    "content": "Snapshot and bump current label to v1.1 (so content/pages/ becomes v1.1) npm run snapshot:version -- v1.0 --bump v1.1 `` vMAJOR[.MINOR[.PATCH]] content/pages/ content/versions/<label>/ src/generated-versions.ts --bump <next> config.ts` + regenerates routes",
     "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
     "version": "v0.8"
   },
@@ -1178,7 +1187,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Versioning",
     "heading": "Manual Workflow (Alternative)",
     "headingId": "manual-workflow-alternative",
-    "content": "Manual Workflow (Alternative) ```bash NEWVER=v1.0 mkdir -p versions/$NEWVER rsync -a pages/ versions/$NEW_VER/",
+    "content": "Manual Workflow (Alternative) ```bash NEWVER=v1.0 mkdir -p versions/$NEWVER rsync -a content/pages/ content/versions/$NEW_VER/",
     "description": "",
     "version": "v0.8"
   },
@@ -1239,9 +1248,9 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/v0.8/guides/versioning/",
     "pageTitle": "Versioning",
-    "heading": "Finish development of v1.0 in pages/",
-    "headingId": "finish-development-of-v10-in-pages",
-    "content": "Finish development of v1.0 in pages/",
+    "heading": "Finish development of v1.0 in content/pages/",
+    "headingId": "finish-development-of-v10-in-contentpages",
+    "content": "Finish development of v1.0 in content/pages/",
     "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
     "version": "v0.8"
   },
@@ -1266,9 +1275,9 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
   {
     "path": "/v0.8/guides/versioning/",
     "pageTitle": "Versioning",
-    "heading": "Continue editing pages/ (now labeled v1.1 automatically)",
-    "headingId": "continue-editing-pages-now-labeled-v11-automatically",
-    "content": "Continue editing pages/ (now labeled v1.1 automatically) ```",
+    "heading": "Continue editing content/pages/ (now labeled v1.1 automatically)",
+    "headingId": "continue-editing-contentpages-now-labeled-v11-automatically",
+    "content": "Continue editing content/pages/ (now labeled v1.1 automatically) ```",
     "description": "Learn how Luma Docs handles multi-version documentation: structure, snapshots, search scoping, UI, and SEO.",
     "version": "v0.8"
   },
@@ -1313,16 +1322,16 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Legacy Home",
     "heading": "Luma Docs v0.9",
     "headingId": "luma-docs-v09",
-    "content": "Luma Docs v0.9 Transition release preparing for the stable 1.0 line.",
+    "content": "Luma Docs v0.9 > Archived snapshot. Script naming and base path handling were refined in 1.0; consult the current docs for authoritative guidance. Transition release preparing for the stable 1.0 line. Refer to the active version for updated build pipeline documentation.",
     "description": "Snapshot for version 0.9",
     "version": "v0.9"
   },
   {
     "path": "/v0.9/",
     "pageTitle": "Legacy Home",
-    "heading": "Improvements since 0.8",
-    "headingId": "improvements-since-08",
-    "content": "Improvements since 0.8 More robust route generation Added early search indexing groundwork Expanded component set",
+    "heading": "Improvements since 0.8 (Historical)",
+    "headingId": "improvements-since-08-historical",
+    "content": "Improvements since 0.8 (Historical) More robust route generation Added early search indexing groundwork Expanded component set",
     "description": "",
     "version": "v0.9"
   },
@@ -1331,7 +1340,7 @@ export const GENERATED_SEARCH_INDEX: SearchableItem[] = [
     "pageTitle": "Getting Started",
     "heading": "Getting Started (v0.9)",
     "headingId": "getting-started-v09",
-    "content": "Getting Started (v0.9) Use 1.0+ for finalized configuration conventions.",
+    "content": "Getting Started (v0.9) > Archived version. Later releases introduce a coordinated multi-step build pipeline (versions, routes, search index, sitemap) that runs automatically inside the and scripts. Use 1.0+ for finalized configuration conventions (pipeline + base path resolver).",
     "description": "Setup guide for v0.9",
     "version": "v0.9"
   }

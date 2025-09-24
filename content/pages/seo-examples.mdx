@@ -84,7 +84,7 @@ You can also override SEO metadata for specific sections using the `<SEO>` compo
 
 ## How It Works
 
-1. **Route Generation**: The `generate-routes.js` script extracts SEO metadata from frontmatter
+1. **Route Generation**: The `src/tools/generate-routes.js` script extracts SEO metadata from frontmatter (executed as part of the build pipeline)
 2. **SEO Component**: The `<SEO>` component renders all meta tags using `vite-react-ssg`'s `<Head>`
 3. **Static Generation**: During SSG build, all meta tags are included in the static HTML
 4. **Dynamic Override**: Inline `<SEO>` components can override frontmatter values

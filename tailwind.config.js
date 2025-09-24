@@ -4,7 +4,8 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+  "./content/pages/**/*.{js,ts,jsx,tsx,mdx}",
+  "./content/versions/**/*.{js,ts,jsx,tsx,mdx}",
     "./main.tsx",
     "./App.tsx"
   ],

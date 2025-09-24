@@ -64,7 +64,7 @@ function processDir(contentDir, versionPrefix = '', versionLabel, importRoot) {
       routePath = `${versionPrefix}${routePath === '/' ? '' : routePath.slice(1)}`.replace(/\/$/, '');
     }
 
-    // Preserve original relative structure under either pages/ or versions/<ver>/
+  // Preserve original relative structure under either content/pages/ or content/versions/<version>/
     const componentPath = `${importRoot}/${file}`.replace(/\\/g, '/');
 
     const meta = {
@@ -112,19 +112,20 @@ function extractCurrentVersionLabel(baseDir) {
 }
 
 function generateRoutes(baseDir) {
-  const currentDir = path.join(baseDir, '../../pages');
-  const versionsDir = path.join(baseDir, '../../versions');
+  // Updated for new content/ folder structure.
+  const currentDir = path.join(baseDir, '../../content/pages');
+  const versionsDir = path.join(baseDir, '../../content/versions');
   const allRoutes = [];
   const currentVersionLabel = extractCurrentVersionLabel(baseDir);
 
   // Root pages use configured current version label
-  allRoutes.push(...processDir(currentDir, '', currentVersionLabel, 'pages'));
+  allRoutes.push(...processDir(currentDir, '', currentVersionLabel, 'content/pages'));
 
   if (fs.existsSync(versionsDir)) {
     const versionFolders = fs.readdirSync(versionsDir).filter(f => fs.statSync(path.join(versionsDir, f)).isDirectory());
     for (const folder of versionFolders) {
-      const dir = path.join(versionsDir, folder);
-  allRoutes.push(...processDir(dir, `/${folder}/`, folder, `versions/${folder}`));
+    const dir = path.join(versionsDir, folder);
+    allRoutes.push(...processDir(dir, `/${folder}/`, folder, `content/versions/${folder}`));
     }
   }
 

@@ -2,8 +2,8 @@
 /**
  * snapshot-version.js
  *
- * Automates creation of a version snapshot by copying the current `pages/` directory
- * into `versions/<label>/`, updating generated versions metadata, and (optionally)
+ * Automates creation of a version snapshot by copying the current `content/pages/` directory
+ * into `content/versions/<label>/`, updating generated versions metadata, and (optionally)
  * bumping the `config.versions.current` label to a new value.
  *
  * Usage:
@@ -17,7 +17,7 @@
  * Behavior:
  * 1. Validates target label (must start with 'v').
  * 2. Ensures `versions/<label>` does not already exist.
- * 3. Recursively copies all files from `pages/` into the new folder.
+ * 3. Recursively copies all files from `content/pages/` into the new folder.
  * 4. Runs `generate:versions` to refresh `src/generated-versions.ts`.
  * 5. If `--bump <newLabel>` provided, updates `config.ts` current label and regenerates routes.
  */
@@ -101,19 +101,19 @@ function main() {
     log(`Note: snapshot label (${target}) differs from current label (${current}). This is allowed.`);
   }
 
-  const versionsDir = path.join(rootDir, 'versions');
+  const versionsDir = path.join(rootDir, 'content', 'versions');
   const targetDir = path.join(versionsDir, target);
-  const pagesDir = path.join(rootDir, 'pages');
+  const pagesDir = path.join(rootDir, 'content', 'pages');
 
-  if (!fs.existsSync(pagesDir)) { exitFail('pages/ directory not found; nothing to snapshot.'); }
-  if (fs.existsSync(targetDir)) { exitFail(`versions/${target} already exists. Aborting to avoid overwrite.`); }
+  if (!fs.existsSync(pagesDir)) { exitFail('content/pages/ directory not found; nothing to snapshot.'); }
+  if (fs.existsSync(targetDir)) { exitFail(`content/versions/${target} already exists. Aborting to avoid overwrite.`); }
 
   if (!fs.existsSync(versionsDir)) { fs.mkdirSync(versionsDir, { recursive: true }); }
 
-  log(`Creating snapshot directory versions/${target}`);
+  log(`Creating snapshot directory content/versions/${target}`);
   fs.mkdirSync(targetDir);
 
-  log(`Copying pages/ -> versions/${target}`);
+  log(`Copying content/pages/ -> content/versions/${target}`);
   copyRecursive(pagesDir, targetDir);
 
   runScript('npm', ['run', '--silent', 'generate:versions'], 'generate:versions');
@@ -125,7 +125,7 @@ function main() {
 
   log('Snapshot complete ✅');
   if (bump) {
-    log(`Next steps:\n  1. Update content in pages/ for new development of ${bump}.\n  2. Commit: git add . && git commit -m "chore: snapshot ${target} and bump current to ${bump}"`);
+  log(`Next steps:\n  1. Update content in content/pages/ for new development of ${bump}.\n  2. Commit: git add . && git commit -m "chore: snapshot ${target} and bump current to ${bump}"`);
   } else {
     log(`Next steps:\n  1. (Optional) bump config.ts current label.\n  2. Commit: git add . && git commit -m "chore: snapshot ${target}"`);
   }

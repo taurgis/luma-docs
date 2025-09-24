@@ -24,7 +24,7 @@ function writeFile(outPath, content) {
 }
 
 function generate() {
-  const versionsDir = path.join(__dirname, '../../versions');
+  const versionsDir = path.join(__dirname, '../../content/versions');
   const versions = collectVersions(versionsDir); // e.g. ['v1.0', 'v1.1']
   const outputPath = path.join(__dirname, '../generated-versions.ts');
 
