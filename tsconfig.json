@@ -24,11 +24,13 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/utils/*": ["./src/utils/*"],
-      "@/tools/*": ["./src/tools/*"],
-      "@/config": ["./config.ts"]
+  "@/*": ["./src/*"],
+  "@/components/*": ["./src/components/*"],
+  "@/types": ["./src/types/index.ts"],
+  "@/types/*": ["./src/types/*"],
+  "@/tools/*": ["./src/tools/*"],
+  "@/config": ["./config.ts"],
+      
     }
   },
   "include": [

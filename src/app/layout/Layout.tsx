@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 
-// Parent/relative imports
-import { TocItem } from '../../../types';
+// Relative
 import ErrorBoundary from './ErrorBoundary';
 
-
-// Internal alias imports
+// Internal aliases
 import MDXPage from '@/components/content/MDXPage';
 import MDXWrapper from '@/components/content/MDXWrapper';
 import OnThisPage from '@/components/navigation/OnThisPage';
 import Sidebar from '@/components/navigation/Sidebar';
 import Breadcrumbs from '@/components/seo/Breadcrumbs';
 import { config } from '@/config';
+import type { TocItem } from '@/types';
 
 
 const Layout: React.FC = () => {

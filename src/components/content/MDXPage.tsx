@@ -2,54 +2,15 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { config } from '@/config';
-import { routeMeta } from '../../generated-routes';
-import type { RouteMeta } from '../../types/route-meta';
-import { archivedVersions } from '../../generated-versions';
+import { routeMeta } from '@/generated-routes';
+import { archivedVersions } from '@/generated-versions';
+import type { SEOBase } from '@/types/seo';
+import { validateSEOBase } from '@/types/seo';
+import type { RouteMeta } from '@/types/route-meta';
 // utils folder relocated under src/utils – use path alias for stability
 import { getBasePath, createPath } from '@/utils/basePath';
 import SEO from '@/components/seo/SEO';
-// Narrowed SEO meta shape
-interface RouteMetaForSEO {
-  title?: string;
-  description?: string;
-  keywords?: string;
-  canonical?: string;
-  ogImage?: string;
-  ogType?: 'website' | 'article';
-  twitterCard?: 'summary' | 'summary_large_image';
-  twitterCreator?: string;
-  twitterSite?: string;
-  author?: string;
-  publishedTime?: string;
-  modifiedTime?: string;
-  robots?: string;
-  noindex?: boolean;
-  section?: string;
-  tags?: string[];
-}
-// (imports reordered above)
-
-interface MDXPageProps {
-  children: React.ReactNode;
-  meta?: {
-    title?: string;
-    description?: string;
-    keywords?: string;
-    canonical?: string;
-    ogImage?: string;
-    ogType?: 'website' | 'article';
-    twitterCard?: 'summary' | 'summary_large_image';
-    twitterCreator?: string;
-    twitterSite?: string;
-    author?: string;
-    publishedTime?: string;
-    modifiedTime?: string;
-    robots?: string;
-    noindex?: boolean;
-    section?: string;
-    tags?: string[];
-  };
-}
+interface MDXPageProps { children: React.ReactNode; meta?: SEOBase; }
 
 const MDXPage: React.FC<MDXPageProps> = ({ children, meta: explicitMeta }) => {
   const location = useLocation();
@@ -66,31 +27,24 @@ const MDXPage: React.FC<MDXPageProps> = ({ children, meta: explicitMeta }) => {
     return normalizedRoutePath === normalizedCurrentPath;
   });
 
-  // Merge explicit meta with route meta, with explicit meta taking precedence
+  // Merge explicit meta with route meta, with explicit meta taking precedence then validate.
   const merged = { ...currentMeta, ...explicitMeta } as Record<string, unknown>;
-  // Sanitize ogType to allowed union
-  let ogType: 'website' | 'article' | undefined;
-  if (merged.ogType === 'article') { ogType = 'article'; }
-  else if (merged.ogType === 'website') { ogType = 'website'; }
-  // Assemble final meta object with narrowed types
-  const finalMeta: RouteMetaForSEO = {
-    title: merged.title as string | undefined,
-    description: merged.description as string | undefined,
-    keywords: merged.keywords as string | undefined,
-    canonical: merged.canonical as string | undefined,
-    ogImage: merged.ogImage as string | undefined,
-    ogType,
-    twitterCard: merged.twitterCard as ('summary' | 'summary_large_image') | undefined,
-    twitterCreator: merged.twitterCreator as string | undefined,
-    twitterSite: merged.twitterSite as string | undefined,
-    author: merged.author as string | undefined,
-    publishedTime: merged.publishedTime as string | undefined,
-    modifiedTime: merged.modifiedTime as string | undefined,
-    robots: merged.robots as string | undefined,
-    noindex: merged.noindex as boolean | undefined,
-    section: merged.section as string | undefined,
-    tags: merged.tags as string[] | undefined,
-  };
+  // Filter out non-SEO keys (e.g., path, slug, version) before validation to avoid noisy warnings.
+  const allowedKeys = new Set([
+    'title','description','keywords','canonical','ogImage','ogType','twitterCard','twitterCreator','twitterSite','author','publishedTime','modifiedTime','robots','noindex','section','tags'
+  ]);
+  const seoCandidate: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(merged)) {
+    if (allowedKeys.has(k)) {
+      seoCandidate[k] = v;
+    }
+  }
+  const validation = validateSEOBase(seoCandidate);
+  if (!validation.valid && import.meta.env.DEV) {
+    // eslint-disable-next-line no-console
+    console.warn('[MDXPage] SEO metadata validation issues for', currentMeta?.path, validation.issues);
+  }
+  const finalMeta: SEOBase = validation.value;
 
   // Build base URL for canonical URLs
   const basePath = getBasePath();

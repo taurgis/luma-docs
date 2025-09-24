@@ -17,6 +17,12 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./test/setup.ts'],
     include: ['test/**/*.spec.{ts,tsx}'],
-    coverage: { provider: 'v8', reporter: ['text', 'lcov'] }
+    coverage: { provider: 'v8', reporter: ['text', 'lcov'] },
+    environmentOptions: {
+      jsdom: {
+        // Silence React Router v7 future flag warnings by opting in early
+        url: 'http://localhost/'
+      }
+    }
   }
 });

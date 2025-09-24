@@ -1,18 +1,8 @@
 import React from 'react';
 import { Head } from 'vite-react-ssg';
 
-import { config } from '../../../config';
-import { SEOMetadata } from '../../../types';
-
-interface BreadcrumbItem {
-  name: string;
-  path: string; // absolute URL path part w/ trailing slash preferred
-}
-
-interface SEOProps extends SEOMetadata {
-  baseUrl?: string;
-  breadcrumbs?: BreadcrumbItem[]; // Provided by MDXPage when available
-}
+import { config } from '@/config';
+import type { SEOProps } from '@/types/seo';
 
 const SEO: React.FC<SEOProps> = ({
   title,
@@ -42,10 +32,10 @@ const SEO: React.FC<SEOProps> = ({
   // Determine canonical URL (normalize to avoid double slashes)
   const joinUrl = (base: string, p: string) => {
     if (!p) { return base; }
-    if (/^https?:\/\//i.test(p)) { return p.replace(/([^:])\/+ /g, '$1/'); }
+    if (/^https?:\/\//i.test(p)) { return p.replace(/([^:])\/+/g, '$1/'); }
     const cleanBase = base.replace(/\/+$|$/, '/');
     const combined = `${cleanBase}${p.startsWith('/') ? p.substring(1) : p}`;
-    return combined.replace(/([^:])\/+ /g, '$1/');
+    return combined.replace(/([^:])\/+/g, '$1/');
   };
 
   let fullCanonical = baseUrl ? baseUrl.replace(/\/+$/, '/') : '';
