@@ -17,6 +17,8 @@ export default defineConfig(({ mode, command: _command }) => {
 
     return {
       base: basePath,
+      // Use moved static assets directory (previously project-root /public)
+      publicDir: 'src/public',
       plugins: [
         mdx({
           remarkPlugins: [remarkGfm, remarkFrontmatter],
