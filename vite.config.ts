@@ -80,6 +80,7 @@ export default defineConfig(({ mode, command: _command }) => {
         alias: {
           // Constrain @ alias to application source (avoid accidentally importing build scripts)
           '@': path.resolve(__dirname, 'src'),
+          '@tools': path.resolve(__dirname, 'src/tools'),
         }
       },
       // Performance optimizations

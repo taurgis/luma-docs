@@ -46,6 +46,18 @@ export default tseslint.config(
       'react/no-unescaped-entities': 'off',
       // Code blocks in MDX may have variables that appear unused
       'no-undef': 'off',
+      // Enforce alias usage: disallow any relative (./ or ../) imports inside MDX files
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['./*', '../*', '../**', '../../*', '../../**', '../../../*', '../../../**'],
+              message: 'Use alias imports (e.g. @/components/...) inside MDX instead of relative paths.'
+            }
+          ]
+        }
+      ],
     },
   },
 
@@ -119,6 +131,22 @@ export default tseslint.config(
       ],
       'import/no-unresolved': 'off', // TypeScript handles this
       'import/no-duplicates': 'error',
+      // Enforce path alias usage instead of long relative traversals for src internals
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['../../components/*', '../../../components/*', '../..*/components/*'],
+              message: 'Use @/components/... alias instead of deep relative path.'
+            },
+            {
+              group: ['../../utils/*', '../../../utils/*', '../..*/utils/*'],
+              message: 'Use @/utils/... alias instead of deep relative path.'
+            }
+          ]
+        }
+      ],
 
       // General code quality rules
       'no-console': 'warn',
@@ -165,6 +193,18 @@ export default tseslint.config(
       'no-console': 'off', // Allow console in build scripts
       '@typescript-eslint/no-var-requires': 'off',
     },
+  },
+  // Allow console in codemod scripts
+  {
+    files: ['scripts/**/*.mjs'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      'no-console': 'off'
+    }
   },
 
   // Configuration for config files

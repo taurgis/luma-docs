@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import config from '../../config';
-import { routeMeta } from '../generated-routes';
-import type { RouteMeta } from '../types/route-meta';
+import config from '../../../config';
+import { routeMeta } from '../../generated-routes';
+import type { RouteMeta } from '../../types/route-meta';
 
 interface Crumb {
   name: string;

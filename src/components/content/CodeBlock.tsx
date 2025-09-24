@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { CopyIcon, CheckIcon } from './icons';
+import { CopyIcon, CheckIcon } from '@/components/content/icons';
 
 // Dynamic Prism import to prevent SSR issues
 // Define a minimal shape for Prism we rely on to avoid 'any'.

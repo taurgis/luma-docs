@@ -1,8 +1,8 @@
 import React from 'react';
 import { Head } from 'vite-react-ssg';
 
-import { config } from '../../config';
-import { SEOMetadata } from '../../types';
+import { config } from '../../../config';
+import { SEOMetadata } from '../../../types';
 
 interface BreadcrumbItem {
   name: string;

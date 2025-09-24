@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, Outlet } from 'react-router-dom';
 
+// Local project-relative imports (config/types)
 import config from '../../../config';
 import { TocItem } from '../../../types';
-import MDXWrapper from '../../components//MDXWrapper';
-import OnThisPage from '../../components//OnThisPage';
-import Sidebar from '../../components//Sidebar';
-import Breadcrumbs from '../../components/Breadcrumbs';
-import MDXPage from '../../components/MDXPage';
 
 import ErrorBoundary from './ErrorBoundary';
+
+// Aliased component imports
+import MDXPage from '@/components/content/MDXPage';
+import MDXWrapper from '@/components/content/MDXWrapper';
+import OnThisPage from '@/components/navigation/OnThisPage';
+import Sidebar from '@/components/navigation/Sidebar';
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
 
 
 const Layout: React.FC = () => {

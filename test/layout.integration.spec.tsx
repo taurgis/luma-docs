@@ -16,20 +16,25 @@ vi.mock('../src/generated-routes', () => {
 
 vi.mock('../src/generated-versions', () => ({ archivedVersions: ['v0.9', 'v0.8'] }));
 
-// Mock MDXPage to avoid its internal logic (it re-reads routeMeta etc.)
+// --- Component Mocks (updated paths after folder re-org) ---
+// Keep legacy mocks (flat paths) in case of stray imports
 vi.mock('../src/components/MDXPage', () => ({ default: ({ children }: { children: React.ReactNode }) => <>{children}</> }));
-// Mock Breadcrumbs to a lightweight marker (we verify it appears)
-vi.mock('../src/components/Breadcrumbs', () => ({ default: () => <nav data-testid="breadcrumbs">Breadcrumbs</nav> }));
-// Mock OnThisPage to avoid timing/DOM scanning logic
-vi.mock('../src/components/OnThisPage', () => ({ default: () => <aside data-testid="on-this-page" /> }));
-// Mock Sidebar to a simple element exposing a toggle marker
-vi.mock('../src/components/Sidebar', () => ({ default: () => <div data-testid="sidebar">SidebarNav</div> }));
-// Mock ErrorBoundary to pass-through
-vi.mock('../src/app/layout/ErrorBoundary', () => ({ default: ({ children }: { children?: React.ReactNode }) => <>{children}</> }));
-// Mock MDXWrapper trivial
 vi.mock('../src/components/MDXWrapper', () => ({ default: ({ children }: { children?: React.ReactNode }) => <div data-testid="mdx-wrapper">{children}</div> }));
-// Mock SEO to a lightweight component (no capture needed for now)
+vi.mock('../src/components/Breadcrumbs', () => ({ default: () => <nav data-testid="breadcrumbs">Breadcrumbs</nav> }));
+vi.mock('../src/components/OnThisPage', () => ({ default: () => <aside data-testid="on-this-page" /> }));
+vi.mock('../src/components/Sidebar', () => ({ default: () => <div data-testid="sidebar">SidebarNav</div> }));
 vi.mock('../src/components/SEO', () => ({ default: () => <></> }));
+
+// New structured paths
+vi.mock('../src/components/content/MDXPage', () => ({ default: ({ children }: { children: React.ReactNode }) => <>{children}</> }));
+vi.mock('../src/components/content/MDXWrapper', () => ({ default: ({ children }: { children?: React.ReactNode }) => <div data-testid="mdx-wrapper">{children}</div> }));
+vi.mock('../src/components/navigation/OnThisPage', () => ({ default: () => <aside data-testid="on-this-page" /> }));
+vi.mock('../src/components/navigation/Sidebar', () => ({ default: () => <div data-testid="sidebar">SidebarNav</div> }));
+vi.mock('../src/components/seo/Breadcrumbs', () => ({ default: () => <nav data-testid="breadcrumbs">Breadcrumbs</nav> }));
+vi.mock('../src/components/seo/SEO', () => ({ default: () => <></> }));
+
+// ErrorBoundary passthrough
+vi.mock('../src/app/layout/ErrorBoundary', () => ({ default: ({ children }: { children?: React.ReactNode }) => <>{children}</> }));
 
 import Layout from '../src/app/layout/Layout';
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import config from '../../config';
+import config from '../../../config';
 
 // utils relocated under src/utils – switch to alias
 import { searchDocs, SearchResult } from '@/utils/search';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { InfoIcon, WarningIcon, SuccessIcon, DangerIcon, LightBulbIcon, NoteIcon } from './icons';
+import { InfoIcon, WarningIcon, SuccessIcon, DangerIcon, LightBulbIcon, NoteIcon } from '@/components/content/icons';
 
 export type CalloutType = 'info' | 'warning' | 'success' | 'note' | 'danger' | 'tip';
 
