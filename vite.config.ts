@@ -65,7 +65,8 @@ export default defineConfig(({ mode, command: _command }) => {
       },
       resolve: {
         alias: {
-          '@': path.resolve(__dirname, '.'),
+          // Constrain @ alias to application source (avoid accidentally importing build scripts)
+          '@': path.resolve(__dirname, 'src'),
         }
       },
       // Performance optimizations
