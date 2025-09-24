@@ -4,6 +4,8 @@ import { fileURLToPath } from 'url';
 
 import matter from 'gray-matter';
 
+import { mdxFileToSlugAndPath } from './shared/route-paths.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -25,28 +27,6 @@ function getMdxFiles(dir, baseDir = '') {
   return files;
 }
 
-function pathToSlug(filePath) {
-  const pathWithoutExt = filePath.replace(/\.mdx$/, '');
-  const parts = pathWithoutExt.split(path.sep);
-  
-  // Convert index files to parent directory name
-  if (parts[parts.length - 1] === 'index') {
-    parts.pop();
-  }
-  
-  // If no parts left, it's the root index
-  if (parts.length === 0) {
-    return '/';
-  }
-  
-  return `/${  parts.join('/')  }/`;
-}
-
-function slugToRoutePath(slug) {
-  if (slug === '/') {return slug;}
-  return slug.endsWith('/') ? slug.slice(0, -1) : slug;
-}
-
 function processDir(contentDir, versionPrefix = '', versionLabel, importRoot) {
   if (!fs.existsSync(contentDir)) { return []; }
   const mdxFiles = getMdxFiles(contentDir);
@@ -57,12 +37,7 @@ function processDir(contentDir, versionPrefix = '', versionLabel, importRoot) {
     const content = fs.readFileSync(fullPath, 'utf-8');
     const { data: frontmatter } = matter(content);
 
-    let slug = pathToSlug(file);
-    let routePath = slugToRoutePath(slug);
-    if (versionPrefix) {
-      slug = `${versionPrefix}${slug === '/' ? '' : slug.slice(1)}`;
-      routePath = `${versionPrefix}${routePath === '/' ? '' : routePath.slice(1)}`.replace(/\/$/, '');
-    }
+    const { slug, path: routePath } = mdxFileToSlugAndPath(file, versionPrefix);
 
   // Preserve original relative structure under either content/pages/ or content/versions/<version>/
     const componentPath = `${importRoot}/${file}`.replace(/\\/g, '/');

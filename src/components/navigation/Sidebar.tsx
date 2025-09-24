@@ -9,16 +9,15 @@ import { config } from '@/config';
 import { routeMeta } from '@/generated-routes';
 import { archivedVersions } from '@/generated-versions';
 import type { RouteMeta } from '@/types/route-meta';
+import { stripTrailingSlash } from '@/utils/routePaths';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
 
   const isLinkActive = (path: string) => {
-    if (path === '/') {return location.pathname === '/';}
-    // Normalize paths to have trailing slashes for comparison
-    const normalizedLocationPath = location.pathname.endsWith('/') ? location.pathname : `${location.pathname  }/`;
-    const normalizedPath = path.endsWith('/') ? path : `${path  }/`;
-    return normalizedLocationPath === normalizedPath;
+    const target = path === '/' ? '/' : stripTrailingSlash(path);
+    const current = location.pathname === '/' ? '/' : stripTrailingSlash(location.pathname);
+    return current === target;
   };
 
   // Determine active version from path
