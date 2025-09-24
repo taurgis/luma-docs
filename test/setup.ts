@@ -22,3 +22,30 @@ const originalWarn = console.warn;
 	}
 	originalWarn(...args);
 };
+
+// Basic IntersectionObserver polyfill for tests (sufficient for a11y nav highlighting logic)
+class TestIntersectionObserver implements IntersectionObserver {
+	readonly root: Element | null = null;
+	readonly rootMargin: string = '0px';
+	readonly thresholds: ReadonlyArray<number> = [0];
+	private _callback: IntersectionObserverCallback;
+	constructor(callback: IntersectionObserverCallback) { this._callback = callback; }
+	observe(target: Element) {
+		// Immediately invoke callback with an intersecting entry to mark active heading deterministically
+		const entry = [{
+			isIntersecting: true,
+			target,
+			intersectionRatio: 1,
+			boundingClientRect: target.getBoundingClientRect(),
+			intersectionRect: target.getBoundingClientRect(),
+			rootBounds: null,
+			time: Date.now()
+		} as IntersectionObserverEntry];
+		this._callback(entry, this as unknown as IntersectionObserver);
+	}
+	unobserve() {/* noop */}
+	disconnect() {/* noop */}
+	takeRecords(): IntersectionObserverEntry[] { return []; }
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).IntersectionObserver = TestIntersectionObserver;

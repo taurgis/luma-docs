@@ -214,11 +214,13 @@ const Search: React.FC = () => {
           </div>
         </div>
         {query.length > 1 && (
-          <div className="flex-1 overflow-y-auto min-h-0">
+          <div className="flex-1 overflow-y-auto min-h-0" aria-live="polite" aria-atomic="false">
             {results.length > 0 ? (
-              <ul ref={resultsRef} className="p-3 sm:p-4 space-y-2" role="listbox" aria-label="Search results">
+              <>
+              <p id="search-results-count" className="sr-only" role="status">{results.length} results found</p>
+              <ul ref={resultsRef} className="p-3 sm:p-4 space-y-2" aria-labelledby="search-results-count">
                 {results.map((result, index) => (
-                  <li key={`${result.path}-${result.heading}`} role="option" aria-selected={activeIndex === index}>
+                  <li key={`${result.path}-${result.heading}`}>
                     <button
                       onClick={() => handleNavigation(result.path, result.heading, result.headingId)}
                       className={`w-full text-left p-3 rounded-md transition-colors ${
@@ -248,6 +250,7 @@ const Search: React.FC = () => {
                   </li>
                 ))}
               </ul>
+              </>
             ) : (
               <p className="p-6 sm:p-8 text-center text-slate-500 text-sm sm:text-base">
                 No results found for &quot;{query}&quot;

@@ -197,7 +197,7 @@ const Layout: React.FC = () => {
         Skip to main content
       </a>
       {/* Mobile Header */}
-      <header className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-50">
+  <header className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-50" role="banner">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2 min-w-0">
             <h1 className="text-xl font-bold text-slate-800">{config.branding.logo.text}</h1>
@@ -260,9 +260,9 @@ const Layout: React.FC = () => {
         <div className="lg:pl-64 flex-1 min-w-0 max-w-full">
           <div className="flex min-w-0 max-w-full">
             {/* Added base mobile padding (p-4) so content isn't flush on very small screens */}
-            <main id="main-content" className="flex-1 max-w-4xl mx-auto p-4 sm:p-4 lg:p-12 min-w-0 overflow-hidden">
+            <main id="main-content" role="main" className="flex-1 max-w-4xl mx-auto p-4 sm:p-4 lg:p-12 min-w-0 overflow-hidden" aria-describedby={config.features.breadcrumbs ? 'breadcrumbs' : undefined}>
               <div className="prose prose-slate max-w-none min-w-0 break-words">
-                {config.features.breadcrumbs && <Breadcrumbs />}
+                {config.features.breadcrumbs && <Breadcrumbs id="breadcrumbs" />}
                 <ErrorBoundary>
                   <MDXPage>
                     <MDXWrapper>
@@ -274,9 +274,7 @@ const Layout: React.FC = () => {
             </main>
             <aside className="hidden xl:block w-64 flex-shrink-0">
               <div className="fixed top-0 right-0 h-full w-64 p-8">
-                <div aria-label="On this page" role="navigation">
-                  <OnThisPage items={toc} />
-                </div>
+                <OnThisPage items={toc} />
               </div>
             </aside>
           </div>

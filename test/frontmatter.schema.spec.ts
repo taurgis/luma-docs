@@ -16,7 +16,9 @@ describe('Frontmatter schema regression', () => {
     const { result } = parseAndValidateFrontmatter(invalidMDX);
     expect(result.success).toBe(false);
   if (result.success) { return; } // type guard
-    const messages = result.error.issues.map(i => i.message);
-    expect(messages.some(m => m.toLowerCase().includes('required') || m.toLowerCase().includes('greater'))).toBe(true);
+  const messages = result.error.issues.map(i => i.message.toLowerCase());
+  // Accept any of the indicative substrings from Zod v4 error messages
+  const indicative = ['invalid input', 'too small', 'expected'];
+  expect(messages.some(m => indicative.some(ind => m.includes(ind)))).toBe(true);
   });
 });

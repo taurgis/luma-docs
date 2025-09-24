@@ -34,13 +34,17 @@ function buildBreadcrumbs(pathname: string): Crumb[] {
   return crumbs;
 }
 
-const Breadcrumbs: React.FC = () => {
+interface BreadcrumbsProps {
+  id?: string;
+}
+
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ id }) => {
   const location = useLocation();
   const crumbs = buildBreadcrumbs(location.pathname);
   if (!crumbs.length) {return null;}
 
   return (
-    <nav aria-label="Breadcrumbs" className="mb-6 text-sm text-slate-600">
+    <nav id={id} aria-label="Breadcrumbs" className="mb-6 text-sm text-slate-600">
       <ol className="flex flex-wrap items-center gap-1">
         {crumbs.map((c, i) => {
           const isLast = i === crumbs.length - 1;
