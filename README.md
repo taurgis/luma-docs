@@ -16,7 +16,6 @@ Lightning‑fast, versioned documentation for your project – powered by React 
 | Speed               | Vite SSG, code‑splitting, tiny runtime hydration              |
 
 Peek at the live docs: https://taurgis.github.io/luma-docs/
-Deep internals live in `ADVANCED.md` or the MDX guide pages.
 
 ## ⚡ Quick Start (90 seconds)
 
@@ -902,14 +901,10 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 🙋 Support & Next Steps
 
-Need deeper internals? See `ADVANCED.md` or browse the live demo guides. Found a gap? Open an issue or PR.
-
 If you have questions or need help:
 
-- Check the documentation in the `content/pages/` directory
+- Check the documentation in the [Demo Site](https://taurgis.github.io/luma-docs/)
 - Open an issue on GitHub
 - Contribute improvements back to the project
 
 ---
-
-Built with ❤️ using React 19, MDX, Vite SSG, and Tailwind CSS. Dive deeper in `ADVANCED.md`.
