@@ -1,3 +1,312 @@
+# AGENTS.md – Operational Guide for AI Coding Agents (Luma Docs)
+
+> README.md is for humans. AGENTS.md is for you – automated coding agents (Copilot, Cursor, Amp, Jules, Factory, Aider, RooCode, Gemini CLI, Zed, Ona, Devin, Warp, Semgrep, Codex, etc.). Keep the README human‑oriented; put machine‑actionable build, test, and convention guidance here.
+
+This repository hosts **Luma Docs**: a React 19 + MDX + Vite SSG documentation system with automatic route + search + sitemap + version generation, GitHub Pages‑aware base path resolution, and CI‑ready deterministic builds.
+
+Use this file to:
+
+1. Understand how to build, test, and safely modify the project.
+2. Avoid re‑deriving conventions already encoded in tooling.
+3. Respect generated artifacts boundaries.
+4. Execute quality gates before finishing a task.
+
+If instructions here ever conflict with a direct user prompt, the user prompt wins; otherwise follow this playbook exactly.
+
+---
+
+## 🔖 Table of Contents (For Agents)
+
+1. Purpose & Scope
+2. Project Snapshot
+3. Core Build / Pipeline
+4. Generated Artifacts Policy
+5. Base Path & Deployment Logic
+6. Versioning & Snapshot Workflow
+7. Environment Variables
+8. Testing Strategy & Quality Gates
+9. Linting & Import Hygiene Rules
+10. Editing Guidelines (MDX / Components / Config)
+11. Common Task Recipes
+12. Performance Considerations
+13. Security / Safety Constraints
+14. Personas (Specialized Roles)
+15. Future Extensions / TODO Hints
+16. Completion Checklist
+
+---
+
+## 1. Purpose & Scope
+
+Provide a **single, predictable location** with automation‑friendly instructions. Avoid duplicating human tutorial prose. Concision > verbosity; exact commands over narrative.
+
+---
+
+## 2. Project Snapshot (Essentials Only)
+
+Stack: React 19, TypeScript (strict), MDX 3, Vite SSG (`vite-react-ssg`), Tailwind + Typography, Prism.js, Vitest + jest-axe.
+
+Key directories:
+
+- `content/pages/` – Current docs (label = `config.versions.current`).
+- `content/versions/<label>/` – Archived snapshots (auto-indexed, `noindex`).
+- `src/tools/` – Build + generation scripts.
+- Generated outputs: `src/generated-*.ts*` (NEVER hand edit).
+- `test/` – Unit, integration, a11y, and SEO tests.
+
+Primary npm scripts (see `package.json` for full list):
+
+- Dev: `npm run dev`
+- Build: `npm run build`
+- Snapshot: `npm run snapshot:version -- <label> [--bump <next>]`
+- Tests: `npm test`
+- Type check: `npm run type-check`
+- Lint: `npm run lint`
+- Regeneration (ad hoc): `npm run generate:routes`, `:search-index`, `:versions`, `:sitemap`
+
+---
+
+## 3. Core Build / Pipeline Sequence
+
+`npm run build` executes (via `src/tools/run-build-pipeline.mjs`):
+
+1. Generate versions → `src/generated-versions.ts`
+2. Generate routes (+ meta/frontmatter) → `src/generated-routes.tsx` & `generated-routes.meta.ts`
+3. Build Tailwind CSS → `src/public/index.css`
+4. Generate search index → `src/generated-search-index.ts`
+5. Generate sitemap → `src/public/sitemap.xml`
+6. Vite SSG → pre-rendered HTML with `<SEO />` meta
+
+Dev: runs pipeline once, then serves. Changes to MDX may require manual regenerate if scripts not re-triggered (run relevant `generate:*` commands for structural changes during a long dev session).
+
+Do NOT reorder pipeline without clear justification—scripts expect prior artifacts.
+
+---
+
+## 4. Generated Artifacts Policy
+
+| File Pattern                            | Source Script              | Modification Rule               |
+| --------------------------------------- | -------------------------- | ------------------------------- |
+| `src/generated-versions.ts`             | `generate-versions.js`     | Regenerate; never edit manually |
+| `src/generated-routes.tsx` / `.meta.ts` | `generate-routes.js`       | Regenerate only                 |
+| `src/generated-search-index.ts`         | `generate-search-index.js` | Regenerate only                 |
+| `src/public/sitemap.xml`                | `generate-sitemap.js`      | Regenerate only                 |
+
+If user asks to change behavior: modify the generator script or upstream inputs, then regenerate & update tests if shape changes.
+
+Red flag actions (avoid): editing any `generated-*` file directly, committing `dist/`, removing normalization logic in resolver.
+
+---
+
+## 5. Base Path & Deployment Logic (Critical)
+
+Central file: `src/tools/resolve-base-path.mjs`.
+
+Resolution priority (first match wins):
+
+1. `VITE_FORCE_BASE` (explicit override)
+2. `VITE_BASE_PATH` (pre-resolved value)
+3. `GITHUB_REPOSITORY` (GitHub Pages inference; repo ending in `.github.io` ⇒ `/`)
+4. `git remote origin` (same inference in local dev)
+5. Fallback `/`
+
+Normalization: always leading `/`; non-root ends with `/`.
+
+Runtime helper: `getBasePath()` (`src/utils/basePath.ts`) returns compile-time value. For links use `createPath()` guard.
+
+Never hardcode subfolder paths in components—import and use helpers.
+
+---
+
+## 6. Versioning & Snapshot Workflow
+
+Current docs: `content/pages/` (label = `config.versions.current`). Archived versions: `content/versions/<label>/`.
+
+Automated snapshot:
+
+```
+npm run snapshot:version -- v1.0            # archive current
+npm run snapshot:version -- v1.0 --bump v1.1 # archive + bump current label
+```
+
+Snapshot script steps: validate label, copy pages → versions, regenerate versions list, optionally bump config + regenerate routes.
+
+When switching versions in UI: if target path missing, auto-fallback to that version's root (avoid 404). Maintain this behavior if editing switcher logic.
+
+---
+
+## 7. Environment Variables Summary
+
+| Variable                    | Purpose                                        | Include in Build? | Notes                      |
+| --------------------------- | ---------------------------------------------- | ----------------- | -------------------------- |
+| `VITE_FORCE_BASE`           | Force base path                                | Optional          | Highest precedence         |
+| `VITE_BASE_PATH`            | Precomputed base path                          | Optional          | Ignored if FORCE set       |
+| `GITHUB_REPOSITORY`         | CI base inference                              | Yes (CI)          | Provided by GitHub Actions |
+| `SITE_URL`                  | Domain (no subfolder) for sitemap & canonicals | Yes               | Do NOT append repo path    |
+| (Reserved) `GEMINI_API_KEY` | Future features                                | No                | Currently unused           |
+
+Never add trailing slash to `SITE_URL`; generator handles concatenation.
+
+---
+
+## 8. Testing Strategy & Quality Gates
+
+Test stacks: Vitest + jsdom + jest-axe.
+
+Categories (see `test/`):
+
+- Base path logic (`basePath*.spec.ts`)
+- Routes shape & ordering (`routes*.spec.ts`)
+- Search index correctness (`search-index.spec.ts`)
+- Frontmatter schema (`frontmatter.schema.spec.ts`)
+- Layout integration & a11y (`layout.*.spec.ts[x]`)
+- SEO (canonical, breadcrumbs, archived banner)
+
+Run full suite:
+
+```
+npm test
+```
+
+Type safety first (ensures generated artifacts present):
+
+```
+npm run type-check
+```
+
+Minimal pre-commit / pre-PR quality gates (MUST pass before declaring task done):
+
+1. `npm run lint`
+2. `npm run type-check`
+3. `npm test` (all green)
+4. If modifying build scripts or base path logic: run `npm run build` once (ensures generation + SSG still succeed).
+
+Focused test example:
+
+```
+npm test -- -t "base path"
+```
+
+Add tests when:
+
+- Adding a new generator
+- Changing shape of generated output
+- Introducing new utilities
+
+---
+
+## 9. Linting & Import Hygiene Rules
+
+Aliases (must use): `@`, `@/components/*`, `@/utils/*`, `@/tools/*`, `@/types`, `@/types/*`, `@/config`.
+
+Disallowed:
+
+- Deep relative traversals instead of an alias
+- Relative imports in MDX (`./` or `../`)
+- Manual edits to `src/generated-*`
+
+Adding a new top-level directory needing alias:
+
+1. Update `tsconfig.json` paths
+2. Update `vite.config.ts` aliases
+3. Optionally extend ESLint restricted import patterns
+4. Update README + this file
+
+---
+
+## 10. Editing Guidelines
+
+MDX:
+
+- Include minimal frontmatter (`title`, `description`, optional `order`).
+- Use barrel `@/components` for UI elements.
+- Avoid fragile relative links; prefer canonical internal paths or helper `createPath()`.
+
+Tools (`src/tools/*`):
+
+- Stay deterministic (no network I/O).
+- Fail fast with clear Error messages.
+- Keep output formatting stable to prevent noisy test diffs.
+
+SEO components:
+
+- Ensure canonical + JSON-LD tests pass (`seo.*.spec.tsx`).
+- Keep archived banner logic intact (auto `noindex` unless overridden).
+
+No side-effectful code at MDX module top-level beyond imports + frontmatter.
+
+---
+
+## 11. Common Task Recipes
+
+Add a component:
+
+1. Create file under `src/components/<group>/`.
+2. Export via `src/components/index.ts`.
+3. Provide safe defaults for optional props.
+4. (Optional) Add example usage to a docs page.
+5. Run quality gates.
+
+Add an MDX page:
+
+1. Create `content/pages/.../file.mdx` with frontmatter.
+2. `npm run generate:routes && npm run generate:search-index`.
+3. `npm test -t routes`.
+
+Adjust base path logic:
+
+1. Edit `resolve-base-path.mjs`.
+2. Update / add tests in `test/basePath*.spec.ts`.
+3. Run full suite + `npm run build`.
+4. Update docs.
+
+Create version snapshot:
+
+1. `npm run snapshot:version -- vX.Y [--bump vNext]`.
+2. Commit new folder + regenerated artifacts.
+
+Modify search index algorithm:
+
+1. Edit `generate-search-index.js`.
+2. Update `search-index.spec.ts` expectations.
+3. Regenerate + test.
+
+Fix route order failure:
+
+1. Inspect comparator logic in `generate-routes.js`.
+2. Ensure deterministic sorting (frontmatter `order`, then alpha).
+3. Adjust tests only if logic intentionally changed.
+
+---
+
+## 12. Performance Considerations
+
+- Keep MDX light; avoid large synchronous computations.
+- Preserve lazy boundaries (each MDX route chunk).
+- Prefer ESM tree-shakeable libs; minimize global side effects.
+- Resolver: single git invocation max; no loops.
+- Tailwind: avoid excessive safelist growth.
+
+Potential future: integrate bundle analyzer (`rollup-plugin-visualizer`) & size budget tests.
+
+---
+
+## 13. Security / Safety Constraints
+
+- Build scripts must not exfiltrate environment data.
+- No remote fetches during generation (deterministic builds).
+- Sanitize any injected HTML (see `src/utils/sanitize.ts`).
+- Respect `noindex` semantics for archived pages.
+- Avoid adding untrusted inline script tags in MDX.
+
+---
+
+## 14. Personas (Specialized Roles)
+
+Below are specialized personas retained for advanced reasoning. Apply their expertise contextually; do not echo them verbatim in user responses unless asked.
+
+---
+
 # AI Agent Personas for Luma Docs
 
 This document defines specialized AI agent personas for the Luma Docs documentation platform - a modern React 19 + MDX + Vite React SSG + Tailwind CSS documentation system with automatic route generation, multi-version documentation, version-aware search, and optimized deployment workflows.
@@ -257,126 +566,51 @@ Notes:
 
 ## 🛠 Configuration System
 
-### Centralized Configuration
-
-Luma Docs uses a centralized configuration system in `config.ts` that eliminates hardcoded values throughout the application:
-
-```typescript
-// config.ts structure
-export const config = {
-  site: {
-    name: "Site Name",
-    title: "Site Title",
-    description: "Site Description",
-    version: "1.0.0",
-  },
-  branding: {
-    logo: { text: "Brand", accent: "Name" },
-  },
-  links: {
-    github: "https://github.com/user/repo",
-  },
-  navigation: {
-    showVersionBadge: true,
-    showGitHubLink: true,
-  },
-};
-```
-
-### Configuration Integration Points
-
-- **Components**: All React components import and use config values
-- **HTML Template**: Build script injects config values into `index.html`
-- **Build Process**: Configuration affects build behavior and asset generation
-- **Navigation**: Dynamic menu generation based on config settings
-- **Branding**: Consistent branding across all UI elements
-
-### Build-Time Configuration Processing
-
-The `update-html-template.js` script processes the HTML template during build:
-
-- Replaces `{{SITE_TITLE}}` with `config.site.title`
-- Replaces `{{SITE_DESCRIPTION}}` with `config.site.description`
-- Ensures consistent metadata across all generated pages
+Agents: configuration resides in `config.ts`; updates may require regeneration of routes/search if version labels or site metadata influence output.
 
 ---
 
-## 🎯 Use Cases for Luma Docs
+## 🎯 Use Cases for Luma Docs Personas
 
-### When to Engage GitHub Pages Expert
-
-- Setting up automated deployments for Luma Docs sites
-- Configuring custom domains for documentation sites
-- Troubleshooting GitHub Pages deployment failures
-- Optimizing base path resolution for specific environments
-- Implementing security best practices for documentation deployment
-- Resolving base path and routing issues in GitHub Pages
-
-### When to Engage Vite React SSG Expert
-
-- Optimizing build performance for large documentation sites
-- Implementing custom MDX components and content processing
-- Configuring development environment for Luma Docs
-- Troubleshooting build issues with React 19 and Vite SSG
-- Performance optimization for content-heavy documentation
-- Extending the automatic content generation systems
-
-### When to Engage Both
-
-- Complete documentation site setup and deployment
-- Performance optimization across the entire content pipeline
-- Troubleshooting complex build/deployment issues
-- Implementing advanced features requiring both content and deployment expertise
-- Migration from other documentation platforms to Luma Docs
-- Setting up multi-environment documentation workflows
-
----
-
-## 📋 Luma Docs Specific Knowledge
-
-### Build Process Understanding
-
-Both agents should understand the current Luma Docs build sequence (no separate HTML template mutation step):
-
-1. `generate:versions` – Detect archived version folders and emit `src/generated-versions.ts`
-2. `generate:routes` – Scan `content/pages/` (current) and `content/versions/*` (archived) to create `src/generated-routes.tsx` with per-route `version` metadata
-3. `build:css` – Compile Tailwind CSS with Typography plugin
-4. `generate:search-index` – Extract content + versioned routes and build search index (with `version` field)
-5. `generate:sitemap` – Create SEO-friendly `sitemap.xml` (can be extended to handle archived exclusion)
-6. `vite-react-ssg build` – Generate static HTML with React hydration & SEO meta tags injected via `components/SEO.tsx`
-7. (Support) Alias codemod available (`npm run codemod:aliases`) – not part of default pipeline but used to keep imports clean
-
-### Directory Structure Expertise
-
-- **`content/pages/`**: Current MDX content files (auto-scanned for routes; labeled with `config.versions.current`)
-- **`content/versions/<label>/`**: Archived MDX snapshots (auto-detected; version switcher + search aware)
-- **`src/components/`**: React components (Layout, Sidebar, Search, SEO, Breadcrumbs, TOC, VersionSwitcher, etc.)
-- **`src/tools/`**: Build automation and content generation scripts (route, search index, sitemap, versions, base path resolver, validation)
-- **`src/generated-*`**: Auto-generated artifacts (routes, search index, versions list, route meta)
-- **Path Aliases**: `@` → `src/`, plus sub-aliases for components, utils, tools (ESLint-enforced)
-- **`config.ts`**: Centralized site configuration (branding, links, features, SEO defaults, version labels)
-- **`src/utils/`**: Shared utilities for routing, search, and base path handling
-
-### Environment Configuration
-
-- **Base Path Handling**: Dynamic detection from git remotes or environment variables (`VITE_FORCE_BASE`, `GITHUB_REPOSITORY`) using a resolver consumed by Vite build + scripts
-- **Import Hygiene**: Codified via ESLint `no-restricted-imports`; MDX must use aliases (no relative paths)
-- **Versioning**: Root `content/pages/` are current (`config.versions.current`); archived versions live under `content/versions/<label>/` and auto-generate a version list + route metadata
-- **Version Switcher**: Hidden automatically when no archived versions; provides seamless navigation between current and archived docs
-- **Version Switch Fallback**: If the requested page path does not exist in the target version (after a restructure or rename) the system gracefully redirects to that version's root to avoid 404 dead ends
-- **Search Scope Toggle**: In-modal control to limit queries to current or include all archived versions (archived results show version pills)
-- **Archived Page Banner**: Automatic banner + `noindex` meta on archived pages (overridable via frontmatter)
-- **Content Processing**: MDX + frontmatter with version-aware navigation filtering
-- **Configuration System**: Centralized `config.ts` controlling branding, links, features, and version labels
-- **Performance Optimization**: Code splitting, lazy loading, and caching strategies
-- **SEO Delivery**: Meta tags & JSON-LD generated at SSG time via `components/SEO.tsx`
+Use personas above when tasks explicitly involve deployment optimization or build/SSG performance tuning; otherwise rely on general operational guidance.
 
 ### Recently Updated Behaviors (Keep Docs in Sync)
 
-- **Navigation Parity for Archived Versions**: Archived sidebars strip the `/vX.Y/` prefix; historical docs appear structurally identical to current docs (no extra top-level version bucket). Agents should avoid reintroducing duplicated version group wrappers.
-- **Group Heading Links & Flattening**: Headings become links when an `index.mdx` exists; single-page groups are flattened to reduce noise.
-- **Fallback Logic on Version Switch**: Implemented path existence check + root redirect—agents troubleshooting 404 reports should confirm this logic hasn't been bypassed by custom routing changes.
+- **Navigation Parity for Archived Versions**: Archived sidebars strip the `/vX.Y/` prefix; no extra version wrapper groups.
+- **Group Heading Links & Flattening**: Direct links when `index.mdx` exists; single-page groups flattened.
+- **Fallback Logic on Version Switch**: If path absent in target version, redirect to that version's root (avoid broken links).
+
+_This persona section serves as a reference for AI agents to understand specialized roles in the Luma Docs ecosystem and collaborate effectively on documentation site tasks._
 
 ---
 
-_This document serves as a reference for AI agents to understand their specialized roles in the Luma Docs ecosystem and collaborate effectively on modern documentation site projects._
+## 15. Future Extensions / TODO Hints (For Agents to Propose Carefully)
+
+Low-risk suggestions (only surface after fulfilling explicit user request):
+
+- Add bundle analyzer command (`npm run analyze`).
+- Add CI link checking (lychee) before deploy.
+- Introduce dark mode toggle (Tailwind dark variant + config flag).
+- Optional service worker for offline (feature flag).
+- Compress search index (gzip + size regression test).
+
+When proposing: outline required tests & dependency impact.
+
+---
+
+## 16. ✅ Agent Completion Checklist (Run Internally Before Finishing)
+
+1. Implemented requested change(s) precisely.
+2. Regenerated artifacts if structural/content changes required them.
+3. Ran: `npm run lint`, `npm run type-check`, `npm test` (all pass) – or reported failures with actionable diff.
+4. Updated docs (README / AGENTS.md) if behavior changed.
+5. Avoided editing generated files directly.
+6. Ensured base path logic untouched unless deliberately modified (with tests).
+7. Added / updated tests for new or changed logic.
+8. Summarized actions + outcomes succinctly to user.
+
+Only mark a task complete when all applicable checks succeed.
+
+---
+
+End of AGENTS.md
