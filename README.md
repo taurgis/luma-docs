@@ -1,24 +1,123 @@
 # Luma Docs
 
-A modern, fast, and beautiful documentation platform built with React 19, MDX, Vite React SSG, and Tailwind CSS. Perfect for creating documentation websites that are both developer-friendly and user-friendly with automatic route generation, search functionality, and optimized deployment workflows.
+[![Demo](https://img.shields.io/badge/demo-live-1db954?logo=vercel&logoColor=white)](https://taurgis.github.io/luma-docs/) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Version](https://img.shields.io/badge/version-1.0.0-indigo)](#) [![Made for GitHub Pages](https://img.shields.io/badge/optimized-GitHub%20Pages-24292e?logo=github)](https://pages.github.com/)
 
-## 🚀 Live Demo
+Lightning‑fast, versioned documentation for your project – powered by React 19, MDX, Vite SSG, Tailwind, and automatic GitHub Pages subfolder detection. Drop in MDX → get routes, search, version switcher, SEO, and pre-rendered HTML. Zero yak shaving.
 
-**[View Live Demo](https://taurgis.github.io/luma-docs/)** - See Luma Docs in action with full SEO features, search functionality, and responsive design.
+## 🚀 Why Luma?
 
-- 📱 **Fully responsive design** that works on all devices
-- 🔍 **Live search functionality** - try searching for "SEO" or "deployment"
-- 🏷️ **Comprehensive SEO** - view source to see Open Graph, Twitter Cards, and JSON-LD
-- 📚 **Multiple content types** - guides, examples, and documentation
-- 🚀 **GitHub Pages deployment** with automatic subfolder detection
-- ⚡ **Fast loading** with static site generation and optimized assets
+| Need | You Get |
+|------|---------|
+| Instant setup | Auto route + search + sitemap generation |
+| GitHub Pages quirks | Smart base path resolver (forks, custom domains) |
+| Versioned docs | Folder snapshots + version switcher + archived `noindex` |
+| Production SEO | Canonicals, OG/Twitter, JSON‑LD, pre-rendered HTML |
+| Great DX | Type‑safe config, enforced aliases, strict frontmatter schema |
+| Speed | Vite SSG, code‑splitting, tiny runtime hydration |
 
-Explore the demo to see how your documentation site will look and feel!
+Peek at the live docs: https://taurgis.github.io/luma-docs/
+Deep internals live in `ADVANCED.md` or the MDX guide pages.
 
-### Available Scripts
+### 🔄 Comparison (At a Glance)
 
-  
-Environment-based overrides:
+Friendly, high‑level defaults comparison (generalized—projects can tune any of these):
+
+| Capability / Concern | Luma Docs (this) | Docusaurus | MkDocs (Material) |
+|----------------------|------------------|------------|-------------------|
+| Stack Core | React 19 + Vite SSG + MDX 3 | React + Webpack (CRA/Vite migration WIP in ecosystem) | Python + Jinja + Markdown |
+| Setup Time (fresh repo) | < 2 min (clone + content) | 5–15 min (init + config + theme tweaks) | 5–15 min (pip + theme + plugins) |
+| Base Path (GH Pages) | Auto detection (repo / custom domain) | Manual `baseUrl` config | Manual `site_url` + path config |
+| Versioning Model | Folder snapshots + zero extra config | Built‑in versioning (CLI + JSON metadata) | Plugin-based / manual copies |
+| MDX Support | First-class (every page is MDX) | First-class (MDX plugin) | Limited (Markdown core; MDX via extra tooling) |
+| Theming / Styling | Tailwind + small component layer | Swizzled React components + CSS | Theme config + custom CSS/JS |
+| Search | Local index generated (no external service) | Local search (Lunr/Algolia integration) | Usually plugin (Lunr/Algolia) |
+| SEO Meta & JSON‑LD | Built‑in, per-page + structured data | Basic tags + community plugins | Depends on theme/plugins |
+| Canonical + Subfolder Safety | Automatic | Needs manual config | Manual / plugin |
+| Build Speed (cold) | Very fast (Vite graph + small footprint) | Moderate (Webpack bundling) | Fast (pure static generation) |
+| Runtime JS Footprint | Minimal (hydrated islands) | Larger (theme scripts + client routing) | Minimal (mostly static HTML) |
+| A11y Tests Included | Yes (jest-axe in repo) | Not by default | Not by default |
+| Content Authoring | MDX (React components inline) | MDX or Markdown | Markdown (Jinja macros) |
+| Extensibility | Direct TS/React code edits | Plugin & swizzle layer | Python plugins / theme overrides |
+| Config Surface Area | Single `config.ts` + scripts | `docusaurus.config.js` + sidebars/version files | `mkdocs.yml` + theme/plugin config |
+| Learning Curve | Low (file-based, minimal config) | Medium (concepts: swizzling, presets) | Medium (YAML + plugin ecosystem) |
+| GitHub Pages Friendly | First-class (detector baked in) | Works (needs baseUrl) | Works (manual path tweaks) |
+| Offline Dev Parity | Full (same SSG pipeline) | Full | Full |
+| License | MIT | MIT | BSD (MkDocs core) / MIT (Material theme) |
+
+When to pick something else:
+- Use Docusaurus if you want a large ecosystem of pre-built plugins & community themes.
+- Use MkDocs (Material) if you prefer Python tooling, ultra-lean output, and no React runtime.
+- Use Luma Docs if you want React + MDX + speed + painless GitHub Pages versioning with minimal ceremony.
+
+
+## ⚡ Quick Start (90 seconds)
+
+```bash
+npx degit taurgis/luma-docs my-docs
+cd my-docs
+npm install
+npm run dev
+```
+
+Add a page (routes appear automatically):
+
+```
+content/pages/getting-started/overview.mdx
+```
+
+Create `.github/workflows/deploy.yml` (native GitHub Pages):
+
+```yaml
+name: Docs
+on: { push: { branches: [main] } }
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Derive SITE_URL
+        id: site
+        run: |
+          if [ -f CNAME ]; then echo "site_url=https://$(head -n1 CNAME)" >> $GITHUB_OUTPUT; \
+          else echo "site_url=https://${GITHUB_REPOSITORY_OWNER}.github.io" >> $GITHUB_OUTPUT; fi
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci --prefer-offline --no-audit
+      - run: npm run build
+        env:
+          SITE_URL: ${{ steps.site.outputs.site_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist }
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: ${{ steps.deployment.outputs.page_url }} }
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+Visit: `https://<user>.github.io/<repo>/` (auto base path). Custom domain? Add `CNAME` → done.
+
+### Core Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `dev` | Local dev (runs generation once) |
+| `build` | Production static build |
+| `snapshot:version` | Archive current docs → `content/versions/<label>` |
+| `validate:frontmatter` | Frontmatter schema check |
+| `search-dev` / `search:generate` | Inspect / rebuild search index |
+| `generate:*` | Manual regeneration (normally not needed) |
+| `test` | Vitest (unit + a11y + SEO) |
+
+Force a subfolder (rarely needed):
 
 ```bash
 # Force subfolder during dev
@@ -33,15 +132,18 @@ VITE_FORCE_BASE=/ npm run build
 
 You can use standard Markdown syntax and React components.
 
-#### Frontmatter Options
+### ✍️ Minimal Frontmatter
 
-- `title`: The page title (used in navigation and SEO)
-- `description`: Page description for SEO
-- `order`: Sort order for navigation (lower numbers appear first)
+```yaml
+---
+title: Getting Started
+description: How to integrate Luma Docs
+order: 1
+---
+```
 
-#### SEO Frontmatter Options
-
-Luma Docs includes comprehensive SEO support through frontmatter metadata:
+### 🔍 SEO (Optional)
+Set only what you need—meta + structured data are auto‑rendered.
 
 ```yaml
 ---
@@ -63,9 +165,10 @@ order: 1
 ---
 ```
 
-**Available SEO Fields:**
+> More in `content/pages/seo-examples.mdx`.
 
 - **Basic Meta Tags**:
+
   - `title` - Page title (used in `<title>` and Open Graph)
   - `description` - Meta description for search engines
   - `keywords` - Comma-separated keywords
@@ -74,10 +177,12 @@ order: 1
   - `robots` - Robots directive (or use `noindex: true`)
 
 - **Open Graph Meta Tags**:
+
   - `ogType` - "website" or "article"
   - `ogImage` - URL to Open Graph image (1200x630px recommended)
 
 - **Twitter Card Meta Tags**:
+
   - `twitterCard` - "summary" or "summary_large_image"
   - `twitterCreator` - Twitter handle of content creator
   - `twitterSite` - Twitter handle of website
@@ -88,9 +193,8 @@ order: 1
   - `section` - Article section/category
   - `tags` - Array of tags (can also be comma-separated string)
 
-#### Inline SEO Components
-
-You can also override SEO metadata directly in your MDX content using the `<SEO>` component:
+### Inline Overrides
+Drop an `<SEO />` component inside an MDX file to override frontmatter per section:
 
 ```mdx
 # Your Page Content
@@ -106,39 +210,17 @@ You can also override SEO metadata directly in your MDX content using the `<SEO>
 More content here...
 ```
 
-This allows for dynamic SEO adjustments within specific sections of your content.
+Great for dynamic sections or demos.
 
-#### SEO Features
+### SEO Highlights
+Meta tags, OG/Twitter, JSON‑LD (Article + Breadcrumbs), canonical URLs, sitemap inclusion, archived pages auto `noindex`.
 
-- **Automatic Meta Tag Generation**: All SEO metadata is automatically converted to proper HTML meta tags
-- **Open Graph Support**: Rich social media previews with customizable images and metadata
-- **Twitter Cards**: Optimized Twitter sharing with summary and large image card support
-- **JSON-LD Structured Data**: Automatic generation of structured data for search engines
-- **Article Schema**: Pages with `ogType: "article"` get proper Article schema markup
-- **Canonical URLs**: Automatic canonical URL generation with base path support
-- **Sitemap Integration**: All pages are automatically included in the generated sitemap.xml
+### 🧭 Automatic Navigation
 
-#### SEO Best Practices
+Folder + file naming drives sidebar. `index.mdx` files become the folder landing page. Single‑page groups are flattened. Versioned snapshots preserve historical structure.
 
-- Keep titles under 60 characters
-- Keep descriptions between 120-160 characters
-- Use relevant, specific keywords (avoid keyword stuffing)
-- Use Open Graph images sized at 1200x630 pixels
-- Set appropriate `ogType` ("website" for landing pages, "article" for content)
-- Include publication and modification dates for articles
-- Use structured tags and sections for better content organization
-
-### Automatic Navigation
-
-Navigation is automatically generated based on your file structure and frontmatter:
-
-- Files are grouped by their top-level directory
-- Within groups, pages are sorted by `order` field, then alphabetically
-- The `title` from frontmatter is used as the navigation label
-
-## Enhanced Component Library
-
-Luma Docs includes a rich set of React components designed specifically for documentation. Import any of these components in your MDX files:
+## 🧩 Components
+Import from the single barrel:
 
 ```jsx
 import {
@@ -151,7 +233,7 @@ import {
 } from "@/components"; // Uses the @ -> src alias
 ```
 
-### Code Components
+### Code Examples
 
 #### CodeBlock
 
@@ -184,7 +266,7 @@ Display code examples in multiple languages:
 
 Use `<Code>text</Code>` for inline code or `<Kbd>Ctrl</Kbd>` for keyboard shortcuts.
 
-### Content Components
+### Content / Layout Goodies
 
 #### Callouts
 
@@ -222,7 +304,7 @@ Organize content in expandable sections:
 </Collapsible>
 ```
 
-### Typography Components
+### Typography
 
 Enhanced typography with consistent styling:
 
@@ -235,7 +317,7 @@ Enhanced typography with consistent styling:
 <Body>Regular body text</Body>
 ```
 
-### Component Features
+### Features
 
 - **TypeScript Support**: All components are fully typed
 - **Accessibility**: Built with ARIA attributes and keyboard navigation
@@ -246,36 +328,40 @@ Enhanced typography with consistent styling:
 
 For a complete showcase of all components with live examples, visit the [Component Showcase](/components/) page.
 
-## Development
+## 🛠 Development
 
 ### Available Scripts
 
-- `npm run dev` - Start development server (runs multi-step pipeline then launches SSG dev)
-- `npm run build` - Full production build (multi-step pipeline + static generation)
-- `npm run test` - Run Vitest test suite
-- `npm run clean` - Remove build/cache artifacts
-- `npm run lint` / `npm run lint:fix` - ESLint checks and autofix
-- `npm run type-check` - TypeScript type checking (ensures generated artifacts in place)
-- `npm run codemod:aliases` - Rewrite deep relative imports to `@/components`, `@/utils`, `@/tools` aliases
-- `npm run snapshot:version` - Snapshot current root docs into an archived version (see versioning section)
-- `npm run validate:frontmatter` - Validate MDX frontmatter against schema
-- `npm run search-dev` - Interactive search dev utility (generate/validate via arguments)
-- `npm run generate:versions` - Regenerate `src/generated-versions.ts` (normally auto via pipeline)
-- `npm run generate:routes` - Regenerate `src/generated-routes.tsx` + meta (auto in pipeline)
-- `npm run generate:search-index` - Rebuild local search index (auto in pipeline)
-- `npm run generate:sitemap` - Regenerate sitemap (auto in pipeline)
-- `npm run build:css` / `npm run build:css:watch` - Tailwind CSS one-off or watch build
-- `npm run pipeline:dev` / `npm run pipeline:build` - Run the internal build pipeline without starting dev server / SSG (usually not needed directly)
+- `npm run dev` – Start development server (runs pipeline once, then launches SSG dev)
+- `npm run dev:subfolder` – Convenience dev with forced base path (uses `VITE_FORCE_BASE=/luma-docs/`)
+- `npm run build` – Full production build (multi-step pipeline + static generation)
+- `npm run test` – Run Vitest test suite (unit, integration, a11y, SEO tests)
+- `npm run clean` – Remove build/cache artifacts
+- `npm run lint` / `npm run lint:fix` – ESLint checks and autofix
+- `npm run type-check` – TypeScript type checking (runs a minimal pipeline first to ensure generated artifacts exist)
+- `npm run snapshot:version` – Snapshot current root docs into an archived version (see versioning section)
+- `npm run validate:frontmatter` – Validate MDX frontmatter against schema
+- `npm run search-dev` – Interactive search dev utility
+  - `npm run search:generate` (script alias) – Force regeneration of search index
+  - `npm run search:validate` (script alias) – Validate existing index
+- `npm run generate:versions` – Regenerate `src/generated-versions.ts` (normally auto via pipeline)
+- `npm run generate:routes` – Regenerate `src/generated-routes.tsx` + meta (auto in pipeline)
+- `npm run generate:search-index` – Rebuild local search index (auto in pipeline)
+- `npm run generate:sitemap` – Regenerate sitemap (auto in pipeline)
+- `npm run build:css` / `npm run build:css:watch` – Tailwind CSS one-off or watch build
+- `npm run pipeline:dev` / `npm run pipeline:build` – Run internal build pipeline only (rarely needed directly)
 
 Environment-based overrides:
+
 - Subfolder dev: `VITE_FORCE_BASE=/your-repo/ npm run dev`
 - Subfolder build: `VITE_FORCE_BASE=/your-repo/ npm run build`
 
-### Unified Base Path Handling
+### Base Path
 
 Base path detection (root vs subfolder like `/luma-docs/`) is centralized in `src/tools/resolve-base-path.mjs` and consumed directly by `vite.config.ts`, build tooling, runtime helpers, and the sitemap generator.
 
 Resolution priority (first match wins):
+
 1. `VITE_FORCE_BASE` – explicit override (e.g. `/docs/` or `/preview/`)
 2. `VITE_BASE_PATH` – externally provided resolved base
 3. `GITHUB_REPOSITORY` – if repository ends with `.github.io` => root `/`; else `/<repo>/`
@@ -288,55 +374,32 @@ Runtime: `getBasePath()` (in `src/utils/basePath.ts`) simply returns the build-t
 
 Sitemap: `generate-sitemap.js` uses the same resolver and expects `SITE_URL` to be the domain only (without the subfolder). If you mistakenly include the subfolder, it will de‑duplicate.
 
-Examples:
-```bash
-# Force a temporary docs path
-VITE_FORCE_BASE=/docs/ npm run dev
+Resolver picks the right base automatically (repo name, custom domain, or forced override). Rarely think about it again.
 
-# Build for a preview namespace
-VITE_FORCE_BASE=/preview/ npm run build
-
-# Standard GitHub Pages (auto-detect /<repo>/)
-VITE_FORCE_BASE=/your-repo/ npm run build
-
-# Root deployment (username.github.io repo or custom domain)
-VITE_FORCE_BASE=/ npm run build
-
-# Custom domain with subfolder
-SITE_URL=https://example.com VITE_FORCE_BASE=/product-docs/ npm run build
-```
-
-Benefits:
-- Single source of truth (no drift between scripts)
-- Easy future migration (e.g. to Cloudflare Pages or Netlify)
-- Deterministic behavior across dev, build, preview, and sitemap generation
-- Works seamlessly with path aliases (`@`, `@/components`, `@/utils`, `@/tools`) for clean imports
-
-### Path Aliases & Import Hygiene
+### Aliases
 
 Configured in `tsconfig.json` and `vite.config.ts`:
 
-| Alias | Resolves To |
-|-------|-------------|
-| `@` | `src/` |
-| `@/components/*` | `src/components/*` |
-| `@/utils/*` | `src/utils/*` |
-| `@/tools/*` | `src/tools/*` |
+| Alias            | Resolves To          |
+| ---------------- | -------------------- |
+| `@`              | `src/`               |
+| `@/components/*` | `src/components/*`   |
+| `@/utils/*`      | `src/utils/*`        |
+| `@/tools/*`      | `src/tools/*`        |
+| `@/types`        | `src/types/index.ts` |
+| `@/types/*`      | `src/types/*`        |
+| `@/config`       | `config.ts`          |
+
+Additional (Vite-only) helper alias: `@tools` → `src/tools`.
 
 Enforced by ESLint:
 
 - Deep relative traversals into these folders (e.g. `../../components/...`) are disallowed.
 - MDX files are restricted from using relative imports (`./` or `../`) and must use aliases (ensures examples are copy‑paste stable after refactors).
 
-Refactor assistance:
+Generated files under `src/generated-*.ts*` should never be manually edited—always regenerate via the relevant `generate:*` script.
 
-```bash
-npm run codemod:aliases
-```
-
-The codemod scans `src/` and rewrites eligible deep relative imports to alias forms. It intentionally skips generated files and `node_modules`.
-
-### Linting Strategy
+### Linting & Import Hygiene
 
 Key enforced rules:
 
@@ -350,9 +413,9 @@ If you add a new top-level directory under `src/` that should have an alias, upd
 1. `tsconfig.json` -> `compilerOptions.paths`
 2. `vite.config.ts` -> `resolve.alias`
 3. ESLint restrictions (if you want to forbid deep relative access)
-4. This README + `COPILOT-INSTRUCTIONS.md` + `AGENTS.MD`
+4. This README + `AGENTS.MD`
 
-### Multi-Version Documentation
+### Versions
 
 Luma Docs supports a folder‑based versioning strategy:
 
@@ -364,17 +427,7 @@ content/
     v0.8/
 ```
 
-Key behaviors:
-
-- Root `content/pages/` content is labeled as the current stable version (`config.versions.current`).
-- Archived versions live under `content/versions/<label>/` and are auto-detected.
-- Sidebar shows only pages for the active version (no cross-version noise) and achieves **navigation parity** for archived versions (the `/vX.Y/` prefix is stripped so historical docs don’t sit inside an extra version bucket).
-- Group headings link to their index page when an `index.mdx` exists; single‑page groups are flattened for cleaner UI.
-- Version switcher hides automatically when there are no archived versions.
-- Switching to a version where the current page path doesn’t exist **falls back automatically to that version’s root** (or `/` for current) to prevent 404 interruptions after restructures.
-- Search can be scoped: Current vs All Versions (toggle inside search modal). Archived results display a neutral version pill.
-- Archived pages receive an in-page banner and automatic `<meta name="robots" content="noindex">` (override with `noindex: false`).
-- `config.versions.hidden` can hide specific archived labels from the switcher while keeping them routable.
+Current docs live in `content/pages/`. Snapshot with `npm run snapshot:version -- v1.2` → archived under `content/versions/v1.2/` (auto noindex + version switcher). Missing path on switch? We fall back gracefully. Search can scope current vs all.
 
 Configuration (`config.ts`):
 
@@ -388,7 +441,7 @@ versions: {
 }
 ```
 
-Creating a new archived snapshot (automated recommended, manual alternative below):
+Create snapshot:
 
 Automated helper (preferred):
 
@@ -400,7 +453,7 @@ npm run snapshot:version -- v1.0
 npm run snapshot:version -- v1.0 --bump v1.1
 ```
 
-Manual workflow (if you need custom filtering):
+Manual (custom filtering):
 
 ```bash
 # 1. Decide new version label (e.g. v1.0 -> archive, start v1.1 in root)
@@ -418,24 +471,9 @@ vim config.ts
 npm run generate:routes && npm run generate:search-index
 ```
 
-Search Behavior:
-- Current scope: filters out any `version` metadata not matching `config.versions.current`.
-- All Versions: shows every match (archived results display gray pills/pills with version label).
+Archived pages: automatic `noindex` (override with `noindex: false`). Add `canonical` if pointing to newer doc.
 
-Restructuring & Resilience:
-- Archived snapshots preserve their original folder layout; later restructures in `content/pages/` will not break archived imports.
-- Version switching performs a path existence check and falls back to the version root when needed.
-
-SEO Considerations:
-- Archived pages are automatically set to `noindex` to avoid competing with current content.
-- You may still expose key legacy pages by adding `noindex: false` in frontmatter (overrides default).
-- Optionally add canonical links in archived pages pointing to current equivalents using frontmatter `canonical`.
-
-Future Enhancements (ideas):
-- Cross-version diff component
-- Version comparison landing page
-
-### Automated Snapshot Command
+### Snapshot Helper
 
 An automated helper script is included to streamline the snapshot workflow above.
 
@@ -450,12 +488,14 @@ npm run snapshot:version -- v1.0 --bump v1.1
 ```
 
 What it does:
+
 1. Validates the target label (must match vMAJOR[.MINOR[.PATCH]])
 2. Copies all content from `content/pages/` into `content/versions/<label>/`
 3. Regenerates `src/generated-versions.ts`
 4. If `--bump <nextLabel>` provided: updates `config.ts` `versions.current` and regenerates routes
 
 Typical release flow:
+
 ```bash
 # Finish work for v1.0 in content/pages/
 npm run snapshot:version -- v1.0 --bump v1.1
@@ -467,7 +507,7 @@ git commit -m "chore: snapshot v1.0 and bump current to v1.1"
 
 If you only snapshot (no bump), you can update `config.ts` later when you begin the next version.
 
-### Project Structure (Simplified / Current)
+### Project Structure (Essentials)
 
 ```
 content/
@@ -480,30 +520,43 @@ src/
     layout/
       Layout.tsx
       ErrorBoundary.tsx
-  components/                # Reusable React + MDX components
-    SEO.tsx
-    MDXWrapper.tsx
-    Search.tsx
-    Sidebar.tsx
-    VersionSwitcher.tsx
-    VersionBadge.tsx
-    Breadcrumbs.tsx
-    OnThisPage.tsx
-    CodeBlock.tsx
-    Callout.tsx
+  components/                # Reusable React + MDX / layout / SEO components
+    content/
+      CodeBlock.tsx
+      CodeTabs.tsx
+      Collapsible.tsx
+      MDXPage.tsx
+      MDXWrapper.tsx
+      icons.tsx
+    feedback/
+      Callout.tsx
+    layout/
+      Typography.tsx
+      VersionBadge.tsx
+      VersionSwitcher.tsx
+    navigation/
+      Sidebar.tsx
+      OnThisPage.tsx
+      NextLink.tsx
+    search/
+      Search.tsx
+    seo/
+      SEO.tsx
+      Breadcrumbs.tsx
   utils/
-    basePath.ts              # Base path helpers (consumes generated constant)
+    basePath.ts              # Base path helpers
     search.ts                # Client search helpers
-  (removed generateRoutes.ts) # Route generation handled by build script only
   styles/
-    input.css                # Tailwind input
-  public/                    # Static assets copied to dist
+    input.css                # Tailwind entry
+  public/                    # Static assets copied to dist (configured via Vite publicDir)
     favicon.svg
     robots.txt
+    sitemap.xml
   generated-routes.tsx       # AUTO-GENERATED: routes w/ version metadata
   generated-routes.meta.ts   # AUTO-GENERATED: route meta export (frontmatter)
   generated-search-index.ts  # AUTO-GENERATED: search index data
   generated-versions.ts      # AUTO-GENERATED: list of archived versions
+  types/                     # Type declarations & ambient defs
 src/tools/                   # Build & generation scripts (invoked via npm scripts)
   generate-routes.js
   generate-search-index.js
@@ -522,13 +575,13 @@ package.json
 dist/                        # Build output (ignored in VCS)
 ```
 
-## Deployment
+## 🚀 Deployment
 
-### GitHub Pages (Recommended)
+### GitHub Pages
 
 The site is optimized for GitHub Pages deployment with intelligent subfolder support. Below is the **modern, native GitHub Pages workflow (recommended)** followed by legacy / manual options.
 
-#### 1. Modern Native GitHub Pages Workflow (Recommended)
+#### Native Workflow
 
 Create `.github/workflows/deploy.yml` using the built‑in Pages deployment actions (no third‑party action needed). The resolver now auto-detects the base path; we only add a tiny step to derive `SITE_URL` from a CNAME or owner:
 
@@ -537,9 +590,9 @@ name: Docs CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -613,14 +666,17 @@ Key benefits:
 - Zero duplication of base path logic (handled centrally in resolver & Vite config)
 - Supports custom domains automatically via optional CNAME
 
-#### 2. Manual / Local Build (Optional)
+#### Local Build
 
 ```bash
-# Build with automatic base path detection
+# Auto-detect base path (preferred)
+npm run build
+
+# Force a specific subfolder (overrides detection)
 VITE_FORCE_BASE=/your-repo/ npm run build
 
-# Or specify repository name manually
-VITE_FORCE_BASE=/your-repo/ npm run build
+# Force root deployment (custom domain or username.github.io)
+VITE_FORCE_BASE=/ npm run build
 ```
 
 #### 3. Legacy Third‑Party Action (Deprecated Here)
@@ -629,7 +685,7 @@ Previously this project used `peaceiris/actions-gh-pages`. It still works, but t
 
 **Live Example:** [taurgis.github.io/luma-docs](https://taurgis.github.io/luma-docs/)
 
-### Other Platforms
+### Other Hosts
 
 The built site in the `dist` folder can be deployed to any static hosting service:
 
@@ -641,15 +697,22 @@ The built site in the `dist` folder can be deployed to any static hosting servic
 
 ### Environment Variables
 
-The build process supports several environment variables:
+Base path & sitemap behavior is primarily controlled by the resolver logic. Supported variables (resolution priority shown earlier under "Unified Base Path Handling"):
 
-- `VITE_BASE_PATH` or `BASE_PATH` – Override the base path (auto-detected for GitHub Pages if unset)
-- `GITHUB_REPOSITORY` – Used for automatic base path detection in CI/CD
-- `GEMINI_API_KEY` – Placeholder for optional future AI features (currently unused)
+- `VITE_FORCE_BASE` – Highest precedence explicit override (e.g. `/preview/`)
+- `VITE_BASE_PATH` – Pre-resolved base path (used if `VITE_FORCE_BASE` absent)
+- `GITHUB_REPOSITORY` – Enables automatic GitHub Pages base detection in CI
+- `SITE_URL` – Domain only (no trailing slash, no subfolder); used for sitemap & canonical assembly
+- (Optional/Future) `GEMINI_API_KEY` – Reserved for future AI features (currently unused)
 
-## How It Works
+Notes:
 
-### Automatic Route Generation
+- Do NOT include the subfolder in `SITE_URL`; the generator appends it.
+- `BASE_PATH` legacy variable is not used—remove it from any external automation.
+
+## 🧠 How It Works
+
+### Route Generation
 
 The platform automatically scans `content/pages/` (current version) and `content/versions/<label>/` (archived) and generates static React Router routes:
 
@@ -659,7 +722,7 @@ The platform automatically scans `content/pages/` (current version) and `content
 4. **Dynamic Import**: MDX files are code-split and lazily imported for performance
 5. **Version Metadata**: Each generated route gets a `version` field (current or archived label)
 
-### Build Process
+### Build Pipeline
 
 The multi-step pipeline (implemented in `src/tools/run-build-pipeline.mjs`) orchestrates all generation steps before Vite SSG runs. Sequence (`npm run build`):
 
@@ -690,16 +753,16 @@ The SEO system works through integrated runtime & build steps:
 - **Automatic Navigation**: Sidebar navigation is generated from file structure and frontmatter
 - **Search Integration**: All content is automatically indexed for search functionality
 
-### Performance Optimizations
+### Performance
 
 - **Code Splitting**: Automatic chunking by vendor, MDX, and Prism libraries
 - **Static Generation**: Pre-rendered HTML for fast initial loads
 - **Optimized Assets**: Hashed filenames for optimal caching
 - **Tree Shaking**: Dead code elimination in production builds
 
-## Customization
+## 🎨 Customization
 
-### Site Configuration & Feature Flags
+### Site Configuration
 
 The site configuration is centralized in `config.ts`. Update this file to customize branding, links, SEO defaults and feature flags:
 
@@ -760,7 +823,7 @@ The site uses Tailwind CSS for styling. You can customize:
 - Typography styles using the `@tailwindcss/typography` plugin
 - Component-specific styles within individual components
 
-### Components
+### Extending Components
 
 You can customize or add new React components:
 
@@ -769,23 +832,23 @@ You can customize or add new React components:
 - Add new layout components for different page types
 - Extend the search functionality in `components/Search.tsx`
 
-### Configuration
+### Tooling Config
 
 - `vite.config.ts` - Vite configuration, base path handling, and build optimization
 - `package.json` - Dependencies, scripts, and project metadata
 - `tsconfig.json` - TypeScript configuration
 - Base path is automatically handled for different deployment environments
 
-### Content Customization
+### Content Features
 
 - **Frontmatter Options**: Extend frontmatter schema for additional metadata
 - **Custom MDX Components**: Add reusable components for documentation
 - **Search Configuration**: Modify search indexing behavior
 - **Navigation Ordering**: Use `order` field in frontmatter to control navigation
 
-## Architecture
+## 🧱 Architecture Snapshot
 
-### Technology Stack
+### Stack
 
 - **Frontend**: React 19 with TypeScript
 - **Build Tool**: Vite with React SSG plugin
@@ -797,26 +860,18 @@ You can customize or add new React components:
 
 ### Key Dependencies
 
-```json
-{
-  "dependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-router-dom": "^6.30.1",
-    "@mdx-js/react": "^3.0.1",
-    "gray-matter": "^4.0.3",
-    "prismjs": "^1.30.0"
-  },
-  "devDependencies": {
-    "vite": "^6.2.0",
-    "vite-react-ssg": "^0.8.9",
-    "tailwindcss": "^3.4.17",
-    "@mdx-js/rollup": "^3.0.1"
-  }
-}
-```
+Core runtime technologies (see `package.json` for full, exact versions):
 
-## Contributing
+- React 19 + React Router 6
+- MDX 3 (`@mdx-js/react` + rollup integration)
+- Vite 7 + `vite-react-ssg` for static generation
+- Tailwind CSS 3 (+ Typography plugin)
+- Prism.js for syntax highlighting
+- gray-matter for frontmatter parsing
+
+Dev & quality stack includes: Vitest (unit/integration/a11y), ESLint (custom rules for MDX + import hygiene), TypeScript strict mode, jest-axe for accessibility assertions, and zod for schema validation.
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -824,14 +879,35 @@ You can customize or add new React components:
 4. Run type checking: `npm run type-check`
 5. Submit a pull request with a clear description
 
-### Development Guidelines
+### Guidelines
 
 - Follow TypeScript best practices
 - Use semantic commit messages
 - Test your changes with both local and subfolder builds
 - Update documentation when adding new features
 
-## Troubleshooting
+### Testing
+
+The project ships with a comprehensive Vitest-based test suite:
+
+- Unit & helper tests (e.g. base path utilities, route path helpers)
+- Generated artifact validation (routes order, search index shape)
+- Accessibility tests using `jest-axe` (landmarks, layout, semantics)
+- SEO meta & canonical behavior tests
+
+Run all tests:
+
+```bash
+npm test
+```
+
+Authoring guidelines:
+
+- Prefer colocated test naming patterns already used in `test/`
+- Avoid importing heavy SSG/Vite plugins in tests (config auto-simplifies with `process.env.VITEST`)
+- If adding new generated artifacts, add a smoke test that fails loudly when shape changes unexpectedly.
+
+## 🧪 Troubleshooting
 
 ### Common Issues
 
@@ -839,6 +915,8 @@ You can customize or add new React components:
 2. **Styles not updating**: Run `npm run build:css` or use watch mode during development
 3. **GitHub Pages 404**: Verify the base path is correctly set in the build process
 4. **Search not working**: Check that `npm run generate:search-index` completed successfully
+5. **Edited generated file overwritten**: Regenerate instead of manual edits (`generate:*` scripts)
+6. **Alias import errors in MDX**: MDX files must use aliases (`@/components/...`) not relative paths
 
 ### Build Issues
 
@@ -846,11 +924,13 @@ You can customize or add new React components:
 - Verify all dependencies: `npm ci`
 - Check Node.js version (18+ required)
 
-## License
+## 📝 License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## Support
+## 🙋 Support & Next Steps
+
+Need deeper internals? See `ADVANCED.md` or browse the live demo guides. Found a gap? Open an issue or PR.
 
 If you have questions or need help:
 
@@ -860,4 +940,4 @@ If you have questions or need help:
 
 ---
 
-Built with ❤️ using React 19, MDX, Vite React SSG, and Tailwind CSS.
+Built with ❤️ using React 19, MDX, Vite SSG, and Tailwind CSS. Dive deeper in `ADVANCED.md`.
