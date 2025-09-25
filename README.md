@@ -6,49 +6,17 @@ Lightning‑fast, versioned documentation for your project – powered by React 
 
 ## 🚀 Why Luma?
 
-| Need | You Get |
-|------|---------|
-| Instant setup | Auto route + search + sitemap generation |
-| GitHub Pages quirks | Smart base path resolver (forks, custom domains) |
-| Versioned docs | Folder snapshots + version switcher + archived `noindex` |
-| Production SEO | Canonicals, OG/Twitter, JSON‑LD, pre-rendered HTML |
-| Great DX | Type‑safe config, enforced aliases, strict frontmatter schema |
-| Speed | Vite SSG, code‑splitting, tiny runtime hydration |
+| Need                | You Get                                                       |
+| ------------------- | ------------------------------------------------------------- |
+| Instant setup       | Auto route + search + sitemap generation                      |
+| GitHub Pages quirks | Smart base path resolver (forks, custom domains)              |
+| Versioned docs      | Folder snapshots + version switcher + archived `noindex`      |
+| Production SEO      | Canonicals, OG/Twitter, JSON‑LD, pre-rendered HTML            |
+| Great DX            | Type‑safe config, enforced aliases, strict frontmatter schema |
+| Speed               | Vite SSG, code‑splitting, tiny runtime hydration              |
 
 Peek at the live docs: https://taurgis.github.io/luma-docs/
 Deep internals live in `ADVANCED.md` or the MDX guide pages.
-
-### 🔄 Comparison (At a Glance)
-
-Friendly, high‑level defaults comparison (generalized—projects can tune any of these):
-
-| Capability / Concern | Luma Docs (this) | Docusaurus | MkDocs (Material) |
-|----------------------|------------------|------------|-------------------|
-| Stack Core | React 19 + Vite SSG + MDX 3 | React + Webpack (CRA/Vite migration WIP in ecosystem) | Python + Jinja + Markdown |
-| Setup Time (fresh repo) | < 2 min (clone + content) | 5–15 min (init + config + theme tweaks) | 5–15 min (pip + theme + plugins) |
-| Base Path (GH Pages) | Auto detection (repo / custom domain) | Manual `baseUrl` config | Manual `site_url` + path config |
-| Versioning Model | Folder snapshots + zero extra config | Built‑in versioning (CLI + JSON metadata) | Plugin-based / manual copies |
-| MDX Support | First-class (every page is MDX) | First-class (MDX plugin) | Limited (Markdown core; MDX via extra tooling) |
-| Theming / Styling | Tailwind + small component layer | Swizzled React components + CSS | Theme config + custom CSS/JS |
-| Search | Local index generated (no external service) | Local search (Lunr/Algolia integration) | Usually plugin (Lunr/Algolia) |
-| SEO Meta & JSON‑LD | Built‑in, per-page + structured data | Basic tags + community plugins | Depends on theme/plugins |
-| Canonical + Subfolder Safety | Automatic | Needs manual config | Manual / plugin |
-| Build Speed (cold) | Very fast (Vite graph + small footprint) | Moderate (Webpack bundling) | Fast (pure static generation) |
-| Runtime JS Footprint | Minimal (hydrated islands) | Larger (theme scripts + client routing) | Minimal (mostly static HTML) |
-| A11y Tests Included | Yes (jest-axe in repo) | Not by default | Not by default |
-| Content Authoring | MDX (React components inline) | MDX or Markdown | Markdown (Jinja macros) |
-| Extensibility | Direct TS/React code edits | Plugin & swizzle layer | Python plugins / theme overrides |
-| Config Surface Area | Single `config.ts` + scripts | `docusaurus.config.js` + sidebars/version files | `mkdocs.yml` + theme/plugin config |
-| Learning Curve | Low (file-based, minimal config) | Medium (concepts: swizzling, presets) | Medium (YAML + plugin ecosystem) |
-| GitHub Pages Friendly | First-class (detector baked in) | Works (needs baseUrl) | Works (manual path tweaks) |
-| Offline Dev Parity | Full (same SSG pipeline) | Full | Full |
-| License | MIT | MIT | BSD (MkDocs core) / MIT (Material theme) |
-
-When to pick something else:
-- Use Docusaurus if you want a large ecosystem of pre-built plugins & community themes.
-- Use MkDocs (Material) if you prefer Python tooling, ultra-lean output, and no React runtime.
-- Use Luma Docs if you want React + MDX + speed + painless GitHub Pages versioning with minimal ceremony.
-
 
 ## ⚡ Quick Start (90 seconds)
 
@@ -107,15 +75,15 @@ Visit: `https://<user>.github.io/<repo>/` (auto base path). Custom domain? Add `
 
 ### Core Scripts
 
-| Script | Purpose |
-|--------|---------|
-| `dev` | Local dev (runs generation once) |
-| `build` | Production static build |
-| `snapshot:version` | Archive current docs → `content/versions/<label>` |
-| `validate:frontmatter` | Frontmatter schema check |
-| `search-dev` / `search:generate` | Inspect / rebuild search index |
-| `generate:*` | Manual regeneration (normally not needed) |
-| `test` | Vitest (unit + a11y + SEO) |
+| Script                           | Purpose                                           |
+| -------------------------------- | ------------------------------------------------- |
+| `dev`                            | Local dev (runs generation once)                  |
+| `build`                          | Production static build                           |
+| `snapshot:version`               | Archive current docs → `content/versions/<label>` |
+| `validate:frontmatter`           | Frontmatter schema check                          |
+| `search-dev` / `search:generate` | Inspect / rebuild search index                    |
+| `generate:*`                     | Manual regeneration (normally not needed)         |
+| `test`                           | Vitest (unit + a11y + SEO)                        |
 
 Force a subfolder (rarely needed):
 
@@ -143,6 +111,7 @@ order: 1
 ```
 
 ### 🔍 SEO (Optional)
+
 Set only what you need—meta + structured data are auto‑rendered.
 
 ```yaml
@@ -194,6 +163,7 @@ order: 1
   - `tags` - Array of tags (can also be comma-separated string)
 
 ### Inline Overrides
+
 Drop an `<SEO />` component inside an MDX file to override frontmatter per section:
 
 ```mdx
@@ -213,6 +183,7 @@ More content here...
 Great for dynamic sections or demos.
 
 ### SEO Highlights
+
 Meta tags, OG/Twitter, JSON‑LD (Article + Breadcrumbs), canonical URLs, sitemap inclusion, archived pages auto `noindex`.
 
 ### 🧭 Automatic Navigation
@@ -220,6 +191,7 @@ Meta tags, OG/Twitter, JSON‑LD (Article + Breadcrumbs), canonical URLs, sitema
 Folder + file naming drives sidebar. `index.mdx` files become the folder landing page. Single‑page groups are flattened. Versioned snapshots preserve historical structure.
 
 ## 🧩 Components
+
 Import from the single barrel:
 
 ```jsx
